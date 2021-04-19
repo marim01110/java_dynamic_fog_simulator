@@ -11,7 +11,7 @@ public class App {
 
         point_test.setLocation(0, 0);
 
-        while(count<100){
+        while(count<10){
             dist = rand.nextInt(100);
 
             switch(rand.nextInt(4)){
@@ -25,8 +25,8 @@ public class App {
                             break;
                 default:    break;
             }
+            System.out.println("point_test (" + point_test.x + ", " + point_test.y + ")");
             count += 1;
         }
-        System.out.println(point_test.toString());
     }
 }
