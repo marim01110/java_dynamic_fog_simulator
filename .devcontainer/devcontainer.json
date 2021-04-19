@@ -1,0 +1,13 @@
+{
+    "name": "java_dev",
+    "dockerComposeFile": "docker-compose.yml",
+    "extensions": [
+		"formulahendry.terminal",
+		"vscjava.vscode-java-pack",
+		"vscjava.vscode-maven",
+		"donjayamanne.githistory"
+	],
+    "service": "java_dev",
+    "workspaceFolder": "/workdir",
+    "shutdownAction": "stopCompose"
+}
