@@ -32,6 +32,18 @@ public class Move {
                       break;
           default:    break;
       }
+
+      if(area_judge(point)!=0) random_walk(point, rand);
+
       System.out.println("point (" + point.x + ", " + point.y + ")");
+  }
+  static int area_judge(Point2D.Double point){
+    int error = 0;
+    if(point.x < 0) error += 1;
+    if(point.x > App.edge_dist) error += 10;
+    if(point.y < 0) error += 100;
+    if(point.y > App.edge_dist) error += 1000;
+    if (error != 0) return 1;
+    else return 0;
   }
 }
