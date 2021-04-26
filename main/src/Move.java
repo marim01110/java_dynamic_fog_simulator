@@ -18,9 +18,7 @@ public class Move {
     point.setLocation(point.x, point.y-y);
     //System.out.println("Done.");
   }
-  static void random_walk(Point2D.Double point, Random rand, int time_sec){
-    int count = 0;
-    while(count<time_sec){
+  static void random_walk(Point2D.Double point, Random rand){
       int dist = rand.nextInt(100);
 
       switch(rand.nextInt(4)){
@@ -35,7 +33,5 @@ public class Move {
           default:    break;
       }
       System.out.println("point (" + point.x + ", " + point.y + ")");
-      count += 1;
-  }
   }
 }

@@ -9,6 +9,12 @@ public class App {
 
         point_test.setLocation(0, 0);
 
-        Move.random_walk(point_test, rand, time_sec);   
+        int count = 0;
+        while(count < time_sec){
+            Move.random_walk(point_test, rand); 
+            count += 1;
+        }
+
+  
     }
 }
