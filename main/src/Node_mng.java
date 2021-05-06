@@ -9,6 +9,6 @@ public class Node_mng {
         node.num = node_leased + 1;
         node.point.setLocation(init_x, init_y);
         node.move_speed = rand.nextInt(40)+10;
-        return node_leased + 1;
+        return node.num;
     }
 }
