@@ -4,20 +4,17 @@ import java.util.Random;
 public class Move {
   static void negative_x(Point2D.Double point, int x){
     point.setLocation(point.x-x, point.y);
-    //System.out.println("Done.");
   }
   static void positive_x(Point2D.Double point, int x){
     point.setLocation(point.x+x, point.y);
-    //System.out.println("Done.");
   }
   static void positive_y(Point2D.Double point, int y){
     point.setLocation(point.x, point.y+y);
-    //System.out.println("Done.");
   }
   static void negative_y(Point2D.Double point, int y){
     point.setLocation(point.x, point.y-y);
-    //System.out.println("Done.");
   }
+
   static void random_walk(Node_info node, Random rand){
       int dist = node.move_speed;
       switch(rand.nextInt(4)){
@@ -34,8 +31,9 @@ public class Move {
 
       if(area_judge(node.point)!=0) random_walk(node, rand);
 
-      System.out.println("point (" + node.point.x + ", " + node.point.y + ")");
+      System.out.println("node"+ node.num + " (" + node.point.x + ", " + node.point.y + ")");
   }
+
   static int area_judge(Point2D.Double point){
     int error = 0;
     if(point.x < 0) error += 1;
