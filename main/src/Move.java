@@ -18,24 +18,23 @@ public class Move {
     point.setLocation(point.x, point.y-y);
     //System.out.println("Done.");
   }
-  static void random_walk(Point2D.Double point, Random rand){
-      int dist = rand.nextInt(100);
-
+  static void random_walk(Node_info node, Random rand){
+      int dist = node.move_speed;
       switch(rand.nextInt(4)){
-          case 0:     Move.positive_x(point, dist);
+          case 0:     Move.positive_x(node.point, dist);
                       break;
-          case 1:     Move.negative_x(point, dist);
+          case 1:     Move.negative_x(node.point, dist);
                       break;
-          case 2:     Move.positive_y(point, dist);
+          case 2:     Move.positive_y(node.point, dist);
                       break;
-          case 3:     Move.negative_y(point, dist);
+          case 3:     Move.negative_y(node.point, dist);
                       break;
           default:    break;
       }
 
-      if(area_judge(point)!=0) random_walk(point, rand);
+      if(area_judge(node.point)!=0) random_walk(node, rand);
 
-      System.out.println("point (" + point.x + ", " + point.y + ")");
+      System.out.println("point (" + node.point.x + ", " + node.point.y + ")");
   }
   static int area_judge(Point2D.Double point){
     int error = 0;
