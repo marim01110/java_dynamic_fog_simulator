@@ -8,18 +8,19 @@ class Node_info{
 }
 
 public class App {
+    static int MAX_NODES = 2;
     static int time_sec = 10;
     static int edge_dist = 2000;
     public static void main(String[] args) throws Exception {
         Random rand = new Random();
         //List<Node_info> node_list = new ArrayList<>();
-        Node_info[] node_array = new Node_info[2];
+        Node_info[] node_array = new Node_info[MAX_NODES];
         int node_leased = 0;
 
         for(int i=0; i<node_array.length; i++) node_array[i] = new Node_info();
 
-        node_leased = Node_mng.init(rand, node_leased, node_array[0], 1000, 1000);
-        node_leased = Node_mng.init(rand, node_leased, node_array[1], 1000, 1000);
+        node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000);
+        node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000);
 
         int count = 0;
         while(count < time_sec){
