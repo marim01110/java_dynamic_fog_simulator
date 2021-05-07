@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 import java.awt.geom.Point2D;
 
 class Node_info{
@@ -13,20 +14,15 @@ public class App {
     static int edge_dist = 2000;
     public static void main(String[] args) throws Exception {
         Random rand = new Random();
-        //List<Node_info> node_list = new ArrayList<>();
-        Node_info[] node_array = new Node_info[MAX_NODES];
-        int node_leased = 0;
+        Scanner scan = new Scanner(System.in);
 
-        for(int i=0; i<node_array.length; i++) node_array[i] = new Node_info();
-
-        node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000);
-        node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000);
-
-        int count = 0;
-        while(count < time_sec){
-            Move.random_walk(node_array[0], rand);
-            Move.random_walk(node_array[1], rand);
-            count += 1;
-        }  
+        System.out.println("Select running mode.[4]");
+        int runnning_mode = scan.nextInt();
+        switch(runnning_mode){
+            case 4:     Mode4.main(rand);
+                        break;
+            case 5:     break;
+            default:    break;
+        }
     }
 }
