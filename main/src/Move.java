@@ -33,12 +33,12 @@ public class Move {
       System.out.println("node"+ node.num + " (" + node.point.x + ", " + node.point.y + ")");
   }
 
-  static int decide_direction(Node_Info node){
+  static int decide_direction(Node_info node){
       double diff_x, diff_y;
       diff_x = node.destination.x - node.point.x;
       diff_y = node.destination.y - node.point.y;
       if(Math.abs(diff_x)<=Math.abs(diff_y)){
-        if()
+        System.out.println("diff_y is bigger.");
       }
       return 0;
   }

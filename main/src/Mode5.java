@@ -33,6 +33,7 @@ public class Mode5 {
         int count = 0;
         while(count < App.time_sec){
             for(int i=0; i<node_leased; i++){
+                Move.decide_direction(node_array[i]);
                 Move.random_walk(node_array[i], rand);
             }
             count += 1;
