@@ -26,6 +26,7 @@ public class Mode5 {
             System.out.println("Goal-" + i+1 + " is now set!");
         }
 
+
         node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
         node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
 
@@ -35,5 +36,9 @@ public class Mode5 {
             Move.random_walk(node_array[1], rand);
             count += 1;
         }
+    }
+
+    static put(int node_leased, Point2D.Double[] goal_array){
+        node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0)
     }
 }
