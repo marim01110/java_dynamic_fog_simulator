@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.awt.geom.Point2D;
 
 public class Node_mng {
     static int init(Random rand, int node_leased, Node_info node, int init_x, int init_y, double dest_x, double dest_y){
@@ -8,5 +9,18 @@ public class Node_mng {
         node.destination.setLocation(dest_x, dest_y);
         node.move_speed = rand.nextInt(40)+10;
         return node.num;
+    }
+
+    static int put(int node_leased, Random rand, int MAX_GOALS, Node_info node_array[], Point2D.Double goals_array[]){
+        int goal;
+        if(MAX_GOALS!=0){
+            goal = rand.nextInt(MAX_GOALS);
+            node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, goals_array[goal].x, goals_array[goal].y);
+        }
+        else{
+            goal = 0;
+            node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
+        }
+        return node_leased;
     }
 }

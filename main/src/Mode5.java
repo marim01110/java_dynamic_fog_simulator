@@ -27,7 +27,7 @@ public class Mode5 {
         }
 
         for(int i=0; i<MAX_NODES; i++){
-            node_leased = put(node_leased, rand, MAX_GOALS, node_array, goals_array);
+            node_leased = Node_mng.put(node_leased, rand, MAX_GOALS, node_array, goals_array);
         }
 
         int count = 0;
@@ -36,10 +36,5 @@ public class Mode5 {
             Move.random_walk(node_array[1], rand);
             count += 1;
         }
-    }
-
-    static int put(int node_leased, Random rand, int MAX_GOALS, Node_info node_array[], Point2D.Double goals_array[]){
-        int goal = rand.nextInt(MAX_GOALS);
-        return Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000, goals_array[goal].x, goals_array[goal].y);
     }
 }
