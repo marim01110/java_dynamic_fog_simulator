@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Node_mng {
-    static int init(Random rand, int node_leased, Node_info node, int init_x, int init_y, int dest_x, int dest_y){
+    static int init(Random rand, int node_leased, Node_info node, int init_x, int init_y, double dest_x, double dest_y){
         //Initialize Node. Set num, first location, move speed.
         node.num = node_leased + 1;
         node.point.setLocation(init_x, init_y);
