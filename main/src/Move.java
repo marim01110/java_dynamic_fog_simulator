@@ -28,10 +28,19 @@ public class Move {
                       break;
           default:    break;
       }
-
       if(area_judge(node.point)!=0) random_walk(node, rand);
 
       System.out.println("node"+ node.num + " (" + node.point.x + ", " + node.point.y + ")");
+  }
+
+  static int decide_direction(Node_Info node){
+      double diff_x, diff_y;
+      diff_x = node.destination.x - node.point.x;
+      diff_y = node.destination.y - node.point.y;
+      if(Math.abs(diff_x)<=Math.abs(diff_y)){
+        if()
+      }
+      return 0;
   }
 
   static int area_judge(Point2D.Double point){
