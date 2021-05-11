@@ -15,9 +15,9 @@ public class Move {
     point.setLocation(point.x, point.y-y);
   }
 
-  static void random_walk(Node_info node, Random rand){
+  static void move(Node_info node, int direc){
       int dist = node.move_speed;
-      switch(rand.nextInt(4)){
+      switch(direc){
           case 0:     Move.positive_x(node.point, dist);
                       break;
           case 1:     Move.negative_x(node.point, dist);
@@ -28,19 +28,26 @@ public class Move {
                       break;
           default:    break;
       }
-      if(area_judge(node.point)!=0) random_walk(node, rand);
-
       System.out.println("node"+ node.num + " (" + node.point.x + ", " + node.point.y + ")");
   }
 
-  static int decide_direction(Node_info node){
+  static void random_walk(Node_info node, Random rand){
+      Move.move(node, rand.nextInt(4));
+      if(area_judge(node.point)!=0) random_walk(node, rand);
+  }
+
+  static void decide_direction(Node_info node){
       double diff_x, diff_y;
       diff_x = node.destination.x - node.point.x;
       diff_y = node.destination.y - node.point.y;
       if(Math.abs(diff_x)<=Math.abs(diff_y)){
-        System.out.println("diff_y is bigger.");
+          if(diff_y>=0) Move.move(node, 2);
+          else Move.move(node, 1);
       }
-      return 0;
+      else{
+          if(diff_x>=0) Move.move(node, 0);
+          else Move.move(node, 3);
+      }
   }
 
   static int area_judge(Point2D.Double point){
