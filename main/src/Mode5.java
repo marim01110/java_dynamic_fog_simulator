@@ -27,7 +27,7 @@ public class Mode5 {
         }
 
         for(int i=0; i<MAX_NODES; i++){
-            node_leased = Node_mng.put(node_leased, rand, MAX_GOALS, node_array, goals_array);
+            Node_mng.put(node_leased, rand, MAX_GOALS, node_array, goals_array);
         }
 
         int count = 0;
