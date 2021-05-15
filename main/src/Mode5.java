@@ -37,14 +37,16 @@ public class Mode5 {
     int count = 0;
     while(count < App.time_sec){
       for(int i=0; i<node_leased; i++){
-        if(node_array[i].goal_nearby_flag == 0){
-          Move.decide_direction(node_array[i]);
-          Node_mng.check_reach_goal(node_array[i]);
+        if(node_array[i].reached == 0){
+          if(node_array[i].goal_nearby_flag == 0){
+            Move.decide_direction(node_array[i]);
+            Node_mng.check_reach_goal(node_array[i]);
+          }
+          else if(node_array[i].goal_nearby_flag == 1){
+            Node_mng.check_reach_goal(node_array[i]);
+          }
+          if(DEBUG) System.out.println("node"+ node_array[i].num + " (" + node_array[i].point.x + ", " + node_array[i].point.y + ")");
         }
-        else if(node_array[i].goal_nearby_flag == 1){
-          Node_mng.check_reach_goal(node_array[i]);
-        }
-        if(DEBUG) System.out.println("node"+ node_array[i].num + " (" + node_array[i].point.x + ", " + node_array[i].point.y + ")");
       }
       count += 1;
     }

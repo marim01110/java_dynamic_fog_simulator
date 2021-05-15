@@ -7,6 +7,7 @@ class Node_info{
   Point2D.Double point = new Point2D.Double();
   Point2D.Double destination = new Point2D.Double();
   int goal_nearby_flag; //if indicate 1, goal_point is nearby.
+  int reached;
   int move_speed;
 }
 
