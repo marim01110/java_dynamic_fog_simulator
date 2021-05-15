@@ -16,38 +16,37 @@ public class Move {
   }
 
   static void move(Node_info node, int direc){
-      int dist = node.move_speed;
-      switch(direc){
-          case 0:     Move.positive_x(node.point, dist);
-                      break;
-          case 1:     Move.negative_x(node.point, dist);
-                      break;
-          case 2:     Move.positive_y(node.point, dist);
-                      break;
-          case 3:     Move.negative_y(node.point, dist);
-                      break;
-          default:    break;
-      }
-      System.out.println("node"+ node.num + " (" + node.point.x + ", " + node.point.y + ")");
+    int dist = node.move_speed;
+    switch(direc){
+      case 0:     Move.positive_x(node.point, dist);
+                  break;
+      case 1:     Move.negative_x(node.point, dist);
+                  break;
+      case 2:     Move.positive_y(node.point, dist);
+                  break;
+      case 3:     Move.negative_y(node.point, dist);
+                  break;
+      default:    break;
+    }
   }
 
   static void random_walk(Node_info node, Random rand){
-      Move.move(node, rand.nextInt(4));
-      if(area_judge(node.point)!=0) random_walk(node, rand);
+    Move.move(node, rand.nextInt(4));
+    if(area_judge(node.point)!=0) random_walk(node, rand);
   }
 
   static void decide_direction(Node_info node){
-      double diff_x, diff_y;
-      diff_x = node.destination.x - node.point.x;
-      diff_y = node.destination.y - node.point.y;
-      if(Math.abs(diff_x)<=Math.abs(diff_y)){
-          if(diff_y>=0) Move.move(node, 2);//positive y
-          else Move.move(node, 3);//negative y
-      }
-      else{
-          if(diff_x>=0) Move.move(node, 0);//positive x
-          else Move.move(node, 1);//negative x
-      }
+    double diff_x, diff_y;
+    diff_x = node.destination.x - node.point.x;
+    diff_y = node.destination.y - node.point.y;
+    if(Math.abs(diff_x)<=Math.abs(diff_y)){
+      if(diff_y>=0) Move.move(node, 2);//positive y
+      else Move.move(node, 3);//negative y
+    }
+    else{
+      if(diff_x>=0) Move.move(node, 0);//positive x
+      else Move.move(node, 1);//negative x
+    }
   }
 
   static int area_judge(Point2D.Double point){
