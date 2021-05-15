@@ -12,8 +12,8 @@ class Node_info{
 }
 
 public class App {
-  static int time_sec = 100;
-  static int edge_dist = 2000;
+  static final int time_sec = 100;
+  static final int edge_dist = 2000;
   public static void main(String[] args) throws Exception {
     Random rand = new Random();
     Scanner scan = new Scanner(System.in);

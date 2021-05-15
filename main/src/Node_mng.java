@@ -2,7 +2,7 @@ import java.util.Random;
 import java.awt.geom.Point2D;
 
 public class Node_mng {
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   static int init(Random rand, int node_leased, Node_info node, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.
@@ -22,7 +22,6 @@ public class Node_mng {
       node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, goals_array[goal].x, goals_array[goal].y);
     }
     else{
-      goal = 0;
       node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
     }
     return node_leased;
