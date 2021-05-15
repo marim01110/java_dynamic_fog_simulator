@@ -42,11 +42,11 @@ public class Move {
       diff_y = node.destination.y - node.point.y;
       if(Math.abs(diff_x)<=Math.abs(diff_y)){
           if(diff_y>=0) Move.move(node, 2);//positive y
-          else Move.move(node, 1);//negative y
+          else Move.move(node, 3);//negative y
       }
       else{
           if(diff_x>=0) Move.move(node, 0);//positive x
-          else Move.move(node, 3);//negative y
+          else Move.move(node, 1);//negative x
       }
   }
 

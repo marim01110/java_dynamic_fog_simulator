@@ -12,7 +12,7 @@ public class Node_mng {
         return node.num;
     }
 
-    static void put(int node_leased, Random rand, int MAX_GOALS, Node_info node_array[], Point2D.Double goals_array[]){
+    static int put(int node_leased, Random rand, int MAX_GOALS, Node_info node_array[], Point2D.Double goals_array[]){
         int goal;
         if(MAX_GOALS!=0){
             goal = rand.nextInt(MAX_GOALS);
@@ -22,6 +22,7 @@ public class Node_mng {
             goal = 0;
             node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
         }
+        return node_leased;
     }
 
     static int check_reach_goal(Node_info node){
