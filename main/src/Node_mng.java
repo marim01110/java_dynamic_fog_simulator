@@ -25,10 +25,11 @@ public class Node_mng {
     }
 
     static int check_reach_goal(Node_info node){
+        int result;
         if(node.point.distance(node.destination)<=node.move_speed){
             node.goal_nearby_flag = 1;
         }
         else node.goal_nearby_flag = 0;
-        return 0;
+        return result;
     }
 }

@@ -28,6 +28,7 @@ public class Mode5 {
 
         for(int i=0; i<MAX_NODES; i++){
             Node_mng.put(node_leased, rand, MAX_GOALS, node_array, goals_array);
+            System.out.println("node put.");
         }
 
         int count = 0;
