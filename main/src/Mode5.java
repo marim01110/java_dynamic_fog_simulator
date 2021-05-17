@@ -5,8 +5,8 @@ import java.awt.geom.Point2D;
 public class Mode5 {
   private static final boolean DEBUG = true;
 
-  static final int MAX_NODES = 1;
-  static final int MAX_GOALS = 1;
+  private static final int MAX_NODES = 1;
+  private static final int MAX_GOALS = 1;
 
   static void main(Random rand, Scanner scan){
     //List<Node_info> node_list = new ArrayList<>();
