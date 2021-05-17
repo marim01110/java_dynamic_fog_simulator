@@ -42,21 +42,21 @@ public class Mode5 {
   }
 
   static void init(Scanner scan, Node_info[] node_array, Point2D.Double[] goals_array){
-    int error;//Input Value Error Flag
+    boolean error;//Input Value Error Flag
     
     //Initialize Array
     for(int i=0; i<node_array.length; i++) node_array[i] = new Node_info();
     for(int i=0; i<goals_array.length; i++){
       goals_array[i] = new Point2D.Double();
-      error = 1;
+      error = true;
       //Goal node Set
       do{
         System.out.print("Goal-" + i+1 + "'s X coordinate is ... [0-" + App.edge_dist + "] ");
         goals_array[i].x = scan.nextInt();
         System.out.print("Goal-" + i+1 + "'s Y coordinate is ... [0-" + App.edge_dist + "] ");
         goals_array[i].y = scan.nextInt();
-        if(goals_array[i].x >= 0 && goals_array[i].x <= App.edge_dist && goals_array[i].y >= 0 && goals_array[i].y <= App.edge_dist) error = 0;
-      }while(error!=0);
+        if(goals_array[i].x >= 0 && goals_array[i].x <= App.edge_dist && goals_array[i].y >= 0 && goals_array[i].y <= App.edge_dist) error = false;
+      }while(error);
       System.out.println("Goal-" + i+1 + " is now set!");
     }
   }

@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Mode4 {
   private static final boolean DEBUG = true;
-  static final int MAX_NODES = 2;
+  static final int MAX_NODES = 1;
 
   static void main(Random rand){
     //List<Node_info> node_list = new ArrayList<>();
@@ -13,7 +13,7 @@ public class Mode4 {
     //Initialized Array
     for(int i=0; i<MAX_NODES; i++){
       node_array[i] = new Node_info();
-      node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
+      node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 10, 10, 0, 0);
     }
 
     while(time_count < App.time_sec){
