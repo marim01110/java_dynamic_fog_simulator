@@ -13,24 +13,9 @@ public class Mode5 {
     Node_info[] node_array = new Node_info[MAX_NODES];
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
     int node_leased = 0;
-    int error;//Input Value Error Flag
     int time_count;
 
-    //Initialized Array
-    for(int i=0; i<node_array.length; i++) node_array[i] = new Node_info();
-    for(int i=0; i<goals_array.length; i++){
-      goals_array[i] = new Point2D.Double();
-      error = 1;
-      //Goal node Set
-      do{
-        System.out.print("Goal-" + i+1 + "'s X coordinate is ... [0-" + App.edge_dist + "] ");
-        goals_array[i].x = scan.nextInt();
-        System.out.print("Goal-" + i+1 + "'s Y coordinate is ... [0-" + App.edge_dist + "] ");
-        goals_array[i].y = scan.nextInt();
-        if(goals_array[i].x >= 0 && goals_array[i].x <= App.edge_dist && goals_array[i].y >= 0 && goals_array[i].y <= App.edge_dist) error = 0;
-      }while(error!=0);
-      System.out.println("Goal-" + i+1 + " is now set!");
-    }
+    init(scan, node_array, goals_array);
 
     //Put Nodes on the Map
     for(int i=0; i<MAX_NODES; i++){
@@ -53,6 +38,26 @@ public class Mode5 {
         }
       }
       time_count += 1;
+    }
+  }
+
+  static void init(Scanner scan, Node_info[] node_array, Point2D.Double[] goals_array){
+    int error;//Input Value Error Flag
+    
+    //Initialize Array
+    for(int i=0; i<node_array.length; i++) node_array[i] = new Node_info();
+    for(int i=0; i<goals_array.length; i++){
+      goals_array[i] = new Point2D.Double();
+      error = 1;
+      //Goal node Set
+      do{
+        System.out.print("Goal-" + i+1 + "'s X coordinate is ... [0-" + App.edge_dist + "] ");
+        goals_array[i].x = scan.nextInt();
+        System.out.print("Goal-" + i+1 + "'s Y coordinate is ... [0-" + App.edge_dist + "] ");
+        goals_array[i].y = scan.nextInt();
+        if(goals_array[i].x >= 0 && goals_array[i].x <= App.edge_dist && goals_array[i].y >= 0 && goals_array[i].y <= App.edge_dist) error = 0;
+      }while(error!=0);
+      System.out.println("Goal-" + i+1 + " is now set!");
     }
   }
 }

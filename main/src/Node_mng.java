@@ -39,7 +39,7 @@ public class Node_mng {
         node.point.setLocation(node.point.x, node.destination.y);
         if(DEBUG) System.out.println("cur_point.y is changed to dest.y");
       }
-      else if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
+      if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
         node.reached = 1;
         if(DEBUG) System.out.println("Reach the goal point.");
       }
