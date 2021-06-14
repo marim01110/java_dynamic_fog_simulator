@@ -4,9 +4,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Mode5 {
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
-  private static final int MAX_NODES = 100;
+  private static final int MAX_NODES = 20;
   private static final int MAX_GOALS = 1;
 
   static void main(Random rand, Scanner scan){
@@ -26,6 +26,8 @@ public class Mode5 {
     //Simuration Start
     time_count = 0;
     while(time_count < App.TIME_SEC){
+      Node_mng.dynamic_fog_dead_judge(node_array, dynamic_fog_list, node_leased);
+      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, dynamic_fog_list, node_leased);
       for(int i=0; i<node_leased; i++){
         if(node_array[i].reached == false){
           if(node_array[i].goal_nearby == false){
@@ -40,7 +42,6 @@ public class Mode5 {
       }
       time_count += 1;
     }
-    Node_mng.dynamic_fog_set(rand, dynamic_fog_list, node_leased);
   }
 
   static void init(Scanner scan, Node_info[] node_array, Point2D.Double[] goals_array){

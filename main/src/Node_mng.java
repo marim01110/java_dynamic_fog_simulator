@@ -32,27 +32,27 @@ public class Node_mng {
   static void check_reach_goal(Node_info node){
     if(node.goal_nearby == true){
       if((Math.abs(node.point.x - node.destination.x) <= node.move_speed) && (node.point.x != node.destination.x)){
-          if(DEBUG) System.out.println("node destination x is " + node.destination.x);
+          //if(DEBUG) System.out.println("node destination x is " + node.destination.x);
           node.point.setLocation(node.destination.x, node.point.y);
-          if(DEBUG) System.out.println("cur_point.x is changed to dest.x");
+          //if(DEBUG) System.out.println("cur_point.x is changed to dest.x");
       }
       else if((Math.abs(node.point.y - node.destination.y) <= node.move_speed) && (node.point.y != node.destination.y)){
-        if(DEBUG) System.out.println("node destination y is " + node.destination.y);
+        //if(DEBUG) System.out.println("node destination y is " + node.destination.y);
         node.point.setLocation(node.point.x, node.destination.y);
-        if(DEBUG) System.out.println("cur_point.y is changed to dest.y");
+        //if(DEBUG) System.out.println("cur_point.y is changed to dest.y");
       }
       if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
         node.reached = true;
-        if(DEBUG) System.out.println("Reach the goal point.");
+        if(DEBUG) System.out.println("Node num: " + node.num + " is reach the goal point.");
       }
     }
     else if(node.point.distance(node.destination)<=node.move_speed){
       node.goal_nearby = true;
-      if(DEBUG) System.out.println("Flag is changed to 1");
+      //if(DEBUG) System.out.println("Flag is changed to 1");
     }
     else{
       node.goal_nearby = false;
-      if(DEBUG) System.out.println("Flag is changed to 0");
+      //if(DEBUG) System.out.println("Flag is changed to 0");
     }
   }
 
@@ -60,23 +60,35 @@ public class Node_mng {
     int dynamic_fogs_required, dynamic_fog_candidate;
     boolean error;
     dynamic_fogs_required = node_leased * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
-    do{
-      error = false;
-      dynamic_fog_candidate = rand.nextInt(node_leased);
-      for(int i = 0; i < dynamic_fog_list.size(); i++){
-        if(dynamic_fog_candidate == dynamic_fog_list.get(i)) error = true;
-        if(error == true) break;
-      }
-      if(error == false) dynamic_fog_list.add(dynamic_fog_candidate);
-    }while((dynamic_fogs_required >= dynamic_fog_list.size()));
-
-    if(DEBUG){//Print Dynamic Fog Node Status
-      System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
-      for(int i = 0; i < dynamic_fog_list.size(); i++){
-        if(i != 0) System.out.print(", ");
-        System.out.print(dynamic_fog_list.get(i));
-      }
-      System.out.println("");
+    if(dynamic_fogs_required > dynamic_fog_list.size()){
+      do{
+        error = false;
+        dynamic_fog_candidate = rand.nextInt(node_leased);
+        for(int i = 0; i < dynamic_fog_list.size(); i++){
+          if(dynamic_fog_candidate == dynamic_fog_list.get(i)) error = true;
+          if(error == true) break;
+        }
+        if(error == false) dynamic_fog_list.add(dynamic_fog_candidate);
+      }while((dynamic_fogs_required - 1 >= dynamic_fog_list.size()));
     }
+
+    if(DEBUG) dynamic_fog_print_status(dynamic_fog_list, node_leased);
+  }
+
+  static void dynamic_fog_dead_judge(Node_info[] node_array, ArrayList<Integer> dynamic_fog_list, int node_leased){
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(node_array[dynamic_fog_list.get(i)].reached == true) dynamic_fog_list.remove(i);
+    }
+    if(DEBUG) dynamic_fog_print_status(dynamic_fog_list, node_leased);
+  }
+
+  static void dynamic_fog_print_status(ArrayList<Integer> dynamic_fog_list, int node_leased){
+    int dynamic_fogs_required = node_leased * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(i != 0) System.out.print(", ");
+      System.out.print(dynamic_fog_list.get(i));
+    }
+    System.out.println("");
   }
 }
