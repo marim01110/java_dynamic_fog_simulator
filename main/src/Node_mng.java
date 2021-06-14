@@ -58,19 +58,20 @@ public class Node_mng {
 
   static void dynamic_fog_set(Random rand, ArrayList<Integer> dynamic_fog_list, int node_leased){
     int dynamic_fogs_required, dynamic_fog_candidate;
-    boolean error = false;
+    boolean error;
     dynamic_fogs_required = node_leased * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
-    while(dynamic_fogs_required <= dynamic_fog_list.size()){
+    do{
+      error = false;
       dynamic_fog_candidate = rand.nextInt(node_leased);
       for(int i = 0; i < dynamic_fog_list.size(); i++){
         if(dynamic_fog_candidate == dynamic_fog_list.get(i)) error = true;
         if(error == true) break;
       }
       if(error == false) dynamic_fog_list.add(dynamic_fog_candidate);
-    }
+    }while((dynamic_fogs_required >= dynamic_fog_list.size()));
 
     if(DEBUG){//Print Dynamic Fog Node Status
-      System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist, Dynamic Fog Node:");
+      System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
       for(int i = 0; i < dynamic_fog_list.size(); i++){
         if(i != 0) System.out.print(", ");
         System.out.print(dynamic_fog_list.get(i));

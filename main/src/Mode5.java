@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Mode5 {
   private static final boolean DEBUG = true;
 
-  private static final int MAX_NODES = 1;
+  private static final int MAX_NODES = 100;
   private static final int MAX_GOALS = 1;
 
   static void main(Random rand, Scanner scan){
