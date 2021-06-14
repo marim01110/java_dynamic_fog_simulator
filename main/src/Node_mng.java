@@ -7,14 +7,14 @@ public class Node_mng {
 
   static int init(Random rand, int node_leased, Node_info node, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.
-    node.num = node_leased + 1;
+    node.num = node_leased;
     node.point.setLocation(init_x, init_y);
     node.destination.setLocation(dest_x, dest_y);
     node.goal_nearby = false;
     node.dynamic_fog = false;
     node.reached = false;
     node.move_speed = rand.nextInt(40)+10;
-    return node.num;
+    return node.num + 1;
   }
 
   static int put(int node_leased, Random rand, int MAX_GOALS, Node_info node_array[], Point2D.Double goals_array[]){
@@ -64,6 +64,7 @@ public class Node_mng {
       do{
         error = false;
         dynamic_fog_candidate = rand.nextInt(node_leased);
+        if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate);
         for(int i = 0; i < dynamic_fog_list.size(); i++){
           if(dynamic_fog_candidate == dynamic_fog_list.get(i)) error = true;
           if(error == true) break;
