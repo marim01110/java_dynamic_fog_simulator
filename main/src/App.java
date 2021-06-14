@@ -6,15 +6,16 @@ class Node_info{
   int num;
   Point2D.Double point = new Point2D.Double();
   Point2D.Double destination = new Point2D.Double();
-  int goal_nearby_flag; //if indicate 1, goal_point is nearby.
-  int reached;
+  boolean goal_nearby;
+  boolean dynamic_fog;
+  boolean reached;
   int move_speed;
 }
 
 public class App {
   static final int TIME_SEC = 100;
   static final int EDGE_DIST = 2000;
-  static final double DYNAMIC_FOG_RATIO = 0.1;
+  static final int DYNAMIC_FOG_RATIO = 0.1;
   public static void main(String[] args) throws Exception {
     Random rand = new Random();
     Scanner scan = new Scanner(System.in);

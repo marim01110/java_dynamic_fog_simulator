@@ -12,7 +12,9 @@ public class Mode5 {
     //List<Node_info> node_list = new ArrayList<>();
     Node_info[] node_array = new Node_info[MAX_NODES];
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
+    Point2D.Double[] dynamic_fogs_array = new Point2D.Double[MAX_NODES];
     int node_leased = 0;
+    int dynamc_fog_leased = 0;
     int time_count;
 
     init(scan, node_array, goals_array);
@@ -26,12 +28,12 @@ public class Mode5 {
     time_count = 0;
     while(time_count < App.TIME_SEC){
       for(int i=0; i<node_leased; i++){
-        if(node_array[i].reached == 0){
-          if(node_array[i].goal_nearby_flag == 0){
+        if(node_array[i].reached == false){
+          if(node_array[i].goal_nearby == false){
             Move.decide_direction(node_array[i]);
             Node_mng.check_reach_goal(node_array[i]);
           }
-          else if(node_array[i].goal_nearby_flag == 1){
+          else if(node_array[i].goal_nearby == true){
             Node_mng.check_reach_goal(node_array[i]);
           }
           if(DEBUG) System.out.println("node"+ node_array[i].num + " (" + node_array[i].point.x + ", " + node_array[i].point.y + ")");

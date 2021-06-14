@@ -9,8 +9,9 @@ public class Node_mng {
     node.num = node_leased + 1;
     node.point.setLocation(init_x, init_y);
     node.destination.setLocation(dest_x, dest_y);
-    node.goal_nearby_flag = 0;
-    node.reached = 0;
+    node.goal_nearby = false;
+    node.dynamic_fog = false;
+    node.reached = false;
     node.move_speed = rand.nextInt(40)+10;
     return node.num;
   }
@@ -28,7 +29,7 @@ public class Node_mng {
   }
 
   static void check_reach_goal(Node_info node){
-    if(node.goal_nearby_flag == 1){
+    if(node.goal_nearby == true){
       if((Math.abs(node.point.x - node.destination.x) <= node.move_speed) && (node.point.x != node.destination.x)){
           if(DEBUG) System.out.println("node destination x is " + node.destination.x);
           node.point.setLocation(node.destination.x, node.point.y);
@@ -40,17 +41,22 @@ public class Node_mng {
         if(DEBUG) System.out.println("cur_point.y is changed to dest.y");
       }
       if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
-        node.reached = 1;
+        node.reached = true;
         if(DEBUG) System.out.println("Reach the goal point.");
       }
     }
     else if(node.point.distance(node.destination)<=node.move_speed){
-      node.goal_nearby_flag = 1;
+      node.goal_nearby = true;
       if(DEBUG) System.out.println("Flag is changed to 1");
     }
     else{
-      node.goal_nearby_flag = 0;
+      node.goal_nearby = false;
       if(DEBUG) System.out.println("Flag is changed to 0");
     }
+  }
+
+  static void dynamic_fog_sel(Point2D.Double[] dynamic_fogs_array, int node_leased, int dynamc_fog_leased){
+    int dynamic_fogs = node_leased * App.DYNAMIC_FOG_RATIO / 100;
+    
   }
 }
