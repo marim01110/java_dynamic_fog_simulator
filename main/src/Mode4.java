@@ -5,7 +5,6 @@ public class Mode4 {
   private static final int MAX_NODES = 1;
 
   static void main(Random rand){
-    //List<Node_info> node_list = new ArrayList<>();
     Node_info[] node_array = new Node_info[MAX_NODES];
     int node_leased = 0;
     int time_count = 0;

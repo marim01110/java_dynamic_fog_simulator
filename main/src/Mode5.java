@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class Mode5 {
   private static final boolean DEBUG = true;
@@ -9,12 +10,10 @@ public class Mode5 {
   private static final int MAX_GOALS = 1;
 
   static void main(Random rand, Scanner scan){
-    //List<Node_info> node_list = new ArrayList<>();
     Node_info[] node_array = new Node_info[MAX_NODES];
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
-    Point2D.Double[] dynamic_fogs_array = new Point2D.Double[MAX_NODES];
+    ArrayList<Integer> dynamic_fog_list = new ArrayList<>();
     int node_leased = 0;
-    int dynamc_fog_leased = 0;
     int time_count;
 
     init(scan, node_array, goals_array);
@@ -41,6 +40,7 @@ public class Mode5 {
       }
       time_count += 1;
     }
+    Node_mng.dynamic_fog_set(rand, dynamic_fog_list, node_leased);
   }
 
   static void init(Scanner scan, Node_info[] node_array, Point2D.Double[] goals_array){
