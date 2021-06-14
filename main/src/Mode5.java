@@ -12,6 +12,7 @@ public class Mode5 {
   static void main(Random rand, Scanner scan){
     Node_info[] node_array = new Node_info[MAX_NODES];
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
+    ArrayList<Integer> node_active_list = new ArrayList<>();
     ArrayList<Integer> dynamic_fog_list = new ArrayList<>();
     int node_leased = 0;
     int time_count;
@@ -20,15 +21,17 @@ public class Mode5 {
 
     //Put Nodes on the Map
     for(int i=0; i<MAX_NODES; i++){
+      node_active_list.add(node_leased);
       node_leased = Node_mng.put(node_leased, rand, MAX_GOALS, node_array, goals_array);
     }
 
     //Simuration Start
     time_count = 0;
     while(time_count < App.TIME_SEC){
-      Node_mng.dynamic_fog_dead_judge(node_array, dynamic_fog_list, node_leased);
-      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, dynamic_fog_list, node_leased);
-      for(int i=0; i<node_leased; i++){
+      Node_mng.dynamic_fog_dead_judge(node_array, dynamic_fog_list, node_active_list);
+      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, dynamic_fog_list, node_active_list);
+
+      for(int i = 0; i < node_active_list.size(); i++){
         if(node_array[i].reached == false){
           if(node_array[i].goal_nearby == false){
             Move.decide_direction(node_array[i]);
@@ -39,6 +42,9 @@ public class Mode5 {
           }
           if(DEBUG) System.out.println("node"+ node_array[i].num + " (" + node_array[i].point.x + ", " + node_array[i].point.y + ")");
         }
+
+        if(node_array[i].reached == true) node_active_list.remove(i);
+
       }
       time_count += 1;
     }
