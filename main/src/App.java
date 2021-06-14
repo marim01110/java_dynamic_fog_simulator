@@ -12,8 +12,9 @@ class Node_info{
 }
 
 public class App {
-  static final int time_sec = 100;
-  static final int edge_dist = 2000;
+  static final int TIME_SEC = 100;
+  static final int EDGE_DIST = 2000;
+  static final double DYNAMIC_FOG_RATIO = 0.1;
   public static void main(String[] args) throws Exception {
     Random rand = new Random();
     Scanner scan = new Scanner(System.in);

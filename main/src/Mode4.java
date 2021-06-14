@@ -16,7 +16,7 @@ public class Mode4 {
       node_leased = Node_mng.init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
     }
 
-    while(time_count < App.time_sec){
+    while(time_count < App.TIME_SEC){
       for(int i=0; i<node_leased; i++){
         Move.random_walk(node_array[i], rand);
         if(DEBUG) System.out.println("node"+ node_array[i].num + " (" + node_array[i].point.x + ", " + node_array[i].point.y + ")");

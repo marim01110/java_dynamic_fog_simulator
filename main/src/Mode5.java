@@ -24,7 +24,7 @@ public class Mode5 {
 
     //Simuration Start
     time_count = 0;
-    while(time_count < App.time_sec){
+    while(time_count < App.TIME_SEC){
       for(int i=0; i<node_leased; i++){
         if(node_array[i].reached == 0){
           if(node_array[i].goal_nearby_flag == 0){
@@ -51,11 +51,11 @@ public class Mode5 {
       error = true;
       //Goal node Set
       do{
-        System.out.print("Goal-" + i+1 + "'s X coordinate is ... [0-" + App.edge_dist + "] ");
+        System.out.print("Goal-" + i+1 + "'s X coordinate is ... [0-" + App.EDGE_DIST + "] ");
         goals_array[i].x = scan.nextInt();
-        System.out.print("Goal-" + i+1 + "'s Y coordinate is ... [0-" + App.edge_dist + "] ");
+        System.out.print("Goal-" + i+1 + "'s Y coordinate is ... [0-" + App.EDGE_DIST + "] ");
         goals_array[i].y = scan.nextInt();
-        if(goals_array[i].x >= 0 && goals_array[i].x <= App.edge_dist && goals_array[i].y >= 0 && goals_array[i].y <= App.edge_dist) error = false;
+        if(goals_array[i].x >= 0 && goals_array[i].x <= App.EDGE_DIST && goals_array[i].y >= 0 && goals_array[i].y <= App.EDGE_DIST) error = false;
       }while(error);
       System.out.println("Goal-" + i+1 + " is now set!");
     }

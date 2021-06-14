@@ -57,9 +57,9 @@ public class Move {
   static boolean area_judge(Point2D.Double point){
     int error = 0;
     if(point.x < 0) error += 1;
-    if(point.x > App.edge_dist) error += 10;
+    if(point.x > App.EDGE_DIST) error += 10;
     if(point.y < 0) error += 100;
-    if(point.y > App.edge_dist) error += 1000;
+    if(point.y > App.EDGE_DIST) error += 1000;
     if (error != 0) return false;//Means Node went outside the area.
     else return true;//Means Node still inside the area.
   }
