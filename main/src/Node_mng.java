@@ -48,11 +48,9 @@ public class Node_mng {
     }
     else if(node.point.distance(node.destination)<=node.move_speed){
       node.goal_nearby = true;
-      //if(DEBUG) System.out.println("Flag is changed to 1");
     }
     else{
       node.goal_nearby = false;
-      //if(DEBUG) System.out.println("Flag is changed to 0");
     }
   }
 
