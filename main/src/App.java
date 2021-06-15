@@ -13,9 +13,17 @@ class Node_info{
   Point2D.Double point = new Point2D.Double();
   Point2D.Double destination = new Point2D.Double();
   boolean goal_nearby;
-  boolean dynamic_fog;
   boolean reached;
   int move_speed;
+
+  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean goal_nearby, boolean reached, int move_speed){
+    this.num = num;
+    this.point = point;
+    this.destination = destination;
+    this.goal_nearby = goal_nearby;
+    this.reached = reached;
+    this.move_speed = move_speed;
+  }
 }
 
 class Storage{

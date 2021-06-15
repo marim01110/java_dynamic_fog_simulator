@@ -4,57 +4,56 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Mode5 {
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   private static final int MAX_NODES = 20;
   private static final int MAX_GOALS = 1;
 
   static void main(Random rand, Scanner scan){
-    Node_info[] node_array = new Node_info[MAX_NODES];
+    var node_list = new ArrayList<Node_info>();
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
-    var node_active_list = new ArrayList<Integer>();
     var dynamic_fog_list = new ArrayList<Storage>();
+    var cache_data_list = new ArrayList<Data>();
     int node_leased = 0;
     int time_count;
 
-    init(scan, node_array, goals_array);
+    init(scan, goals_array);
 
     //Put Nodes on the Map
-    for(int i=0; i<MAX_NODES; i++){
-      node_active_list.add(node_leased);
-      node_leased = Node_mng.put(node_leased, rand, MAX_GOALS, node_array, goals_array);
+    for(int i = 0; i < MAX_NODES; i++){
+      node_list.add(Node_mng.put(rand, node_list, node_leased, MAX_GOALS, goals_array));
+      node_leased = node_list.size();
     }
 
     //Simuration Start
     time_count = 0;
     while(time_count < App.TIME_SEC){
-      Node_mng.dynamic_fog_dead_judge(node_array, dynamic_fog_list, node_active_list);
-      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, dynamic_fog_list, node_active_list);
+      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, node_list, dynamic_fog_list);
 
-      for(int i = 0; i < node_active_list.size(); i++){
-        if(node_array[i].reached == false){
-          if(node_array[i].goal_nearby == false){
-            Move.decide_direction(node_array[i]);
-            Node_mng.check_reach_goal(node_array[i]);
+      for(int i = 0; i < node_list.size(); i++){
+        if(node_list.get(i).reached == false){
+          if(node_list.get(i).goal_nearby == false){
+            Move.decide_direction(node_list.get(i));
+            Node_mng.check_reach_goal(node_list.get(i));
           }
-          else if(node_array[i].goal_nearby == true){
-            Node_mng.check_reach_goal(node_array[i]);
+          else if(node_list.get(i).goal_nearby == true){
+            Node_mng.check_reach_goal(node_list.get(i));
           }
-          if(DEBUG) System.out.println("node"+ node_array[i].num + " (" + node_array[i].point.x + ", " + node_array[i].point.y + ")");
+          if(DEBUG) System.out.println("node"+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
         }
 
-        if(node_array[i].reached == true) node_active_list.remove(i);
-
+        Node_mng.dynamic_fog_dead_judge(node_list, dynamic_fog_list);
+        if(node_list.get(i).reached == true) node_list.remove(i);
       }
+      if(DEBUG) System.out.println("");
       time_count += 1;
     }
   }
 
-  static void init(Scanner scan, Node_info[] node_array, Point2D.Double[] goals_array){
+  static void init(Scanner scan, Point2D.Double[] goals_array){
     boolean error;//Input Value Error Flag
     
     //Initialize Array
-    for(int i=0; i<node_array.length; i++) node_array[i] = new Node_info();
     for(int i=0; i<goals_array.length; i++){
       goals_array[i] = new Point2D.Double();
       error = true;

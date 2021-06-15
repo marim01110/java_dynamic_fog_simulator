@@ -5,27 +5,21 @@ import java.util.ArrayList;
 public class Node_mng {
   private static final boolean DEBUG = true;
 
-  static int init(Random rand, int node_leased, Node_info node, int init_x, int init_y, double dest_x, double dest_y){
+  static Node_info init(Random rand, ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.
-    node.num = node_leased;
-    node.point.setLocation(init_x, init_y);
-    node.destination.setLocation(dest_x, dest_y);
-    node.goal_nearby = false;
-    node.reached = false;
-    node.move_speed = rand.nextInt(40)+10;
-    return node.num + 1;
+    var point = new Point2D.Double();
+    var destination = new Point2D.Double();
+
+    point.setLocation(init_x, init_y);
+    destination.setLocation(dest_x, dest_y);
+    var new_node = new Node_info(node_leased, point, destination, false, false, rand.nextInt(40) + 10);
+    return new_node;
   }
 
-  static int put(int node_leased, Random rand, int MAX_GOALS, Node_info node_array[], Point2D.Double goals_array[]){
+  static Node_info put(Random rand, ArrayList<Node_info> node_list, int node_leased, int MAX_GOALS, Point2D.Double goals_array[]){
     int goal;
-    if(MAX_GOALS!=0){
-      goal = rand.nextInt(MAX_GOALS);
-      node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, goals_array[goal].x, goals_array[goal].y);
-    }
-    /*else{
-      node_leased = init(rand, node_leased, node_array[node_leased], 1000, 1000, 0, 0);
-    }*/
-    return node_leased;
+    goal = rand.nextInt(MAX_GOALS);
+    return init(rand, node_list, node_leased, 1000, 1000, goals_array[goal].x, goals_array[goal].y);
   }
 
   static void check_reach_goal(Node_info node){
@@ -53,15 +47,15 @@ public class Node_mng {
     }
   }
 
-  static void dynamic_fog_set(Random rand, ArrayList<Storage> dynamic_fog_list, ArrayList<Integer> node_active_list){
+  static void dynamic_fog_set(Random rand, ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list){
     int dynamic_fogs_required, dynamic_fog_candidate;
     boolean error;
     
-    dynamic_fogs_required = node_active_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     if(dynamic_fogs_required > dynamic_fog_list.size()){
       do{
         error = false;
-        dynamic_fog_candidate = rand.nextInt(node_active_list.size());
+        dynamic_fog_candidate = rand.nextInt(node_list.size());
         if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate);
         for(int i = 0; i < dynamic_fog_list.size(); i++){
           if(dynamic_fog_candidate == dynamic_fog_list.get(i).node_num) error = true;
@@ -70,24 +64,24 @@ public class Node_mng {
         if(error == false){//"error == false" means the candidate not dupulicated.
           var temp = new Storage(dynamic_fog_candidate);
           dynamic_fog_list.add(temp);
-          if(DEBUG) System.out.println("The candidate becomes Dynamic_Fog node.");
+          if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
           Fog_mng.fog_storage_attach(dynamic_fog_list);
         }
       }while((dynamic_fogs_required - 1 >= dynamic_fog_list.size()));
     }
 
-    if(DEBUG) dynamic_fog_print_status(dynamic_fog_list, node_active_list);
+    if(DEBUG) dynamic_fog_print_status(node_list, dynamic_fog_list);
   }
 
-  static void dynamic_fog_dead_judge(Node_info[] node_array, ArrayList<Storage> dynamic_fog_list, ArrayList<Integer> node_active_list){
+  static void dynamic_fog_dead_judge(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list){
     for(int i = 0; i < dynamic_fog_list.size(); i++){
-      if(node_array[dynamic_fog_list.get(i).node_num].reached == true) dynamic_fog_list.remove(i);
+      if(node_list.get(dynamic_fog_list.get(i).node_num).reached == true) dynamic_fog_list.remove(i);
     }
-    if(DEBUG) dynamic_fog_print_status(dynamic_fog_list, node_active_list);
+    if(DEBUG) dynamic_fog_print_status(node_list, dynamic_fog_list);
   }
 
-  static void dynamic_fog_print_status(ArrayList<Storage> dynamic_fog_list, ArrayList<Integer> node_active_list){
-    int dynamic_fogs_required = node_active_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+  static void dynamic_fog_print_status(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list){
+    int dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       if(i != 0) System.out.print(", ");

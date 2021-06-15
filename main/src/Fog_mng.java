@@ -15,6 +15,6 @@ public class Fog_mng {
   }
 
   static void fog_data_copy(ArrayList<Storage> storage_list, ArrayList<Data> data_list){
-    storage_list
+    
   }
 }
