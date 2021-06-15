@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Mode5 {
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   private static final int MAX_NODES = 20;
   private static final int MAX_GOALS = 1;
@@ -13,7 +13,7 @@ public class Mode5 {
     var node_list = new ArrayList<Node_info>();
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
     var dynamic_fog_list = new ArrayList<Storage>();
-    var cache_data_list = new ArrayList<Data>();
+    //var cache_data_list = new ArrayList<Data>();
     int node_leased = 0;
     int time_count;
 
@@ -22,13 +22,13 @@ public class Mode5 {
     //Put Nodes on the Map
     for(int i = 0; i < MAX_NODES; i++){
       node_list.add(Node_mng.put(rand, node_list, node_leased, MAX_GOALS, goals_array));
-      node_leased = node_list.size();
+      node_leased += 1;
     }
 
     //Simuration Start
     time_count = 0;
     while(time_count < App.TIME_SEC){
-      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, node_list, dynamic_fog_list);
+      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, node_list, node_leased, dynamic_fog_list);
 
       for(int i = 0; i < node_list.size(); i++){
         if(node_list.get(i).reached == false){
@@ -42,10 +42,16 @@ public class Mode5 {
           if(DEBUG) System.out.println("node"+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
         }
 
-        Node_mng.dynamic_fog_dead_judge(node_list, dynamic_fog_list);
-        if(node_list.get(i).reached == true) node_list.remove(i);
+        //Node_mng.dynamic_fog_dead_judge(node_list, dynamic_fog_list);
+        if(node_list.get(i).reached == true) {
+          if(DEBUG) System.out.println("Node " + node_list.get(i).num + " is now deleteing.");
+          node_list.remove(i);
+        }
       }
-      if(DEBUG) System.out.println("");
+      if(DEBUG){
+        System.out.println("");
+        Node_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
+      }
       time_count += 1;
     }
   }

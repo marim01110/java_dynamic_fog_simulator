@@ -32,8 +32,9 @@ class Storage{
   int used_capacity = 0;
   ArrayList<Integer> cache_num_list = new ArrayList<>();
 
-  public Storage(int node_num){
+  public Storage(int node_num, int used_capacity){
     this.node_num = node_num;
+    this.used_capacity = used_capacity;
   }
 }
 
@@ -48,10 +49,10 @@ class Data{
 }
 
 public class App {
-  static final int TIME_SEC = 100;
+  static final int TIME_SEC = 20;
   static final int EDGE_DIST = 2000;
-  static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 10;
-  static final int DYNAMIC_FOG_UPDATE_INTERVAL = 60;
+  static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 50;
+  static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
   public static void main(String[] args) throws Exception {
     Random rand = new Random();
     Scanner scan = new Scanner(System.in);
