@@ -12,8 +12,8 @@ public class Mode5 {
   static void main(Random rand, Scanner scan){
     Node_info[] node_array = new Node_info[MAX_NODES];
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
-    ArrayList<Integer> node_active_list = new ArrayList<>();
-    ArrayList<Integer> dynamic_fog_list = new ArrayList<>();
+    var node_active_list = new ArrayList<Integer>();
+    var dynamic_fog_list = new ArrayList<Storage>();
     int node_leased = 0;
     int time_count;
 

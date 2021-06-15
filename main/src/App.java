@@ -1,6 +1,12 @@
+//Used Java Version
+//openjdk 11.0.11 2021-04-20
+//OpenJDK Runtime Environment (build 11.0.11+9-post-Debian-1deb10u1)
+//OpenJDK 64-Bit Server VM (build 11.0.11+9-post-Debian-1deb10u1, mixed mode, sharing)
+
 import java.util.Random;
 import java.util.Scanner;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 class Node_info{
   int num;
@@ -10,6 +16,27 @@ class Node_info{
   boolean dynamic_fog;
   boolean reached;
   int move_speed;
+}
+
+class Storage{
+  int node_num;
+  int total_capacity = 500;
+  int used_capacity = 0;
+  ArrayList<Integer> cache_num_list = new ArrayList<>();
+
+  public Storage(int node_num){
+    this.node_num = node_num;
+  }
+}
+
+class Data{
+  int num;
+  int file_size;
+
+  public Data(int num, int file_size){
+    this.num = num;
+    this.file_size = file_size;
+  }
 }
 
 public class App {
