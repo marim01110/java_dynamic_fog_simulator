@@ -12,14 +12,16 @@ class Node_info{
   int num;
   Point2D.Double point = new Point2D.Double();
   Point2D.Double destination = new Point2D.Double();
+  boolean dynamic_fog;
   boolean goal_nearby;
   boolean reached;
   int move_speed;
 
-  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean goal_nearby, boolean reached, int move_speed){
+  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed){
     this.num = num;
     this.point = point;
     this.destination = destination;
+    this.dynamic_fog = dynamic_fog;
     this.goal_nearby = goal_nearby;
     this.reached = reached;
     this.move_speed = move_speed;

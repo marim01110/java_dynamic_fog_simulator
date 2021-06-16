@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Node_mng {
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   static Node_info init(Random rand, ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.
@@ -12,7 +12,7 @@ public class Node_mng {
 
     point.setLocation(init_x, init_y);
     destination.setLocation(dest_x, dest_y);
-    var new_node = new Node_info(node_leased, point, destination, false, false, rand.nextInt(40) + 10);
+    var new_node = new Node_info(node_leased, point, destination, false, false, false, rand.nextInt(40) + 10);
     return new_node;
   }
 
@@ -82,9 +82,12 @@ public class Node_mng {
     }
   }
 
-  static void dynamic_fog_dead_judge(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list){
-    for(int i = 0; i < dynamic_fog_list.size(); i++){
-      if(node_list.get(dynamic_fog_list.get(i).node_num).reached == true) dynamic_fog_list.remove(i);
+  static void dynamic_fog_dead_judge(ArrayList<Node_info> node_list, int node_list_index, ArrayList<Storage> dynamic_fog_list){
+    for(int j = 0; j < dynamic_fog_list.size(); j++){
+      if(dynamic_fog_list.get(j).node_num == node_list.get(node_list_index).num){
+        if(DEBUG) System.out.println("Dynamic_Fog Node " + dynamic_fog_list.get(j).node_num + " is now deleting.");
+        dynamic_fog_list.remove(j);
+      }
     }
   }
 
