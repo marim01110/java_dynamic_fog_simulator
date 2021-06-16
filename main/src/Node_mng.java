@@ -53,13 +53,13 @@ public class Node_mng {
     
     dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     if(dynamic_fogs_required > dynamic_fog_list.size()){
-      do{
+      while(dynamic_fogs_required > dynamic_fog_list.size()){
         error = false;
         dynamic_fog_candidate = rand.nextInt(node_leased);
         if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate);
         for(int i = 0; i < dynamic_fog_list.size(); i++){
           if(dynamic_fog_candidate == dynamic_fog_list.get(i).node_num) error = true;
-          //if(error == true) break;
+          if(error == true) break;
         }
         if(error == false){
           for(int i = 0; i < node_list.size(); i++){
@@ -71,14 +71,14 @@ public class Node_mng {
 
         if(error == true){
           if(DEBUG) System.out.println("The Candidate is Dupulicated.");
-          break;
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
           var temp = new Storage(dynamic_fog_candidate, 0);
           dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }
-      }while((dynamic_fogs_required - 1 >= dynamic_fog_list.size()));
+        if(DEBUG) System.out.println("Required: " + dynamic_fogs_required + ", Exist: " + dynamic_fog_list.size());
+      }
     }
   }
 
