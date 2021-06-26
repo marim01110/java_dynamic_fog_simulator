@@ -2,7 +2,7 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class Move {
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = App.DEBUG;
 
   static void negative_x(Point2D.Double point, int x){
     point.setLocation(point.x-x, point.y);

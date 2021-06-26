@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Mode4 {
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = App.DEBUG;
   private static final int MAX_NODES = 20;
 
   static void main(Random rand){

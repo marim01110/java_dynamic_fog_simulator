@@ -4,9 +4,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Mode5 {
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = App.DEBUG;
 
-  private static final int MAX_NODES = 20;
+  private static final int MAX_NODES = 5;
   private static final int MAX_GOALS = 1;
 
   static void main(Random rand, Scanner scan){
@@ -39,15 +39,17 @@ public class Mode5 {
           else if(node_list.get(i).goal_nearby == true){
             Node_mng.check_reach_goal(node_list.get(i));
           }
-          if(DEBUG) System.out.println("node"+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
+          if(DEBUG) System.out.println("Node "+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
         }
 
         if(node_list.get(i).reached == true) {
           Node_mng.dynamic_fog_dead_judge(node_list, i, dynamic_fog_list);
           if(DEBUG) System.out.println("Node " + node_list.get(i).num + " is now deleteing.");
           node_list.remove(i);
+          i -= 1;
         }
       }
+
       if(DEBUG){
         System.out.println("");
         Node_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);

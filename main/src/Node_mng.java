@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Node_mng {
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = App.DEBUG;
 
   static Node_info init(Random rand, ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.
@@ -36,7 +36,7 @@ public class Node_mng {
       }
       if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
         node.reached = true;
-        System.out.println("Node num: " + node.num + " is reach the goal point.");
+        System.out.println("Node num: " + node.num + " have reached the goal point.");
       }
     }
     else if(node.point.distance(node.destination)<=node.move_speed){

@@ -51,6 +51,7 @@ class Data{
 }
 
 public class App {
+  static final boolean DEBUG = true;
   static final int TIME_SEC = 20;
   static final int EDGE_DIST = 2000;
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 50;
