@@ -27,7 +27,7 @@ public class Mode5 {
 
     //Simuration Start
     time_count = 0;
-    while(time_count < App.TIME_SEC){
+    while(time_count < App.TIME){
       if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, node_list, node_leased, dynamic_fog_list);
 
       for(int i = 0; i < node_list.size(); i++){

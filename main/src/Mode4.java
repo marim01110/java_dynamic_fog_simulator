@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = App.DEBUG;
-  private static final int MAX_NODES = 20;
+  private static final int MAX_NODES = 1;
 
   static void main(Random rand){
     var node_list = new ArrayList<Node_info>();
@@ -19,12 +19,12 @@ public class Mode4 {
     }
 
     time_count = 0;
-    while(time_count < App.TIME_SEC){
+    while(time_count < App.TIME){
       if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, node_list, node_leased, dynamic_fog_list);
 
       for(int i = 0; i < node_list.size(); i++){
         Move.random_walk(node_list.get(i), rand);
-        if(DEBUG) System.out.println("node"+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
+        if(DEBUG) System.out.println("Node"+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
       }
       time_count += 1;
       if(DEBUG){
