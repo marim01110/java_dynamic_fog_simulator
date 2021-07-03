@@ -42,11 +42,14 @@ class Storage{
 class Data{
   int num;
   int file_size;
-  ArrayList<Integer> cached_by = new ArrayList<>();
+  int cached_by_total;
+  ArrayList<Integer> cached_by_list = new ArrayList<>();
 
-  public Data(int num, int file_size){
+  public Data(int num, int file_size, int cached_by_total, ArrayList<Integer> cached_by_list){
     this.num = num;
     this.file_size = file_size;
+    this.cached_by_total = cached_by_total;
+    this.cached_by_list = cached_by_list;
   }
 }
 

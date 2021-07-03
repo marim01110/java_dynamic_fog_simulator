@@ -38,7 +38,8 @@ public class Mode4 {
 
       //Data Transfer Process
       for(int i = 0; i < node_list.size(); i++){
-        need_data_num = rand.nextInt(cache_data_list.size());
+        need_data_num = rand.nextInt(cache_data_list.size() + 1);
+        System.out.println(need_data_num);
         
         data_exist = Fog_mng.data_exist(cache_data_list, need_data_num);
         if(data_exist == false){
