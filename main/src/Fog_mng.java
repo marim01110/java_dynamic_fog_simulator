@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Fog_mng {
   private static final boolean DEBUG = true;
@@ -8,8 +9,19 @@ public class Fog_mng {
     storage_List.add(temp);
   }
 
-  static void fog_data_add(ArrayList<Data> data_list){
-    var temp = new Data(data_list.size() + 1, 100);
+  static boolean data_exist(ArrayList<Data> cache_data_list, Integer data_num){
+    boolean data_exist = false;
+    for(int i = 0; i < cache_data_list.size(); i++){
+      if(cache_data_list.get(i).num == data_num) data_exist = true;
+      if(data_exist == true) break;
+    }
+    return data_exist;
+  }
+
+  static void data_add(ArrayList<Data> data_list, Integer data_num){
+    Random rand = new Random();
+    int data_size = rand.nextInt(40) + 10;
+    var temp = new Data(data_num, data_size);
     data_list.add(temp);
     if(DEBUG) System.out.println("Data Added.");
   }

@@ -5,8 +5,9 @@ import java.util.ArrayList;
 public class Node_mng {
   private static final boolean DEBUG = App.DEBUG;
 
-  static Node_info init(Random rand, ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
+  static Node_info init(ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.
+    Random rand = new Random();
     var point = new Point2D.Double();
     var destination = new Point2D.Double();
 
@@ -16,10 +17,11 @@ public class Node_mng {
     return new_node;
   }
 
-  static Node_info put(Random rand, ArrayList<Node_info> node_list, int node_leased, int MAX_GOALS, Point2D.Double goals_array[]){
+  static Node_info put(ArrayList<Node_info> node_list, int node_leased, int MAX_GOALS, Point2D.Double goals_array[]){
+    Random rand = new Random();
     int goal;
     goal = rand.nextInt(MAX_GOALS);
-    return init(rand, node_list, node_leased, 1000, 1000, goals_array[goal].x, goals_array[goal].y);
+    return init(node_list, node_leased, 1000, 1000, goals_array[goal].x, goals_array[goal].y);
   }
 
   static void check_reach_goal(Node_info node){
@@ -47,7 +49,8 @@ public class Node_mng {
     }
   }
 
-  static void dynamic_fog_set(Random rand, ArrayList<Node_info> node_list, int node_leased, ArrayList<Storage> dynamic_fog_list){
+  static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Storage> dynamic_fog_list){
+    Random rand = new Random();
     int dynamic_fogs_required, dynamic_fog_candidate;
     boolean error;
     

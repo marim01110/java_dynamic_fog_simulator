@@ -33,7 +33,8 @@ public class Move {
     }
   }
 
-  static void random_walk(Node_info node, Random rand){
+  static void random_walk(Node_info node){
+    Random rand = new Random();
     int candidate, area_judge_data;
     var direction_list = new ArrayList<Integer>();
 

@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ public class Mode5 {
   private static final int MAX_NODES = 5;
   private static final int MAX_GOALS = 1;
 
-  static void main(Random rand, Scanner scan){
+  static void main(){
     var node_list = new ArrayList<Node_info>();
     Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
     var dynamic_fog_list = new ArrayList<Storage>();
@@ -17,18 +16,18 @@ public class Mode5 {
     int node_leased = 0;
     int time_count;
 
-    init(scan, goals_array);
+    init(goals_array);
 
     //Put Nodes on the Map
     for(int i = 0; i < MAX_NODES; i++){
-      node_list.add(Node_mng.put(rand, node_list, node_leased, MAX_GOALS, goals_array));
+      node_list.add(Node_mng.put(node_list, node_leased, MAX_GOALS, goals_array));
       node_leased += 1;
     }
 
     //Simuration Start
     time_count = 0;
     while(time_count < App.TIME){
-      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(rand, node_list, node_leased, dynamic_fog_list);
+      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
 
       for(int i = 0; i < node_list.size(); i++){
         if(node_list.get(i).reached == false){
@@ -58,7 +57,8 @@ public class Mode5 {
     }
   }
 
-  static void init(Scanner scan, Point2D.Double[] goals_array){
+  static void init(Point2D.Double[] goals_array){
+    Scanner scan = new Scanner(System.in);
     boolean error;//Input Value Error Flag
     
     //Initialize Array
@@ -73,6 +73,7 @@ public class Mode5 {
         goals_array[i].y = scan.nextInt();
         if(goals_array[i].x >= 0 && goals_array[i].x <= App.EDGE_DIST && goals_array[i].y >= 0 && goals_array[i].y <= App.EDGE_DIST) error = false;
       }while(error);
+      scan.close();
       System.out.println("Goal-" + i+1 + " is now set!");
     }
   }
