@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
-
-import jdk.nashorn.api.tree.TryTree;
+import java.awt.geom.Point2D;
 
 public class Fog_mng {
   private static final boolean DEBUG = true;
@@ -23,7 +22,7 @@ public class Fog_mng {
     return result;
   }
 
-  static void data_add(ArrayList<Data> cache_data_list, Integer data_num){
+  static void data_add(ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
     Random rand = new Random();
     var cached_by_list = new ArrayList<Integer>();
 
@@ -38,15 +37,25 @@ public class Fog_mng {
     }
     catch(Exception e){
       cached_by_total = 1;
-      cached_by_list.add("DF_node_num");
     }
+    cached_by_list.add(dynamic_fog_num);
 
     var temp = new Data(data_num, data_size, cached_by_total, cached_by_list);
     cache_data_list.add(temp);
     if(DEBUG) System.out.println("Data Added.");
   }
 
-  static void fog_data_copy(ArrayList<Storage> storage_list, ArrayList<Data> data_list){
-    
+  static int set_nearest_dynamic_fog(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, Point2D.Double current_node){
+    double distance = 9999;//Initialze distance
+    double temp_distance;
+    int dynamic_fog_result = -1;
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      temp_distance = current_node.distance(node_list.get(dynamic_fog_list.get(i).node_num).point);
+      if(distance > temp_distance){
+        distance = temp_distance;
+        dynamic_fog_result = dynamic_fog_list.get(i).node_num;
+      }
+    }
+    return dynamic_fog_result;
   }
 }
