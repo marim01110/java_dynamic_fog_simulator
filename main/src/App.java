@@ -29,13 +29,15 @@ class Node_info{
 
 class Storage{
   int node_num;
-  int total_capacity = 500;
-  int used_capacity = 0;
-  ArrayList<Integer> cache_num_list = new ArrayList<>();
+  int total_capacity;
+  int used_capacity;
+  ArrayList<Integer> cache_index_list = new ArrayList<>();
 
-  public Storage(int node_num, int used_capacity){
+  public Storage(int node_num, int total_capacity, int used_capacity, ArrayList<Integer> cache_index_list){
     this.node_num = node_num;
+    this.total_capacity = total_capacity;
     this.used_capacity = used_capacity;
+    this.cache_index_list = cache_index_list;
   }
 }
 

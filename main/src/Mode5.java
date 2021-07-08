@@ -27,7 +27,7 @@ public class Mode5 {
     //Simuration Start
     time_count = 0;
     while(time_count < App.TIME){
-      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Node_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
+      if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
 
       for(int i = 0; i < node_list.size(); i++){
         if(node_list.get(i).reached == false){
@@ -42,7 +42,7 @@ public class Mode5 {
         }
 
         if(node_list.get(i).reached == true) {
-          Node_mng.dynamic_fog_dead_judge(node_list, i, dynamic_fog_list);
+          Fog_mng.dynamic_fog_dead_judge(node_list, i, dynamic_fog_list);
           if(DEBUG) System.out.println("Node " + node_list.get(i).num + " is now deleteing.");
           node_list.remove(i);
           i -= 1;
@@ -51,7 +51,7 @@ public class Mode5 {
 
       if(DEBUG){
         System.out.println("");
-        Node_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
+        Fog_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
       }
       time_count += 1;
     }
