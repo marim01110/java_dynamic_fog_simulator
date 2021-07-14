@@ -103,7 +103,7 @@ public class Fog_mng {
     if(DEBUG) System.out.println("Data Added.");
 
     //Update dynamic_fog_list Process
-    if(DEBUG) System.out.println("Lookinig for index_num for Dynamic Fog Node: " + dynamic_fog_num);
+    if(DEBUG) System.out.println("Looking for index_num for Dynamic Fog Node: " + dynamic_fog_num);
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
         dynamic_fog_index_num = i;
@@ -115,7 +115,6 @@ public class Fog_mng {
       }
     }
     catch(Exception e){}
-    //total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
     cache_index_list.add(data_num);
     total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
     used_capacity = calc_used_capacity(cache_data_list, cache_index_list);
@@ -162,7 +161,7 @@ public class Fog_mng {
     if(data_found == true) System.out.println("Data Found.");
   }
 
-  static int calc_used_capacity(ArrayList<Data> cache_data_list, ArrayList<Integer> cache_index_list){
+  private static int calc_used_capacity(ArrayList<Data> cache_data_list, ArrayList<Integer> cache_index_list){
     int used_capacity = 0;
     
     for(int i = 0; i < cache_index_list.size(); i++){
@@ -170,5 +169,23 @@ public class Fog_mng {
     }
     
     return used_capacity;
+  }
+
+  static void print_detail(ArrayList<Storage> dynamic_fog_list){
+    Storage node;
+
+    try{
+      for(int i = 0; i < dynamic_fog_list.size(); i++){
+        node = dynamic_fog_list.get(i);
+        System.out.println();
+        System.out.println("Dynamic_Fog_index: " + i + ", Node_num: " + node.node_num);
+        System.out.println("Total cap. " + node.total_capacity + ", Used cap. " + node.used_capacity);
+        System.out.println("Cached Data Num: " + node.cache_index_list);
+        System.out.println();
+      }
+    }
+    catch(Exception e){
+      System.out.println("No Dynamic Fog exist or Error has occured.");
+    }
   }
 }
