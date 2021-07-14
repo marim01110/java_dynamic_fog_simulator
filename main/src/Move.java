@@ -5,16 +5,16 @@ import java.util.Random;
 public class Move {
   private static final boolean DEBUG = App.DEBUG;
 
-  static void negative_x(Point2D.Double point, int x){
+  private static void negative_x(Point2D.Double point, int x){
     point.setLocation(point.x-x, point.y);
   }
-  static void positive_x(Point2D.Double point, int x){
+  private static void positive_x(Point2D.Double point, int x){
     point.setLocation(point.x+x, point.y);
   }
-  static void positive_y(Point2D.Double point, int y){
+  private static void positive_y(Point2D.Double point, int y){
     point.setLocation(point.x, point.y+y);
   }
-  static void negative_y(Point2D.Double point, int y){
+  private static void negative_y(Point2D.Double point, int y){
     point.setLocation(point.x, point.y-y);
   }
 
@@ -35,11 +35,41 @@ public class Move {
 
   static void random_walk(Node_info node){
     Random rand = new Random();
+    int direction, area_judge_data;
+
+    direction = rand.nextInt(4);
+    Move.move(node, direction);
+    
+    area_judge_data = area_judge(node);
+    if(area_judge_data / 1000 != 1){
+      negative_y(node.point, App.EDGE_DIST);
+      area_judge_data -= 1000;
+      Statistics.area_acrossed += 1;
+    }
+    if(area_judge_data / 100 != 1){
+      negative_x(node.point, App.EDGE_DIST);
+      area_judge_data -= 100;
+      Statistics.area_acrossed += 1;
+    }
+    if(area_judge_data / 10 != 1){
+      positive_y(node.point, App.EDGE_DIST);
+      area_judge_data -= 10;
+      Statistics.area_acrossed += 1;
+    }
+    if(area_judge_data / 1 != 1){
+      positive_x(node.point, App.EDGE_DIST);
+      area_judge_data -= 1;
+      Statistics.area_acrossed += 1;
+    }
+  }
+
+  static void random_walk_restrict(Node_info node){
+    Random rand = new Random();
     int candidate, area_judge_data;
     var direction_list = new ArrayList<Integer>();
 
     //Scan the surroundings
-    area_judge_data = area_judge(node);
+    area_judge_data = next_area_judge(node);
     if(area_judge_data / 1000 != 1) direction_list.add(2);
     else area_judge_data -= 1000;
     if(area_judge_data / 100 != 1) direction_list.add(3);
@@ -67,7 +97,16 @@ public class Move {
     }
   }
 
-  static int area_judge(Node_info node){
+  private static int area_judge(Node_info node){
+    int error = 0;
+    if(node.point.x < 0) error += 1;
+    if(node.point.y < 0) error += 10;
+    if(node.point.x > App.EDGE_DIST) error += 100;
+    if(node.point.y > App.EDGE_DIST) error += 1000;
+    return error;
+  }
+
+  private static int next_area_judge(Node_info node){
     int error = 0;
     if(node.point.x - node.move_speed < 0) error += 1;
     if(node.point.x + node.move_speed > App.EDGE_DIST) error += 10;

@@ -61,7 +61,7 @@ public class Fog_mng {
     System.out.println("");
   }
 
-  static boolean data_exist(ArrayList<Data> cache_data_list, Integer data_num){
+  private static boolean data_exist(ArrayList<Data> cache_data_list, Integer data_num){
     boolean result = false;
     for(int i = 0; i < cache_data_list.size(); i++){
       if(cache_data_list.get(i).num == data_num){
@@ -73,7 +73,7 @@ public class Fog_mng {
     return result;
   }
 
-  static void data_add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
+  private static void data_add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
     Random rand = new Random();
     var cached_by_list = new ArrayList<Integer>();
     var cache_index_list = new ArrayList<Integer>();
@@ -103,6 +103,7 @@ public class Fog_mng {
     if(DEBUG) System.out.println("Data Added.");
 
     //Update dynamic_fog_list Process
+    if(DEBUG) System.out.println("Lookinig for index_num for Dynamic Fog Node: " + dynamic_fog_num);
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
         dynamic_fog_index_num = i;
@@ -114,7 +115,7 @@ public class Fog_mng {
       }
     }
     catch(Exception e){}
-    total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
+    //total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
     cache_index_list.add(data_num);
     total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
     used_capacity = calc_used_capacity(cache_data_list, cache_index_list);
