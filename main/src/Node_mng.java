@@ -4,6 +4,17 @@ import java.util.ArrayList;
 
 public class Node_mng {
   private static final boolean DEBUG = App.DEBUG;
+  private static final int LANDMARKS = 2;
+  static Point2D.Double[] landmark_point_array = new Point2D.Double[LANDMARKS];
+  
+  static int[] landmark_point_x_array = {1000, 800};
+  static int[] landmark_point_y_array = {1000, 200};
+
+  static void init(){
+    for(int i = 0; i < LANDMARKS; i++){
+      landmark_point_array[i].setLocation(landmark_point_x_array[i], landmark_point_y_array[i]);
+    }
+  }
 
   static Node_info init(ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
     //Initialize Node. Set num, first location, move speed.

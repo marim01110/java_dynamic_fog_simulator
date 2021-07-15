@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = App.DEBUG;
-  private static final int MAX_NODES = 2;
+  private static final int MAX_NODES = 20;
 
   static void main(){
     Random rand = new Random();
@@ -16,6 +16,7 @@ public class Mode4 {
     int nearest_dynamic_fog;
 
     //Initialized Array on Dynamic_List
+    Node_mng.init();
     for(int i = 0; i < MAX_NODES; i++){
       node_list.add(Node_mng.init(node_list, node_leased, 1000, 1000, 0, 0));
       node_leased += 1;
