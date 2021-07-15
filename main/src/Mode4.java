@@ -16,9 +16,7 @@ public class Mode4 {
     int nearest_dynamic_fog;
 
     //Initialized Array on Dynamic_List
-    Node_mng.init();
     for(int i = 0; i < MAX_NODES; i++){
-      //node_list.add(Node_mng.init(node_list, node_leased, 1000, 1000, 0, 0));
       node_list.add(Node_mng.generate(node_list, node_leased));
       node_leased += 1;
     }
@@ -29,7 +27,7 @@ public class Mode4 {
       if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
 
       for(int i = 0; i < node_list.size(); i++){
-        Move.random_walk_restrict(node_list.get(i));
+        Move.random_walk(node_list.get(i));
         if(DEBUG) System.out.println("Node"+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
       }
       time_count += 1;

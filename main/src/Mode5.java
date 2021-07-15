@@ -13,10 +13,8 @@ public class Mode5 {
     int time_count;
 
     //Put Nodes on the Map
-    Node_mng.init();
     for(int i = 0; i < MAX_NODES; i++){
       node_list.add(Node_mng.generate(node_list, node_leased));
-      //node_list.add(Node_mng.put(node_list, node_leased, MAX_GOALS, goals_array));
       node_leased += 1;
     }
 
