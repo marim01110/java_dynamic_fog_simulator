@@ -1,26 +1,22 @@
-import java.util.Scanner;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Mode5 {
   private static final boolean DEBUG = App.DEBUG;
 
   private static final int MAX_NODES = 5;
-  private static final int MAX_GOALS = 1;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
-    Point2D.Double[] goals_array = new Point2D.Double[MAX_GOALS];
     var dynamic_fog_list = new ArrayList<Storage>();
     //var cache_data_list = new ArrayList<Data>();
     int node_leased = 0;
     int time_count;
 
-    init(goals_array);
-
     //Put Nodes on the Map
+    Node_mng.init();
     for(int i = 0; i < MAX_NODES; i++){
-      node_list.add(Node_mng.put(node_list, node_leased, MAX_GOALS, goals_array));
+      node_list.add(Node_mng.generate(node_list, node_leased));
+      //node_list.add(Node_mng.put(node_list, node_leased, MAX_GOALS, goals_array));
       node_leased += 1;
     }
 
@@ -54,27 +50,6 @@ public class Mode5 {
         Fog_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
       }
       time_count += 1;
-    }
-  }
-
-  static void init(Point2D.Double[] goals_array){
-    Scanner scan = new Scanner(System.in);
-    boolean error;//Input Value Error Flag
-    
-    //Initialize Array
-    for(int i=0; i<goals_array.length; i++){
-      goals_array[i] = new Point2D.Double();
-      error = true;
-      //Goal node Set
-      do{
-        System.out.print("Goal-" + i+1 + "'s X coordinate is ... [0-" + App.EDGE_DIST + "] ");
-        goals_array[i].x = scan.nextInt();
-        System.out.print("Goal-" + i+1 + "'s Y coordinate is ... [0-" + App.EDGE_DIST + "] ");
-        goals_array[i].y = scan.nextInt();
-        if(goals_array[i].x >= 0 && goals_array[i].x <= App.EDGE_DIST && goals_array[i].y >= 0 && goals_array[i].y <= App.EDGE_DIST) error = false;
-      }while(error);
-      scan.close();
-      System.out.println("Goal-" + i+1 + " is now set!");
     }
   }
 }

@@ -18,7 +18,8 @@ public class Mode4 {
     //Initialized Array on Dynamic_List
     Node_mng.init();
     for(int i = 0; i < MAX_NODES; i++){
-      node_list.add(Node_mng.init(node_list, node_leased, 1000, 1000, 0, 0));
+      //node_list.add(Node_mng.init(node_list, node_leased, 1000, 1000, 0, 0));
+      node_list.add(Node_mng.generate(node_list, node_leased));
       node_leased += 1;
     }
 

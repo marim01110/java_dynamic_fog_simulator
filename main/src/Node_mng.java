@@ -11,28 +11,26 @@ public class Node_mng {
   static int[] landmark_point_y_array = {1000, 200};
 
   static void init(){
+    Point2D.Double temp = new Point2D.Double();
+
     for(int i = 0; i < LANDMARKS; i++){
-      landmark_point_array[i].setLocation(landmark_point_x_array[i], landmark_point_y_array[i]);
+      temp.setLocation(landmark_point_x_array[i], landmark_point_y_array[i]);
+      landmark_point_array[i] = temp;
     }
   }
 
-  static Node_info init(ArrayList<Node_info> node_list, int node_leased, int init_x, int init_y, double dest_x, double dest_y){
-    //Initialize Node. Set num, first location, move speed.
+  static Node_info generate(ArrayList<Node_info> node_list, int node_leased){
     Random rand = new Random();
-    var point = new Point2D.Double();
-    var destination = new Point2D.Double();
+    int point_index, destination_index, move_speed;
 
-    point.setLocation(init_x, init_y);
-    destination.setLocation(dest_x, dest_y);
-    var new_node = new Node_info(node_leased, point, destination, false, false, false, rand.nextInt(40) + 10);
-    return new_node;
-  }
+    do{
+      point_index = rand.nextInt(LANDMARKS);
+      destination_index = rand.nextInt(LANDMARKS);
+    }while(point_index != destination_index);
+    move_speed = rand.nextInt(40) + 10;
 
-  static Node_info put(ArrayList<Node_info> node_list, int node_leased, int MAX_GOALS, Point2D.Double goals_array[]){
-    Random rand = new Random();
-    int goal;
-    goal = rand.nextInt(MAX_GOALS);
-    return init(node_list, node_leased, 1000, 1000, goals_array[goal].x, goals_array[goal].y);
+    var newnode = new Node_info(node_leased, landmark_point_array[point_index], landmark_point_array[destination_index], false, false, false, move_speed);
+    return newnode;
   }
 
   static void check_reach_goal(Node_info node){
