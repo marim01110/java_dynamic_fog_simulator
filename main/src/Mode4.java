@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.ArrayList;
 
 public class Mode4 {
@@ -6,7 +5,6 @@ public class Mode4 {
   private static final int MAX_NODES = 20;
 
   static void main(){
-    Random rand = new Random();
     var node_list = new ArrayList<Node_info>();
     var dynamic_fog_list = new ArrayList<Storage>();
     var cache_data_list = new ArrayList<Data>();
@@ -39,13 +37,13 @@ public class Mode4 {
 
       //Data Transfer Process
       for(int i = 0; i < node_list.size(); i++){
-        need_data_num = rand.nextInt(cache_data_list.size() + 1);
+        need_data_num = Data_mng.select();
         if(DEBUG) System.out.println("Need data: " + need_data_num);
         
         nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
         if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Nearest DF: " + nearest_dynamic_fog);
 
-        Data_mng.data_search(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+        Data_mng.search(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
       }
     }
     Statistics.print_info();

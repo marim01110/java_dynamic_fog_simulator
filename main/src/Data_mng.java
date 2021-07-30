@@ -5,29 +5,43 @@ public class Data_mng {
   private static final boolean DEBUG = App.DEBUG;
   static int cache_data_total = 0;
 
-  static void data_search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int nearest_dynamic_fog, int need_data_num){
+  static int select(){
+    int need_data_num;
+    Random rand = new Random();
+
+    if(App.CONTENTS_TYPES_FIXED){
+      need_data_num = rand.nextInt(App.CONTENTS_TYPES_MAX);
+    }
+    else{
+      need_data_num = rand.nextInt(cache_data_total + 1);
+    }
+    System.out.println(need_data_num);
+    return need_data_num;
+  }
+
+  static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int nearest_dynamic_fog, int need_data_num){
     boolean data_exist;
     boolean data_found = false;
 
-    data_exist = data_exist(cache_data_list, need_data_num);
+    data_exist = exist(cache_data_list, need_data_num);
     if(data_exist == true){
       for(int j = 0; j < cache_data_list.get(need_data_num).cached_by_list.size(); j++){
         if(nearest_dynamic_fog == cache_data_list.get(need_data_num).cached_by_list.get(j)) data_found = true;
       }
       if(data_found == false){
         //Data Copy Process
-        data_add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+        add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
         if(DEBUG) System.out.println("Cache Data Copied.");
       }
     }
     else if(data_exist == false){
-      data_add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+      add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
       data_found = true;
     }
     if(data_found == true) System.out.println("Data Found.");
   }
 
-  private static void data_add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
+  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
     Random rand = new Random();
     var cached_by_list = new ArrayList<Integer>();
     var cache_index_list = new ArrayList<Integer>();
@@ -80,7 +94,7 @@ public class Data_mng {
     dynamic_fog_list.add(temp_Storage);
   }
 
-  private static boolean data_exist(ArrayList<Data> cache_data_list, Integer data_num){
+  private static boolean exist(ArrayList<Data> cache_data_list, Integer data_num){
     boolean result = false;
     for(int i = 0; i < cache_data_list.size(); i++){
       if(cache_data_list.get(i).num == data_num){
