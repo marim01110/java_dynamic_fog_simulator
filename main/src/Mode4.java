@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = App.DEBUG;
-  private static final int MAX_NODES = 20;
+  private static final int MAX_NODES = 5;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
@@ -19,6 +19,7 @@ public class Mode4 {
       node_leased += 1;
     }
 
+    //Simuration Start
     time_count = 0;
     while(time_count < App.TIME){
       //Node Move Process
@@ -39,6 +40,8 @@ public class Mode4 {
       for(int i = 0; i < node_list.size(); i++){
         need_data_num = Data_mng.select();
         if(DEBUG) System.out.println("Need data: " + need_data_num);
+
+        //if(App.CONTENTS_TYPES_FIXED) Data_mng.add_fixed();
         
         nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
         if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Nearest DF: " + nearest_dynamic_fog);

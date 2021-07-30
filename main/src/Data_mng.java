@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Data_mng {
   private static final boolean DEBUG = App.DEBUG;
@@ -15,7 +15,6 @@ public class Data_mng {
     else{
       need_data_num = rand.nextInt(cache_data_total + 1);
     }
-    System.out.println(need_data_num);
     return need_data_num;
   }
 
@@ -41,54 +40,80 @@ public class Data_mng {
     if(data_found == true) System.out.println("Data Found.");
   }
 
-  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
-    Random rand = new Random();
-    var cached_by_list = new ArrayList<Integer>();
-    var cache_index_list = new ArrayList<Integer>();
-
-    int data_size = rand.nextInt(40) + 10;
-    int cached_by_total;
-
-    int dynamic_fog_index_num = -1;// Initialize variable
-    int used_capacity;
-    int total_capacity;
-
-    //Update cache_data_list Process
-    try{
-      Data data = cache_data_list.get(data_num);
-      cached_by_total = data.cached_by_total + 1;
-      for (int i = 0; i < data.cached_by_list.size(); i++) {
-        cached_by_list.add(data.cached_by_list.get(i));
+  /*static void add_fixed(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list,){
+    if(DATA_CREATED != true){
+      for(int i = 0; i < App.CONTENTS_TYPES_MAX; i++){
+        add(dynamic_fog_list, cache_data_list, dynamic_fog_num, i);
       }
     }
-    catch(Exception e){
-      cached_by_total = 1;
-    }
-    cached_by_list.add(dynamic_fog_num);
+  }*/
+
+  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
+    create(cache_data_list);
+    update(dynamic_fog_list, cache_data_list, dynamic_fog_num, data_num);
+  }
+
+  private static void create(ArrayList<Data> cache_data_list){
+    Random rand = new Random();
+    var cached_by_list = new ArrayList<Integer>();
+    int data_num, data_size, cached_by_total;
+
+    //Data Create Process
+    data_num = cache_data_total;
+    data_size = rand.nextInt(40) + 10;
+    cached_by_total = 0;
 
     var temp_Data = new Data(data_num, data_size, cached_by_total, cached_by_list);
     cache_data_list.add(temp_Data);
-    cache_data_total += 1;
-    if(DEBUG) System.out.println("Data Added.");
 
-    //Update dynamic_fog_list Process
-    if(DEBUG) System.out.println("Looking for index_num for Dynamic Fog Node: " + dynamic_fog_num);
+    cache_data_total += 1;
+  }
+
+  private static void update(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int dynamic_fog_num, int data_num){
+    var cached_by_list = new ArrayList<Integer>();
+    var cache_index_list = new ArrayList<Integer>();
+    int data_index_num = -1;
+    int dynamic_fog_index_num = -1;
+    int cached_by_total, total_capacity, used_capacity;
+
+    //Get data index_num
+    for(int i = 0; i < cache_data_list.size(); i++){
+      if(cache_data_list.get(i).num == data_num) data_index_num = i;
+      if(data_index_num != -1) break;
+    }
+
+    //Update cache_data_list Process
+    Data data = cache_data_list.get(data_index_num);
+    cached_by_total = data.cached_by_total + 1;
+    for (int i = 0; i < data.cached_by_list.size(); i++) {
+      cached_by_list.add(data.cached_by_list.get(i));
+    }
+    cached_by_list.add(dynamic_fog_num);
+
+    //Replace with new Info
+    var temp_Data = new Data(data_num, data.file_size, cached_by_total, cached_by_list);
+    cache_data_list.remove(data_index_num);
+    cache_data_list.add(temp_Data);
+
+    //Get DF index_num
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
         dynamic_fog_index_num = i;
       }
     }
+
+    //Update dynamic_fog_list Process
     try{
       for(int i = 0; i < dynamic_fog_list.get(dynamic_fog_index_num).cache_index_list.size(); i++){
         cache_index_list.add(dynamic_fog_list.get(dynamic_fog_index_num).cache_index_list.get(i));
       }
     }
-    catch(Exception e){}
+    catch(Exception e){} //If cache_index_list is empty, do nothing.
     cache_index_list.add(data_num);
     total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
     used_capacity = Fog_mng.calc_used_capacity(cache_data_list, cache_index_list);
 
-    //Replace Dynamic_Fog Information
+    //Replace with new Dynamic_Fog Information
     dynamic_fog_list.remove(dynamic_fog_index_num);
     var temp_Storage = new Storage(dynamic_fog_num, total_capacity, used_capacity, cache_index_list);
     dynamic_fog_list.add(temp_Storage);

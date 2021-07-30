@@ -59,7 +59,7 @@ public class App {
   static final boolean DEBUG = true;
   static final boolean CONTENTS_TYPES_FIXED = false;
   static final int CONTENTS_TYPES_MAX = 100;
-  static final int TIME = 20;
+  static final int TIME = 10;
   static final int EDGE_DIST = 2000;
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 50;
   static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
