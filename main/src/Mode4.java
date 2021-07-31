@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = App.DEBUG;
-  private static final int MAX_NODES = 6;
+  private static final int MAX_NODES = 78;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();

@@ -115,12 +115,14 @@ public class Data_mng {
     else data_exist = exist(cache_data_list, need_data_num);
 
     need_data_index_num = get_index_num(cache_data_list, need_data_num);
+    Statistics.data_transfer += 1;
 
     if(data_exist == true){
       //Data Information Found in index_list
       for(int j = 0; j < cache_data_list.get(need_data_index_num).cached_by_list.size(); j++){
         if(nearest_dynamic_fog == cache_data_list.get(need_data_index_num).cached_by_list.get(j)){
           data_found = true;
+          Statistics.dl_from_nearest_df += 1;
           if(DEBUG) System.out.println("Data was found in Nearest DF.");
           break;
         }
@@ -129,12 +131,14 @@ public class Data_mng {
         //Data Copy Process
         update(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
         data_found = true;
+        Statistics.dl_from_local += 1;
         if(DEBUG) System.out.println("Data Copied from Local Network.");
       }
     }
     else if(data_exist == false){
       add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
       data_found = true;
+      Statistics.dl_from_cloud += 1;
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
     }
   }
