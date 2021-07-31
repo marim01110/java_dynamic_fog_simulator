@@ -1,7 +1,7 @@
 //Used Java Version
-//openjdk 11.0.11 2021-04-20
-//OpenJDK Runtime Environment (build 11.0.11+9-post-Debian-1deb10u1)
-//OpenJDK 64-Bit Server VM (build 11.0.11+9-post-Debian-1deb10u1, mixed mode, sharing)
+//openjdk 11.0.12 2021-07-20
+//OpenJDK Runtime Environment (build 11.0.12+7-post-Debian-2deb10u1)
+//OpenJDK 64-Bit Server VM (build 11.0.12+7-post-Debian-2deb10u1, mixed mode)
 
 import java.util.Scanner;
 import java.awt.geom.Point2D;
