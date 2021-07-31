@@ -51,16 +51,6 @@ public class Fog_mng {
     }
   }
 
-  static void dynamic_fog_print_status(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list){//For DEBUG
-    int dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
-    System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
-    for(int i = 0; i < dynamic_fog_list.size(); i++){
-      if(i != 0) System.out.print(", ");
-      System.out.print(dynamic_fog_list.get(i).node_num);
-    }
-    System.out.println("");
-  }
-
   static int set_nearest_dynamic_fog(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, Point2D.Double current_node){
     double distance = 9999;//Initialze distance
     double temp_distance;
@@ -77,16 +67,25 @@ public class Fog_mng {
 
   static int calc_used_capacity(ArrayList<Data> cache_data_list, ArrayList<Integer> cache_index_list){
     int used_capacity = 0;
-    
+    /*
     for(int i = 0; i < cache_index_list.size(); i++){
       used_capacity += cache_data_list.get(i).file_size;
     }
-    
+    */
     return used_capacity;
   }
 
-  static void print_detail(ArrayList<Storage> dynamic_fog_list){
+  static void print_detail(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list){
+    int dynamic_fogs_required;
     Storage node;
+
+    dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(i != 0) System.out.print(", ");
+      System.out.print(dynamic_fog_list.get(i).node_num);
+    }
+    System.out.println();
 
     try{
       for(int i = 0; i < dynamic_fog_list.size(); i++){

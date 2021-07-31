@@ -45,7 +45,7 @@ public class Mode5 {
 
       if(DEBUG){
         System.out.println("");
-        Fog_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
+        Fog_mng.print_detail(node_list, dynamic_fog_list);
       }
       time_count += 1;
     }
