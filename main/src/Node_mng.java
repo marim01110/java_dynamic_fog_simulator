@@ -4,10 +4,15 @@ import java.util.ArrayList;
 
 public class Node_mng {
   private static final boolean DEBUG = App.DEBUG;
-  static final int LANDMARKS = 3;
-  
+
+  //------LANDMARK SETTING------
+  private static final int LANDMARKS = 3;
   private static int[] landmark_point_x_array = {1000, 800, 500};
   private static int[] landmark_point_y_array = {1000, 200, 500};
+
+  //------NODE MOVE SPEED SETTING------
+  private static final int MOVE_SPEEDS = 0;
+  private static int[] move_speed_array = {};
 
   static Node_info generate(ArrayList<Node_info> node_list, int node_leased){
     Random rand = new Random();

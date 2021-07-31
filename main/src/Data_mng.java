@@ -5,39 +5,9 @@ public class Data_mng {
   private static final boolean DEBUG = App.DEBUG;
   static int cache_data_total = 0;
 
-  static int select(){
-    int need_data_num;
-    Random rand = new Random();
-
-    if(App.CONTENTS_TYPES_FIXED){
-      need_data_num = rand.nextInt(App.CONTENTS_TYPES_MAX);
-    }
-    else{
-      need_data_num = rand.nextInt(cache_data_total + 1);
-    }
-    return need_data_num;
-  }
-
-  static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int nearest_dynamic_fog, int need_data_num){
-    boolean data_exist;
-    boolean data_found = false;
-
-    data_exist = exist(cache_data_list, need_data_num);
-    if(data_exist == true){
-      for(int j = 0; j < cache_data_list.get(need_data_num).cached_by_list.size(); j++){
-        if(nearest_dynamic_fog == cache_data_list.get(need_data_num).cached_by_list.get(j)) data_found = true;
-      }
-      if(data_found == false){
-        //Data Copy Process
-        add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
-        if(DEBUG) System.out.println("Cache Data Copied.");
-      }
-    }
-    else if(data_exist == false){
-      add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
-      data_found = true;
-    }
-    if(data_found == true) System.out.println("Data Found.");
+  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
+    create(cache_data_list);
+    update(dynamic_fog_list, cache_data_list, dynamic_fog_num, data_num);
   }
 
   /*static void add_fixed(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list,){
@@ -47,11 +17,6 @@ public class Data_mng {
       }
     }
   }*/
-
-  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
-    create(cache_data_list);
-    update(dynamic_fog_list, cache_data_list, dynamic_fog_num, data_num);
-  }
 
   private static void create(ArrayList<Data> cache_data_list){
     Random rand = new Random();
@@ -119,14 +84,56 @@ public class Data_mng {
     dynamic_fog_list.add(temp_Storage);
   }
 
+  static int select(){
+    int need_data_num;
+    Random rand = new Random();
+
+    if(App.CONTENTS_TYPES_FIXED){
+      need_data_num = rand.nextInt(App.CONTENTS_TYPES_MAX);
+    }
+    else{
+      need_data_num = rand.nextInt(cache_data_total + 1);
+    }
+    return need_data_num;
+  }
+
+  static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int nearest_dynamic_fog, int need_data_num){
+    boolean data_exist;
+    boolean data_found = false;
+
+    if(App.CONTENTS_TYPES_FIXED) data_exist = true;
+    else data_exist = exist(cache_data_list, need_data_num);
+
+    if(data_exist == true){
+      //Data Information Found in index_list
+      for(int j = 0; j < cache_data_list.get(need_data_num).cached_by_list.size(); j++){
+        if(nearest_dynamic_fog == cache_data_list.get(need_data_num).cached_by_list.get(j)) data_found = true;
+        if((DEBUG) && (data_found)) System.out.println("Data was found in Nearest DF.");
+      }
+      if(data_found == false){
+        //Data Copy Process
+        update(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+        data_found = true;
+        if(DEBUG) System.out.println("Data Copied from Local Network.");
+      }
+    }
+    else if(data_exist == false){
+      add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+      data_found = true;
+      if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+    }
+  }
+
   private static boolean exist(ArrayList<Data> cache_data_list, Integer data_num){
+    boolean found = false;
     boolean result = false;
     for(int i = 0; i < cache_data_list.size(); i++){
       if(cache_data_list.get(i).num == data_num){
-        result = true;
-        if(DEBUG) System.out.println("Data Found on Local Network.");
+        found = true;
+        if(cache_data_list.get(i).cached_by_list.size() > 0) result = true;
+        if(DEBUG) System.out.println("Data seems to be in Local Network.");
       }
-      if(result == true) break;
+      if(found == true) break;
     }
     return result;
   }

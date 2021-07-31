@@ -21,6 +21,7 @@ public class Mode4 {
 
     //Simuration Start
     time_count = 0;
+    //if(App.CONTENTS_TYPES_FIXED) Data_mng.add_fixed();
     while(time_count < App.TIME){
       //Node Move Process
       if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
@@ -39,16 +40,14 @@ public class Mode4 {
       //Data Transfer Process
       for(int i = 0; i < node_list.size(); i++){
         need_data_num = Data_mng.select();
-        if(DEBUG) System.out.println("Need data: " + need_data_num);
-
-        //if(App.CONTENTS_TYPES_FIXED) Data_mng.add_fixed();
         
         nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
-        if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Nearest DF: " + nearest_dynamic_fog);
+        if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
 
         Data_mng.search(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
       }
     }
     Statistics.print_info();
+    System.out.println(Data_mng.cache_data_total);
   }
 }
