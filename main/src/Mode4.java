@@ -33,8 +33,7 @@ public class Mode4 {
       time_count += 1;
       if(DEBUG){
         System.out.println("");
-        Fog_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
-        Fog_mng.print_detail(dynamic_fog_list);
+        Fog_mng.print_detail(node_list, dynamic_fog_list);
         Data_mng.print_detail(cache_data_list);
       }
 
