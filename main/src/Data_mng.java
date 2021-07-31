@@ -107,6 +107,7 @@ public class Data_mng {
     if(data_exist == true){
       //Data Information Found in index_list
       for(int j = 0; j < cache_data_list.get(need_data_num).cached_by_list.size(); j++){
+        System.out.println("Checking... nearest DF: " + nearest_dynamic_fog + ", and cur value: " + cache_data_list.get(need_data_num).cached_by_list.get(j));
         if(nearest_dynamic_fog == cache_data_list.get(need_data_num).cached_by_list.get(j)) data_found = true;
         if((DEBUG) && (data_found)) System.out.println("Data was found in Nearest DF.");
       }
@@ -136,5 +137,23 @@ public class Data_mng {
       if(found == true) break;
     }
     return result;
+  }
+
+  static void print_detail(ArrayList<Data> cache_data_list){
+    Data data;
+
+    try {
+      for(int i = 0; i < cache_data_list.size(); i++){
+        data = cache_data_list.get(i);
+        System.out.println();
+        System.out.println("Data num: " + data.num);
+        System.out.println("Data size: " + data.file_size);
+        System.out.println("Cached by total: " + data.cached_by_total);
+        System.out.println("Cached by: " + data.cached_by_list);
+        System.out.println();
+      }
+    } catch (Exception e) {
+      System.out.println("No File exist or Error has occured.");
+    }
   }
 }

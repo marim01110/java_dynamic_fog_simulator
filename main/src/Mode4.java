@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = App.DEBUG;
-  private static final int MAX_NODES = 5;
+  private static final int MAX_NODES = 4;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
@@ -35,6 +35,7 @@ public class Mode4 {
         System.out.println("");
         Fog_mng.dynamic_fog_print_status(node_list, dynamic_fog_list);
         Fog_mng.print_detail(dynamic_fog_list);
+        Data_mng.print_detail(cache_data_list);
       }
 
       //Data Transfer Process
@@ -48,6 +49,5 @@ public class Mode4 {
       }
     }
     Statistics.print_info();
-    System.out.println(Data_mng.cache_data_total);
   }
 }
