@@ -67,11 +67,11 @@ public class Fog_mng {
 
   static int calc_used_capacity(ArrayList<Data> cache_data_list, ArrayList<Integer> cache_index_list){
     int used_capacity = 0;
-    /*
+    
     for(int i = 0; i < cache_index_list.size(); i++){
       used_capacity += cache_data_list.get(i).file_size;
     }
-    */
+    
     return used_capacity;
   }
 

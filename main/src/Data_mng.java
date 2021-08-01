@@ -157,6 +157,31 @@ public class Data_mng {
     return result;
   }
 
+  static void update_delete_order(ArrayList<Data> cache_data_list, ArrayList<Integer> last_used, int data_num){
+    for(int i = 0; i < last_used.size(); i++){
+      if(last_used.get(i) == data_num){
+        last_used.remove(i);
+      }
+    }
+    last_used.add(data_num);
+  }
+
+  private static int delete_older_file(ArrayList<Storage> dynamic_fog_list, ArrayList<Integer> last_used, int dynamic_fog_num){
+    var temp_cache_index_list = new ArrayList<Integer>();
+    int delete_file_num = INIT;
+
+    temp_cache_index_list = dynamic_fog_list.get(dynamic_fog_num).cache_index_list;
+    for(int i = 0; i < last_used.size(); i++){
+      for(int j = 0; j < temp_cache_index_list.size(); j++){
+        if(last_used.get(i) == temp_cache_index_list.get(j)){
+          temp_cache_index_list.remove(j);
+          delete_file_num = last_used.get(i);
+        }
+      }
+    }
+    return delete_file_num;
+  }
+
   static void print_detail(ArrayList<Data> cache_data_list){
     Data data;
 
