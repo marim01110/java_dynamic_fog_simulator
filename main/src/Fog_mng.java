@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 
 public class Fog_mng {
   private static final boolean DEBUG = App.DEBUG;
+  private static final int INIT = -1;
 
   static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Storage> dynamic_fog_list){
     Random rand = new Random();
@@ -32,8 +33,8 @@ public class Fog_mng {
           if(DEBUG) System.out.println("The Candidate is Dupulicated.");
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
-          var cache_index_list = new ArrayList<Integer>();
-          var temp = new Storage(dynamic_fog_candidate, 500, 0, cache_index_list);
+          var fog_stored_contents_list = new ArrayList<Integer>();
+          var temp = new Storage(dynamic_fog_candidate, 500, 0, fog_stored_contents_list);
           dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }
@@ -65,13 +66,27 @@ public class Fog_mng {
     return dynamic_fog_result;
   }
 
-  static int calc_used_capacity(ArrayList<Data> cache_data_list, ArrayList<Integer> cache_index_list){
-    int used_capacity = 0;
-    /*
-    for(int i = 0; i < cache_index_list.size(); i++){
-      used_capacity += cache_data_list.get(i).file_size;
+  static int get_dynamic_fog_index_num(ArrayList<Storage> dynamic_fog_list, int dynamic_fog_num){
+    int dynamic_fog_index_num = INIT;
+
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
+        dynamic_fog_index_num = i;
+        break;
+      }
     }
-    */
+    return dynamic_fog_index_num;
+  }
+
+  static int calc_used_capacity(ArrayList<Data> network_contents_list, ArrayList<Integer> fog_stored_contents_list){
+    int used_capacity = 0;
+    int file_num, file_index_num;
+    
+    for(int i = 0; i < fog_stored_contents_list.size(); i++){
+      file_num = fog_stored_contents_list.get(i);
+      file_index_num = Data_mng.get_index_num(network_contents_list, file_num);
+      used_capacity += network_contents_list.get(file_index_num).file_size;
+    }
     return used_capacity;
   }
 
@@ -93,7 +108,7 @@ public class Fog_mng {
         System.out.println();
         System.out.println("Dynamic_Fog_index: " + i + ", Node_num: " + node.node_num);
         System.out.println("Total cap. " + node.total_capacity + ", Used cap. " + node.used_capacity);
-        System.out.println("Cached Data Num: " + node.cache_index_list);
+        System.out.println("Cached Data Num: " + node.fog_stored_contents_list);
         System.out.println();
       }
     }
