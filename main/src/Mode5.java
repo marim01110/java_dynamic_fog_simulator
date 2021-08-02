@@ -8,7 +8,7 @@ public class Mode5 {
   static void main(){
     var node_list = new ArrayList<Node_info>();
     var dynamic_fog_list = new ArrayList<Storage>();
-    //var cache_data_list = new ArrayList<Data>();
+    //var stored_contents_list = new ArrayList<Data>();
     int node_leased = 0;
     int time_count;
 
