@@ -45,7 +45,7 @@ public class Mode4 {
         nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
         if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
 
-        Data_mng.search(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+        Data_mng.search(dynamic_fog_list, cache_data_list, last_used, nearest_dynamic_fog, need_data_num);
       }
     }
     Statistics.print_info();

@@ -18,9 +18,9 @@ public class Data_mng {
     return result;
   }
 
-  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, Integer dynamic_fog_num, Integer data_num){
+  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, ArrayList<Integer> last_used, Integer dynamic_fog_num, Integer data_num){
     create(cache_data_list);
-    update(dynamic_fog_list, cache_data_list, dynamic_fog_num, data_num);
+    update(dynamic_fog_list, cache_data_list, last_used, dynamic_fog_num, data_num);
   }
 
   /*static void add_fixed(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list,){
@@ -38,7 +38,7 @@ public class Data_mng {
 
     //Data Create Process
     data_num = cache_data_total;
-    data_size = rand.nextInt(40) + 10;
+    data_size = (rand.nextInt(39) + 1) * 5;
     cached_by_total = 0;
 
     var temp_Data = new Data(data_num, data_size, cached_by_total, cached_by_list);
@@ -47,11 +47,12 @@ public class Data_mng {
     cache_data_total += 1;
   }
 
-  private static void update(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int dynamic_fog_num, int data_num){
+  private static void update(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
     var cached_by_list = new ArrayList<Integer>();
     var cache_index_list = new ArrayList<Integer>();
     int data_index_num = INIT;
     int dynamic_fog_index_num = INIT;
+    int loop_count = 0;
     int cached_by_total, total_capacity, used_capacity;
 
     data_index_num = get_index_num(cache_data_list, data_num);
@@ -64,10 +65,12 @@ public class Data_mng {
     }
     cached_by_list.add(dynamic_fog_num);
 
+/*
     //Replace with new Info
     var temp_Data = new Data(data_num, data.file_size, cached_by_total, cached_by_list);
     cache_data_list.remove(data_index_num);
     cache_data_list.add(temp_Data);
+*/
 
     //Get DF index_num
     for(int i = 0; i < dynamic_fog_list.size(); i++){
@@ -86,6 +89,32 @@ public class Data_mng {
     cache_index_list.add(data_num);
     total_capacity = dynamic_fog_list.get(dynamic_fog_index_num).total_capacity;
     used_capacity = Fog_mng.calc_used_capacity(cache_data_list, cache_index_list);
+
+    //Check Used Capacity and remove files
+    while(total_capacity < used_capacity){
+
+      //Decide a file to delete and delete from cache_index_list
+      System.out.println(used_capacity);//DL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      delete_older_file(dynamic_fog_list, data, last_used, dynamic_fog_num);
+
+      /*
+      cache_data_list LAN内にあるコンテンツ情報を管理する動的リスト
+      cache_index_list DF内にあるコンテンツ番号を管理する動的リスト
+      cached_by_list あるデータがどのDFにキャッシュされているかを管理する動的リスト
+      */
+
+      used_capacity = Fog_mng.calc_used_capacity(cache_data_list, cache_index_list);
+      System.out.println(used_capacity);//DL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+      if(DEBUG) System.out.println("Used: " + used_capacity);
+      loop_count += 1;
+      if(loop_count < 10) System.exit(-1);
+    }
+
+    //Replace with new Info
+    var temp_Data = new Data(data_num, data.file_size, cached_by_total, cached_by_list);
+    cache_data_list.remove(data_index_num);
+    cache_data_list.add(temp_Data);
 
     //Replace with new Dynamic_Fog Information
     dynamic_fog_list.remove(dynamic_fog_index_num);
@@ -106,7 +135,7 @@ public class Data_mng {
     return need_data_num;
   }
 
-  static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, int nearest_dynamic_fog, int need_data_num){
+  static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> cache_data_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
     boolean data_exist;
     boolean data_found = false;
     int need_data_index_num = INIT;
@@ -129,14 +158,14 @@ public class Data_mng {
       }
       if(data_found == false){
         //Data Copy Process
-        update(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+        update(dynamic_fog_list, cache_data_list, last_used, nearest_dynamic_fog, need_data_num);
         data_found = true;
         Statistics.dl_from_local += 1;
         if(DEBUG) System.out.println("Data Copied from Local Network.");
       }
     }
     else if(data_exist == false){
-      add(dynamic_fog_list, cache_data_list, nearest_dynamic_fog, need_data_num);
+      add(dynamic_fog_list, cache_data_list, last_used, nearest_dynamic_fog, need_data_num);
       data_found = true;
       Statistics.dl_from_cloud += 1;
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
@@ -166,20 +195,40 @@ public class Data_mng {
     last_used.add(data_num);
   }
 
-  private static int delete_older_file(ArrayList<Storage> dynamic_fog_list, ArrayList<Integer> last_used, int dynamic_fog_num){
+  private static void delete_older_file(ArrayList<Storage> dynamic_fog_list, Data data, ArrayList<Integer> last_used, int dynamic_fog_num){
     var temp_cache_index_list = new ArrayList<Integer>();
+    int dynamic_fog_index_num = INIT;
     int delete_file_num = INIT;
 
-    temp_cache_index_list = dynamic_fog_list.get(dynamic_fog_num).cache_index_list;
+    //Get DF index num
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
+        dynamic_fog_index_num = i;
+        break;
+      }
+    }
+
+    // Delete from cache_index_list
+    temp_cache_index_list = dynamic_fog_list.get(dynamic_fog_index_num).cache_index_list;
     for(int i = 0; i < last_used.size(); i++){
       for(int j = 0; j < temp_cache_index_list.size(); j++){
         if(last_used.get(i) == temp_cache_index_list.get(j)){
           temp_cache_index_list.remove(j);
           delete_file_num = last_used.get(i);
+          break;
         }
       }
+      if(delete_file_num != INIT) break;
     }
-    return delete_file_num;
+    
+    //Delete from cached_by_list
+    for(int i = 0; i < data.cached_by_list.size(); i++){
+      if(data.cached_by_list.get(i) == dynamic_fog_num){
+        data.cached_by_list.remove(i);
+        break;
+      }
+    }
+    data.cached_by_total -= 1;
   }
 
   static void print_detail(ArrayList<Data> cache_data_list){
