@@ -7,7 +7,7 @@ public class Mode4 {
   static void main(){
     var node_list = new ArrayList<Node_info>();
     var dynamic_fog_list = new ArrayList<Storage>();
-    var stored_contents_list = new ArrayList<Data>();
+    var network_contents_list = new ArrayList<Data>();
     var last_used = new ArrayList<Integer>();
     int node_leased = 0;
     int time_count;
@@ -40,12 +40,12 @@ public class Mode4 {
       //Data Transfer Process
       for(int i = 0; i < node_list.size(); i++){
         need_data_num = Data_mng.select();
-        Data_mng.update_delete_order(stored_contents_list, last_used, need_data_num);
+        Data_mng.update_delete_order(network_contents_list, last_used, need_data_num);
         
         nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
         if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
 
-        Data_mng.search(dynamic_fog_list, stored_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+        Data_mng.search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
       }
     }
     Statistics.print_info();

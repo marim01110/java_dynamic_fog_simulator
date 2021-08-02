@@ -31,13 +31,13 @@ class Storage{
   int node_num;
   int total_capacity;
   int used_capacity;
-  ArrayList<Integer> contents_list = new ArrayList<>();
+  ArrayList<Integer> fog_stored_contents_list = new ArrayList<>();
 
-  public Storage(int node_num, int total_capacity, int used_capacity, ArrayList<Integer> contents_list){
+  public Storage(int node_num, int total_capacity, int used_capacity, ArrayList<Integer> fog_stored_contents_list){
     this.node_num = node_num;
     this.total_capacity = total_capacity;
     this.used_capacity = used_capacity;
-    this.contents_list = contents_list;
+    this.fog_stored_contents_list = fog_stored_contents_list;
   }
 }
 

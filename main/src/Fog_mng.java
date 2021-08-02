@@ -33,8 +33,8 @@ public class Fog_mng {
           if(DEBUG) System.out.println("The Candidate is Dupulicated.");
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
-          var contents_list = new ArrayList<Integer>();
-          var temp = new Storage(dynamic_fog_candidate, 500, 0, contents_list);
+          var fog_stored_contents_list = new ArrayList<Integer>();
+          var temp = new Storage(dynamic_fog_candidate, 500, 0, fog_stored_contents_list);
           dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }
@@ -78,13 +78,15 @@ public class Fog_mng {
     return dynamic_fog_index_num;
   }
 
-  static int calc_used_capacity(ArrayList<Data> stored_contents_list, ArrayList<Integer> contents_list){
+  static int calc_used_capacity(ArrayList<Data> network_contents_list, ArrayList<Integer> fog_stored_contents_list){
     int used_capacity = 0;
+    int file_num, file_index_num;
     
-    for(int i = 0; i < contents_list.size(); i++){
-      used_capacity += stored_contents_list.get(i).file_size;
+    for(int i = 0; i < fog_stored_contents_list.size(); i++){
+      file_num = fog_stored_contents_list.get(i);
+      file_index_num = Data_mng.get_index_num(network_contents_list, file_num);
+      used_capacity += network_contents_list.get(file_index_num).file_size;
     }
-    
     return used_capacity;
   }
 
@@ -106,7 +108,7 @@ public class Fog_mng {
         System.out.println();
         System.out.println("Dynamic_Fog_index: " + i + ", Node_num: " + node.node_num);
         System.out.println("Total cap. " + node.total_capacity + ", Used cap. " + node.used_capacity);
-        System.out.println("Cached Data Num: " + node.contents_list);
+        System.out.println("Cached Data Num: " + node.fog_stored_contents_list);
         System.out.println();
       }
     }
