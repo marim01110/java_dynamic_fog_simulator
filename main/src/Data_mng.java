@@ -72,12 +72,7 @@ public class Data_mng {
     stored_contents_list.add(temp_Data);
 */
 
-    //Get DF index_num
-    for(int i = 0; i < dynamic_fog_list.size(); i++){
-      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
-        dynamic_fog_index_num = i;
-      }
-    }
+    dynamic_fog_index_num = Fog_mng.get_dynamic_fog_index_num(dynamic_fog_list, dynamic_fog_num);
 
     //Update dynamic_fog_list Process
     try{
@@ -94,15 +89,18 @@ public class Data_mng {
     while(total_capacity < used_capacity){
 
       //Decide a file to delete and delete from contents_list
-      System.out.println(used_capacity);//DL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      delete_older_file(dynamic_fog_list, data, last_used, dynamic_fog_num);
+      if(true){
+        System.out.println("Used: " + used_capacity);//DL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        System.out.println(stored_contents_list);
+      }
+      delete_older_file(dynamic_fog_list, stored_contents_list, last_used, dynamic_fog_num);
 
       used_capacity = Fog_mng.calc_used_capacity(stored_contents_list, contents_list);
-      System.out.println(used_capacity);//DL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      
 
       if(DEBUG) System.out.println("Used: " + used_capacity);
       loop_count += 1;
-      if(loop_count < 10) System.exit(-1);
+      if(loop_count > 10) System.exit(-1);
     }
 
     //Replace with new Info
@@ -169,6 +167,7 @@ public class Data_mng {
   private static boolean exist(ArrayList<Data> stored_contents_list, Integer data_num){
     boolean found = false;
     boolean result = false;
+
     for(int i = 0; i < stored_contents_list.size(); i++){
       if(stored_contents_list.get(i).num == data_num){
         found = true;
@@ -189,33 +188,34 @@ public class Data_mng {
     last_used.add(data_num);
   }
 
-  private static void delete_older_file(ArrayList<Storage> dynamic_fog_list, Data data, ArrayList<Integer> last_used, int dynamic_fog_num){
-    var temp_contents_list = new ArrayList<Integer>();
+  private static void delete_older_file(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> stored_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
+    Storage storage;
+    Data data;
     int dynamic_fog_index_num = INIT;
     int delete_file_num = INIT;
+    int delete_file_index_num = INIT;
 
-    //Get DF index num
-    for(int i = 0; i < dynamic_fog_list.size(); i++){
-      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
-        dynamic_fog_index_num = i;
-        break;
-      }
-    }
+    dynamic_fog_index_num = Fog_mng.get_dynamic_fog_index_num(dynamic_fog_list, dynamic_fog_num);
+    if(DEBUG) System.out.println("Current delete order is " + last_used);
 
     // Delete from contents_list
-    temp_contents_list = dynamic_fog_list.get(dynamic_fog_index_num).contents_list;
+    storage = dynamic_fog_list.get(dynamic_fog_index_num);
     for(int i = 0; i < last_used.size(); i++){
-      for(int j = 0; j < temp_contents_list.size(); j++){
-        if(last_used.get(i) == temp_contents_list.get(j)){
-          temp_contents_list.remove(j);
+      for(int j = 0; j < storage.contents_list.size(); j++){
+        if(last_used.get(i) == storage.contents_list.get(j)){
+          storage.contents_list.remove(j);
           delete_file_num = last_used.get(i);
+          System.out.println("File num: " + delete_file_num + " has deleted.");
           break;
         }
       }
       if(delete_file_num != INIT) break;
     }
-    
+
+    delete_file_index_num = get_index_num(stored_contents_list, delete_file_num);
+
     //Delete from cached_by_list
+    data = stored_contents_list.get(delete_file_index_num);
     for(int i = 0; i < data.cached_by_list.size(); i++){
       if(data.cached_by_list.get(i) == dynamic_fog_num){
         data.cached_by_list.remove(i);

@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 
 public class Fog_mng {
   private static final boolean DEBUG = App.DEBUG;
+  private static final int INIT = -1;
 
   static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Storage> dynamic_fog_list){
     Random rand = new Random();
@@ -63,6 +64,18 @@ public class Fog_mng {
       }
     }
     return dynamic_fog_result;
+  }
+
+  static int get_dynamic_fog_index_num(ArrayList<Storage> dynamic_fog_list, int dynamic_fog_num){
+    int dynamic_fog_index_num = INIT;
+
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
+        dynamic_fog_index_num = i;
+        break;
+      }
+    }
+    return dynamic_fog_index_num;
   }
 
   static int calc_used_capacity(ArrayList<Data> stored_contents_list, ArrayList<Integer> contents_list){
