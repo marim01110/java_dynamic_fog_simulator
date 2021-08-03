@@ -75,6 +75,9 @@ public class Fog_mng {
         break;
       }
     }
+    if(dynamic_fog_index_num == INIT){
+      System.out.println("Requested fog: " + dynamic_fog_num + " is Not Found.");
+    }
     return dynamic_fog_index_num;
   }
 
