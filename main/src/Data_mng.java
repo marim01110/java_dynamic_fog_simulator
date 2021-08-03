@@ -15,6 +15,9 @@ public class Data_mng {
         break;
       }
     }
+    if(result == INIT){
+      System.out.println("Requested data: " + need_data_num + " is Not Found.");
+    }
     return result;
   }
 
@@ -90,11 +93,9 @@ public class Data_mng {
 
       //Decide a file to delete and delete from fog_stored_contents_list
       delete_older_file(fog_stored_contents_list, network_contents_list, last_used, dynamic_fog_num);
-      System.out.println(fog_stored_contents_list);
 
       used_capacity = Fog_mng.calc_used_capacity(network_contents_list, fog_stored_contents_list);
       
-      if(DEBUG) System.out.println("Used: " + used_capacity);
       loop_count += 1;
       if(loop_count > 10){
         System.out.println("Storage management error.");
@@ -193,18 +194,23 @@ public class Data_mng {
     int delete_file_num = INIT;
     int delete_file_index_num = INIT;
 
-    if(DEBUG) System.out.println("Current delete order is " + last_used);
+    //if(DEBUG) System.out.println("Current delete order is " + last_used);
 
     // Delete from fog_stored_contents_list
     for(int i = 0; i < last_used.size(); i++){
       for(int j = 0; j < fog_stored_contents_list.size(); j++){
-        if(last_used.get(i) == fog_stored_contents_list.get(j)){
+        //if(last_used.get(i) == fog_stored_contents_list.get(j)){//Not Works
+        if((last_used.get(i) - fog_stored_contents_list.get(j)) == 0){
           fog_stored_contents_list.remove(j);
           delete_file_num = last_used.get(i);
           break;
         }
       }
       if(delete_file_num != INIT) break;
+    }
+    if(delete_file_num == INIT){
+      System.out.println("Error: Can not Find Delete file.");
+      System.exit(-1);
     }
 
     delete_file_index_num = get_index_num(network_contents_list, delete_file_num);
