@@ -1,7 +1,7 @@
 import java.awt.geom.Point2D;
 public class Environment {
     //------LANDMARK SETTING------
-    private static final int LANDMARKS = 3;
+    static final int LANDMARKS = 3;
     private static int[] landmark_point_x_array = {1000, 800, 500};
     private static int[] landmark_point_y_array = {1000, 200, 500};
   

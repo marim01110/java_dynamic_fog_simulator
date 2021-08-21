@@ -5,11 +5,6 @@ import java.util.ArrayList;
 public class Node_mng {
   private static final boolean DEBUG = App.DEBUG;
 
-  //------LANDMARK SETTING------
-  private static final int LANDMARKS = 3;
-  private static int[] landmark_point_x_array = {1000, 800, 500};
-  private static int[] landmark_point_y_array = {1000, 200, 500};
-
   //------NODE MOVE SPEED SETTING------
   private static final int MOVE_SPEEDS = 0;
   private static int[] move_speed_array = {};
@@ -21,12 +16,12 @@ public class Node_mng {
     int point_index, destination_index, move_speed;
 
     do{
-      point_index = rand.nextInt(LANDMARKS);
-      destination_index = rand.nextInt(LANDMARKS);
+      point_index = rand.nextInt(Environment.LANDMARKS);
+      destination_index = rand.nextInt(Environment.LANDMARKS);
     }while(point_index == destination_index);
 
-    start.setLocation(landmark_point_x_array[point_index], landmark_point_y_array[point_index]);
-    destination.setLocation(landmark_point_x_array[destination_index], landmark_point_y_array[destination_index]);
+    start.setLocation(Environment.return_landmark_point(point_index));
+    destination.setLocation(Environment.return_landmark_point(destination_index));
     move_speed = rand.nextInt(40) + 10;
 
     var newnode = new Node_info(node_leased, start, destination, false, false, false, move_speed);
