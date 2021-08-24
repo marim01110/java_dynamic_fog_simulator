@@ -1,7 +1,9 @@
-//Used Java Version
-//openjdk 11.0.12 2021-07-20
-//OpenJDK Runtime Environment (build 11.0.12+7-post-Debian-2deb10u1)
-//OpenJDK 64-Bit Server VM (build 11.0.12+7-post-Debian-2deb10u1, mixed mode)
+/*
+Used Java Version
+openjdk 11.0.12 2021-07-20
+OpenJDK Runtime Environment (build 11.0.12+7-post-Debian-2)
+OpenJDK 64-Bit Server VM (build 11.0.12+7-post-Debian-2, mixed mode)
+*/
 
 import java.util.Scanner;
 import java.awt.geom.Point2D;
@@ -57,6 +59,7 @@ class Data{
 
 public class App {
   static final boolean DEBUG = true;
+  static final boolean FOG_USE = true;
   static final boolean CONTENTS_TYPES_FIXED = false;
   static final int CONTENTS_TYPES_MAX = 100;
   static final int TIME = 10;
