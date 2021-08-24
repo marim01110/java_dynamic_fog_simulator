@@ -59,9 +59,9 @@ class Data{
 
 public class App {
   static final boolean DEBUG = true;
-  static final boolean FOG_USE = false;
-  static final boolean CONTENTS_TYPES_FIXED = false;
-  static final int CONTENTS_TYPES_MAX = 100;
+  static final boolean FOG_USE = true;//Incomplete Feature. Default: true
+  static final boolean CONTENTS_TYPES_FIXED = false;//Incomplete Feature. Default: false
+  static final int CONTENTS_TYPES_MAX = 10;
   static final int TIME = 10;
   static final int EDGE_DIST = 2000;
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;

@@ -26,13 +26,15 @@ public class Data_mng {
     update(dynamic_fog_list, network_contents_list, last_used, dynamic_fog_num, data_num);
   }
 
-  /*static void add_fixed(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list,){
+/*
+  static void add_fixed(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list){
     if(DATA_CREATED != true){
       for(int i = 0; i < App.CONTENTS_TYPES_MAX; i++){
         add(dynamic_fog_list, network_contents_list, dynamic_fog_num, i);
       }
     }
-  }*/
+  }
+*/
 
   private static void create(ArrayList<Data> network_contents_list){
     Random rand = new Random();
@@ -108,7 +110,7 @@ public class Data_mng {
     dynamic_fog_list.add(temp_Storage);
   }
 
-  static int select(){
+  private static int select(){
     int need_data_num;
     Random rand = new Random();
 
@@ -121,7 +123,27 @@ public class Data_mng {
     return need_data_num;
   }
 
-  static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
+  static void transfer(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used){
+    int need_data_num;
+    int nearest_dynamic_fog;
+
+    for(int i = 0; i < node_list.size(); i++){
+      need_data_num = select();
+      update_delete_order(network_contents_list, last_used, need_data_num);
+      
+      if(App.FOG_USE){
+        nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
+      }
+      else{
+        nearest_dynamic_fog = INIT;
+      }
+      if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
+
+      search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+    }
+  }
+
+  private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
     boolean data_exist;
     boolean data_found = false;
     int need_data_index_num = INIT;
@@ -175,7 +197,7 @@ public class Data_mng {
     return result;
   }
 
-  static void update_delete_order(ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int data_num){
+  private static void update_delete_order(ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int data_num){
     for(int i = 0; i < last_used.size(); i++){
       if(last_used.get(i) == data_num){
         last_used.remove(i);
@@ -233,7 +255,8 @@ public class Data_mng {
         System.out.println("Cached by: " + data.cached_by_list);
         System.out.println();
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.out.println("No File exist or Error has occured.");
     }
   }

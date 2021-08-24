@@ -2,8 +2,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = App.DEBUG;
-  private static final int INIT = -1;
-  private static final int MAX_NODES = 50;
+  private static final int MAX_NODES = 10;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
@@ -12,8 +11,6 @@ public class Mode4 {
     var last_used = new ArrayList<Integer>();
     int node_leased = 0;
     int time_count;
-    int need_data_num;
-    int nearest_dynamic_fog;
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
@@ -43,20 +40,9 @@ public class Mode4 {
       }
 
       //Data Transfer Process
-      for(int i = 0; i < node_list.size(); i++){
-        need_data_num = Data_mng.select();
-        Data_mng.update_delete_order(network_contents_list, last_used, need_data_num);
-        
-        if(App.FOG_USE){
-          nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
-        }
-        else{
-          nearest_dynamic_fog = INIT;
-        }
-        if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
+      Data_mng.transfer(node_list, dynamic_fog_list, network_contents_list, last_used);
 
-        Data_mng.search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
-      }
+      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / App.TIME + "%)");
     }
     Statistics.print_info();
   }
