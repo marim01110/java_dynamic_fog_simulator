@@ -68,13 +68,6 @@ public class Data_mng {
     }
     cached_by_list.add(dynamic_fog_num);
 
-/*
-    //Replace with new Info
-    var temp_Data = new Data(data_num, data.file_size, cached_by_total, cached_by_list);
-    network_contents_list.remove(data_index_num);
-    network_contents_list.add(temp_Data);
-*/
-
     dynamic_fog_index_num = Fog_mng.get_dynamic_fog_index_num(dynamic_fog_list, dynamic_fog_num);
 
     //Update dynamic_fog_list Process
@@ -158,7 +151,9 @@ public class Data_mng {
       }
     }
     else if(data_exist == false){
-      add(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+      if(App.FOG_USE){
+        add(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+      }
       data_found = true;
       Statistics.dl_from_cloud += 1;
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");

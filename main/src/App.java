@@ -59,7 +59,7 @@ class Data{
 
 public class App {
   static final boolean DEBUG = true;
-  static final boolean FOG_USE = true;
+  static final boolean FOG_USE = false;
   static final boolean CONTENTS_TYPES_FIXED = false;
   static final int CONTENTS_TYPES_MAX = 100;
   static final int TIME = 10;
