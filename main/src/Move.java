@@ -22,12 +22,16 @@ public class Move {
     int dist = node.move_speed;
     switch(direc){
       case 0:     Move.positive_x(node.point, dist);
+                  Statistics.moves += 1;
                   break;
       case 1:     Move.negative_x(node.point, dist);
+                  Statistics.moves += 1;
                   break;
       case 2:     Move.positive_y(node.point, dist);
+                  Statistics.moves += 1;
                   break;
       case 3:     Move.negative_y(node.point, dist);
+                  Statistics.moves += 1;
                   break;
       default:    break;
     }

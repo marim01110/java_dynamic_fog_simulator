@@ -43,7 +43,7 @@ public class Mode4 {
       //Data Transfer Process
       Data_mng.transfer(node_list, dynamic_fog_list, network_contents_list, last_used);
 
-      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / App.TIME + "%)");
+      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / App.TIME + "% done.)");
     }
     Statistics.print_info();
   }
