@@ -139,18 +139,18 @@ public class Data_mng {
     }
   }
 
-  private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
-    boolean data_exist;
+  private static void search_old(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
+    boolean data_info_exist;
     boolean data_found = false;
     int need_data_index_num = INIT;
 
-    if(App.CONTENTS_TYPES_FIXED) data_exist = true;
-    else data_exist = exist(network_contents_list, need_data_num);
+    if(App.CONTENTS_TYPES_FIXED) data_info_exist = false;
+    else data_info_exist = exist(network_contents_list, need_data_num);
 
     need_data_index_num = get_index_num(network_contents_list, need_data_num);
     Statistics.data_transfer += 1;
 
-    if(data_exist == true){
+    if(data_info_exist == true){
       //Data Information Found in index_list
       for(int j = 0; j < network_contents_list.get(need_data_index_num).cached_by_list.size(); j++){
         if(nearest_dynamic_fog == network_contents_list.get(need_data_index_num).cached_by_list.get(j)){
@@ -168,7 +168,7 @@ public class Data_mng {
         if(DEBUG) System.out.println("Data Copied from Local Network.");
       }
     }
-    else if(data_exist == false){
+    else if(data_info_exist == false){
       if(App.FOG_USE){
         add(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
       }
@@ -176,6 +176,10 @@ public class Data_mng {
       Statistics.dl_from_cloud += 1;
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
     }
+  }
+
+  private static void search(){
+    
   }
 
   private static boolean exist(ArrayList<Data> network_contents_list, Integer data_num){
