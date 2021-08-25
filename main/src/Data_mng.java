@@ -26,15 +26,11 @@ public class Data_mng {
     update(dynamic_fog_list, network_contents_list, last_used, dynamic_fog_num, data_num);
   }
 
-/*
-  static void add_fixed(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list){
-    if(DATA_CREATED != true){
-      for(int i = 0; i < App.CONTENTS_TYPES_MAX; i++){
-        add(dynamic_fog_list, network_contents_list, dynamic_fog_num, i);
-      }
+  static void fixed_init(ArrayList<Data> network_contents_list){
+    for (int i = 0; i < App.CONTENTS_TYPES_MAX; i++) {
+      create(network_contents_list);
     }
   }
-*/
 
   private static void create(ArrayList<Data> network_contents_list){
     Random rand = new Random();

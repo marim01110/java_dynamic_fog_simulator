@@ -20,7 +20,8 @@ public class Mode4 {
 
     //Simuration Start
     time_count = 0;
-    //if(App.CONTENTS_TYPES_FIXED) Data_mng.add_fixed();
+    if(App.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
+
     while(time_count < App.TIME){
       //Node Move Process
       if(App.FOG_USE){
@@ -42,7 +43,7 @@ public class Mode4 {
       //Data Transfer Process
       Data_mng.transfer(node_list, dynamic_fog_list, network_contents_list, last_used);
 
-      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / App.TIME + "%)");
+      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / App.TIME + "% done.)");
     }
     Statistics.print_info();
   }
