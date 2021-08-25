@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Move {
-  private static final boolean DEBUG = App.DEBUG;
+  //private static final boolean DEBUG = App.DEBUG;
 
   private static void negative_x(Point2D.Double point, int x){
     point.setLocation(point.x-x, point.y);
@@ -41,29 +41,29 @@ public class Move {
     Move.move(node, direction);
     
     area_judge_data = area_judge(node);
-    if(area_judge_data / 1000 != 1){
+    if(area_judge_data / 1000 == 1){
       negative_y(node.point, App.EDGE_DIST);
       area_judge_data -= 1000;
       Statistics.area_acrossed += 1;
     }
-    if(area_judge_data / 100 != 1){
+    if(area_judge_data / 100 == 1){
       negative_x(node.point, App.EDGE_DIST);
       area_judge_data -= 100;
       Statistics.area_acrossed += 1;
     }
-    if(area_judge_data / 10 != 1){
+    if(area_judge_data / 10 == 1){
       positive_y(node.point, App.EDGE_DIST);
       area_judge_data -= 10;
       Statistics.area_acrossed += 1;
     }
-    if(area_judge_data / 1 != 1){
+    if(area_judge_data / 1 == 1){
       positive_x(node.point, App.EDGE_DIST);
       area_judge_data -= 1;
       Statistics.area_acrossed += 1;
     }
   }
 
-  static void random_walk_restrict(Node_info node){
+  static void random_walk_restrict(Node_info node){//Not Used.
     Random rand = new Random();
     int candidate, area_judge_data;
     var direction_list = new ArrayList<Integer>();
@@ -106,7 +106,7 @@ public class Move {
     return error;
   }
 
-  private static int next_area_judge(Node_info node){
+  private static int next_area_judge(Node_info node){//Not Used.
     int error = 0;
     if(node.point.x - node.move_speed < 0) error += 1;
     if(node.point.x + node.move_speed > App.EDGE_DIST) error += 10;
