@@ -20,7 +20,8 @@ public class Mode4 {
 
     //Simuration Start
     time_count = 0;
-    //if(App.CONTENTS_TYPES_FIXED) Data_mng.add_fixed();
+    if(App.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
+
     while(time_count < App.TIME){
       //Node Move Process
       if(App.FOG_USE){
