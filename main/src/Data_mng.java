@@ -21,11 +21,6 @@ public class Data_mng {
     return result;
   }
 
-  private static void add(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, Integer dynamic_fog_num, Integer data_num){
-    create(network_contents_list);
-    update(dynamic_fog_list, network_contents_list, last_used, dynamic_fog_num, data_num);
-  }
-
   static void fixed_init(ArrayList<Data> network_contents_list){
     for (int i = 0; i < App.CONTENTS_TYPES_MAX; i++) {
       create(network_contents_list);
@@ -135,54 +130,60 @@ public class Data_mng {
       }
       if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
 
-      search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+      if(nearest_dynamic_fog == INIT){
+        Statistics.dl_from_cloud += 1;
+        if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+      }
+      else search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+
+      Statistics.data_transfered += 1;
     }
   }
 
-  private static void search_old(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
-    boolean data_info_exist;
+  private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
     boolean data_found = false;
     int need_data_index_num = INIT;
 
-    if(App.CONTENTS_TYPES_FIXED) data_info_exist = false;
-    else data_info_exist = exist(network_contents_list, need_data_num);
+    if(info_exist(network_contents_list, need_data_num)) create(network_contents_list);
 
     need_data_index_num = get_index_num(network_contents_list, need_data_num);
-    Statistics.data_transfer += 1;
 
-    if(data_info_exist == true){
-      //Data Information Found in index_list
-      for(int j = 0; j < network_contents_list.get(need_data_index_num).cached_by_list.size(); j++){
-        if(nearest_dynamic_fog == network_contents_list.get(need_data_index_num).cached_by_list.get(j)){
+    //Check variable cached_by_total.
+    if(network_contents_list.get(need_data_index_num).cached_by_total == 0){
+      update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+      data_found = true;
+      Statistics.dl_from_cloud += 1;
+      if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+    }
+
+    //Search in the Nearest Dynamic Fog.
+    if(data_found != true){
+      for(int i = 0; i < network_contents_list.get(need_data_index_num).cached_by_list.size(); i++){
+        if(nearest_dynamic_fog == network_contents_list.get(need_data_index_num).cached_by_list.get(i)){
           data_found = true;
           Statistics.dl_from_nearest_df += 1;
           if(DEBUG) System.out.println("Data was found in Nearest DF.");
           break;
         }
       }
-      if(data_found == false){
-        //Data Copy Process
-        update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
-        data_found = true;
-        Statistics.dl_from_local += 1;
-        if(DEBUG) System.out.println("Data Copied from Local Network.");
-      }
     }
-    else if(data_info_exist == false){
-      if(App.FOG_USE){
-        add(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
-      }
+
+    //Copy from Local Network.
+    if(data_found != true){
+      update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
       data_found = true;
-      Statistics.dl_from_cloud += 1;
-      if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+      Statistics.dl_from_local += 1;
+      if(DEBUG) System.out.println("Data Copied from Local Network.");
+    }
+
+    if(data_found != true){
+      System.out.println("Error: An unexpected error has occurred.");
+      System.out.println("Quit the program.");
+      System.exit(-1);
     }
   }
 
-  private static void search(){
-    
-  }
-
-  private static boolean exist(ArrayList<Data> network_contents_list, Integer data_num){
+  private static boolean info_exist(ArrayList<Data> network_contents_list, Integer data_num){
     boolean found = false;
     boolean result = false;
 
@@ -190,7 +191,6 @@ public class Data_mng {
       if(network_contents_list.get(i).num == data_num){
         found = true;
         if(network_contents_list.get(i).cached_by_list.size() > 0) result = true;
-        if(DEBUG) System.out.println("Data seems to be in Local Network.");
       }
       if(found == true) break;
     }
@@ -227,6 +227,7 @@ public class Data_mng {
     }
     if(delete_file_num == INIT){
       System.out.println("Error: Can not Find Delete file.");
+      System.out.println("Quit the program.");
       System.exit(-1);
     }
 

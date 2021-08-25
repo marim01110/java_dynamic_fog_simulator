@@ -59,7 +59,7 @@ class Data{
 
 public class App {
   static final boolean DEBUG = true;
-  static final boolean FOG_USE = true;//Incomplete Feature. Default: true
+  static final boolean FOG_USE = true;
   static final boolean CONTENTS_TYPES_FIXED = true;
   static final int CONTENTS_TYPES_MAX = 10;
   static final int TIME = 10;
