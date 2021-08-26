@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Node_mng {
   private static final boolean DEBUG = App.DEBUG;
+  private static final int INIT = -1;
 
   static Node_info generate(ArrayList<Node_info> node_list, int node_leased){
     Random rand = new Random();
@@ -45,5 +46,20 @@ public class Node_mng {
     else{
       node.goal_nearby = false;
     }
+  }
+
+  static int get_index_num(ArrayList<Node_info> node_list, int node_num){
+    int result = INIT;
+
+    for(int i = 0; i < node_list.size(); i++){
+      if(node_num == node_list.get(i).num){
+        result = i;
+        break;
+      }
+    }
+    if(result == INIT){
+      System.out.println("Requested node: " + node_num + " is Not Found.");
+    }
+    return result;
   }
 }

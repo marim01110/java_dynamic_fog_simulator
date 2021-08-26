@@ -34,7 +34,7 @@ public class Fog_mng {
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
           var fog_stored_contents_list = new ArrayList<Integer>();
-          var temp = new Storage(dynamic_fog_candidate, 500, 0, fog_stored_contents_list);
+          var temp = new Storage(dynamic_fog_candidate, App.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
           dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }
@@ -55,9 +55,12 @@ public class Fog_mng {
   static int set_nearest_dynamic_fog(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, Point2D.Double current_node){
     double distance = 9999;//Initialze distance
     double temp_distance;
-    int dynamic_fog_result = -1;
+    int dynamic_fog_node_index_num = INIT;
+    int dynamic_fog_result = INIT;
+
     for(int i = 0; i < dynamic_fog_list.size(); i++){
-      temp_distance = current_node.distance(node_list.get(dynamic_fog_list.get(i).node_num).point);
+      dynamic_fog_node_index_num = Node_mng.get_index_num(node_list, dynamic_fog_list.get(i).node_num);
+      temp_distance = current_node.distance(node_list.get(dynamic_fog_node_index_num).point);
       if(distance > temp_distance){
         distance = temp_distance;
         dynamic_fog_result = dynamic_fog_list.get(i).node_num;
