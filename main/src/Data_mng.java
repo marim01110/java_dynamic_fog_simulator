@@ -114,29 +114,36 @@ public class Data_mng {
     return need_data_num;
   }
 
-  static void transfer(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used){
+  static void transfer(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int time_count){
+    boolean transfer;
     int need_data_num;
     int nearest_dynamic_fog;
 
     for(int i = 0; i < node_list.size(); i++){
-      need_data_num = select();
-      update_delete_order(network_contents_list, last_used, need_data_num);
-      
-      if(Environment.FOG_USE){
-        nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
-      }
-      else{
-        nearest_dynamic_fog = INIT;
-      }
-      if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
+      transfer = false;
+      if(time_count % node_list.get(i).data_refresh_time == 0) transfer = true;
 
-      if(nearest_dynamic_fog == INIT){
-        Statistics.dl_from_cloud += 1;
-        if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+      if(transfer){
+        need_data_num = select();
+        update_delete_order(network_contents_list, last_used, need_data_num);
+        
+        if(Environment.FOG_USE){
+          nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
+        }
+        else{
+          nearest_dynamic_fog = INIT;
+        }
+        if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
+  
+        if(nearest_dynamic_fog == INIT){
+          Statistics.dl_from_cloud += 1;
+          if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+        }
+        else search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+  
+        Statistics.data_transfered += 1;
       }
-      else search(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
-
-      Statistics.data_transfered += 1;
+      else if(DEBUG) System.out.println("There is no data in Node_num " + node_list.get(i).num + " to be transferred this time.");
     }
   }
 

@@ -10,7 +10,7 @@ public class Node_mng {
     Random rand = new Random();
     Point2D.Double start = new Point2D.Double();
     Point2D.Double destination = new Point2D.Double();
-    int point_index, destination_index, move_speed, move_speed_index;
+    int point_index, destination_index, data_refresh_time, move_speed, move_speed_index;
 
     do{
       point_index = rand.nextInt(Environment.LANDMARKS);
@@ -20,9 +20,10 @@ public class Node_mng {
 
     start.setLocation(Environment.return_landmark_point(point_index));
     destination.setLocation(Environment.return_landmark_point(destination_index));
+    data_refresh_time = rand.nextInt(5) + 1;
     move_speed = Environment.return_move_speed(move_speed_index);
 
-    var newnode = new Node_info(node_leased, start, destination, false, false, false, move_speed);
+    var newnode = new Node_info(node_leased, start, destination, data_refresh_time, false, false, false, move_speed);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
     return newnode;
   }
