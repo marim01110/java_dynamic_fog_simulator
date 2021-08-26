@@ -3,7 +3,7 @@ import java.util.Random;
 import java.awt.geom.Point2D;
 
 public class Fog_mng {
-  private static final boolean DEBUG = App.DEBUG;
+  private static final boolean DEBUG = Environment.DEBUG;
   private static final int INIT = -1;
 
   static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Storage> dynamic_fog_list){
@@ -11,7 +11,7 @@ public class Fog_mng {
     int dynamic_fogs_required, dynamic_fog_candidate;
     boolean error;
     
-    dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    dynamic_fogs_required = node_list.size() * Environment.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     if(dynamic_fogs_required > dynamic_fog_list.size()){
       while(dynamic_fogs_required > dynamic_fog_list.size()){
         error = false;
@@ -34,7 +34,7 @@ public class Fog_mng {
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
           var fog_stored_contents_list = new ArrayList<Integer>();
-          var temp = new Storage(dynamic_fog_candidate, App.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
+          var temp = new Storage(dynamic_fog_candidate, Environment.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
           dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }
@@ -100,8 +100,8 @@ public class Fog_mng {
     int dynamic_fogs_required;
     Storage node;
 
-    dynamic_fogs_required = node_list.size() * App.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
-    System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node:");
+    dynamic_fogs_required = node_list.size() * Environment.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node: ");
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       if(i != 0) System.out.print(", ");
       System.out.print(dynamic_fog_list.get(i).node_num);

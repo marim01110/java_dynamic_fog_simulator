@@ -1,13 +1,27 @@
 import java.awt.geom.Point2D;
+
 public class Environment {
-    //------LANDMARK SETTING------
+    //------SIMULATION SETTINGS------
+    static final boolean DEBUG = true;
+    static final boolean FOG_USE = true;
+    static final int TIME = 10;
+    static final int EDGE_DIST = 2000;
+
+    //------FOG SETTINGS------
+    static final int FOG_STORAGE_SIZE = 500;
+    static final boolean CONTENTS_TYPES_FIXED = true;
+    static final int CONTENTS_TYPES_MAX = 10;
+    static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
+    static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
+
+    //------LANDMARK SETTINGS------
     static final int LANDMARKS = 3;
-    private static int[] landmark_point_x_array = {1000, 800, 500};
-    private static int[] landmark_point_y_array = {1000, 200, 500};
+    private static final int[] landmark_point_x_array = {1000, 800, 500};
+    private static final int[] landmark_point_y_array = {1000, 200, 500};
   
-    //------NODE MOVE SPEED SETTING------
+    //------NODE MOVE SPEED SETTINGS------
     static final int MOVE_SPEEDS = 4;
-    private static int[] move_speed_array = {55, 80, 250, 330};
+    private static final int[] move_speed_array = {55, 80, 250, 330};
 
     /*
     http://www.yspc-ysmc.jp/ysmc/column/health-fitness/walking-2.html

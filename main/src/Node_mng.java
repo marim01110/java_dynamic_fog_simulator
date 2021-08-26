@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Node_mng {
-  private static final boolean DEBUG = App.DEBUG;
+  private static final boolean DEBUG = Environment.DEBUG;
   private static final int INIT = -1;
 
   static Node_info generate(ArrayList<Node_info> node_list, int node_leased){

@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Data_mng {
-  private static final boolean DEBUG = App.DEBUG;
+  private static final boolean DEBUG = Environment.DEBUG;
   private static final int INIT = -1;
   static int cache_data_total = 0;
 
@@ -22,7 +22,7 @@ public class Data_mng {
   }
 
   static void fixed_init(ArrayList<Data> network_contents_list){
-    for (int i = 0; i < App.CONTENTS_TYPES_MAX; i++) {
+    for (int i = 0; i < Environment.CONTENTS_TYPES_MAX; i++) {
       create(network_contents_list);
     }
   }
@@ -105,8 +105,8 @@ public class Data_mng {
     int need_data_num;
     Random rand = new Random();
 
-    if(App.CONTENTS_TYPES_FIXED){
-      need_data_num = rand.nextInt(App.CONTENTS_TYPES_MAX);
+    if(Environment.CONTENTS_TYPES_FIXED){
+      need_data_num = rand.nextInt(Environment.CONTENTS_TYPES_MAX);
     }
     else{
       need_data_num = rand.nextInt(cache_data_total + 1);
@@ -122,7 +122,7 @@ public class Data_mng {
       need_data_num = select();
       update_delete_order(network_contents_list, last_used, need_data_num);
       
-      if(App.FOG_USE){
+      if(Environment.FOG_USE){
         nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
       }
       else{

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Mode5 {
-  private static final boolean DEBUG = App.DEBUG;
+  private static final boolean DEBUG = Environment.DEBUG;
   private static final int MAX_NODES = 10;
 
   static void main(){
@@ -20,11 +20,11 @@ public class Mode5 {
 
     //Simuration Start
     time_count = 0;
-    if(App.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
+    if(Environment.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
 
-    while(time_count < App.TIME){
-      if(App.FOG_USE){
-        if((time_count % App.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
+    while(time_count < Environment.TIME){
+      if(Environment.FOG_USE){
+        if((time_count % Environment.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
       }
 
       //Node Move Process
@@ -49,7 +49,7 @@ public class Mode5 {
       }
 
       time_count += 1;
-      if(App.FOG_USE){
+      if(Environment.FOG_USE){
         if(DEBUG){
           System.out.println("");
           Fog_mng.print_detail(node_list, dynamic_fog_list);
@@ -59,7 +59,7 @@ public class Mode5 {
       //Data Transfer Process
       Data_mng.transfer(node_list, dynamic_fog_list, network_contents_list, last_used);
 
-      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / App.TIME + "% done.)");
+      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Environment.TIME + "% done.)");
     }
     Statistics.print_info();
   }
