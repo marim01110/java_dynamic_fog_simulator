@@ -48,22 +48,22 @@ public class Move {
     if(area_judge_data / 1000 == 1){
       negative_y(node.point, Environment.EDGE_DIST);
       area_judge_data -= 1000;
-      Statistics.area_acrossed += 1;
+      Statistics.border_acrossed += 1;
     }
     if(area_judge_data / 100 == 1){
       negative_x(node.point, Environment.EDGE_DIST);
       area_judge_data -= 100;
-      Statistics.area_acrossed += 1;
+      Statistics.border_acrossed += 1;
     }
     if(area_judge_data / 10 == 1){
       positive_y(node.point, Environment.EDGE_DIST);
       area_judge_data -= 10;
-      Statistics.area_acrossed += 1;
+      Statistics.border_acrossed += 1;
     }
     if(area_judge_data / 1 == 1){
       positive_x(node.point, Environment.EDGE_DIST);
       area_judge_data -= 1;
-      Statistics.area_acrossed += 1;
+      Statistics.border_acrossed += 1;
     }
   }
 

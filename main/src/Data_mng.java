@@ -144,7 +144,7 @@ public class Data_mng {
     boolean data_found = false;
     int need_data_index_num = INIT;
 
-    if(info_exist(network_contents_list, need_data_num)) create(network_contents_list);
+    if(info_exist(network_contents_list, need_data_num) != true) create(network_contents_list);
 
     need_data_index_num = get_index_num(network_contents_list, need_data_num);
 
@@ -184,15 +184,13 @@ public class Data_mng {
   }
 
   private static boolean info_exist(ArrayList<Data> network_contents_list, Integer data_num){
-    boolean found = false;
     boolean result = false;
 
     for(int i = 0; i < network_contents_list.size(); i++){
       if(network_contents_list.get(i).num == data_num){
-        found = true;
-        if(network_contents_list.get(i).cached_by_list.size() > 0) result = true;
+        result = true;
       }
-      if(found == true) break;
+      if(result == true) break;
     }
     return result;
   }

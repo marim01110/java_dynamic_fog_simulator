@@ -8,15 +8,18 @@ public class Fog_mng {
 
   static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Storage> dynamic_fog_list){
     Random rand = new Random();
-    int dynamic_fogs_required, dynamic_fog_candidate;
+    int dynamic_fogs_required, counter, dynamic_fog_candidate;
     boolean error;
     
     dynamic_fogs_required = node_list.size() * Environment.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     if(dynamic_fogs_required > dynamic_fog_list.size()){
       while(dynamic_fogs_required > dynamic_fog_list.size()){
         error = false;
-        dynamic_fog_candidate = rand.nextInt(node_leased);
+        counter = rand.nextInt(node_list.size());
+        dynamic_fog_candidate = node_list.get(counter).num;
         if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate);
+
+        //Verify the candidate.
         for(int i = 0; i < dynamic_fog_list.size(); i++){
           if(dynamic_fog_candidate == dynamic_fog_list.get(i).node_num) error = true;
           if(error == true) break;

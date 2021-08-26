@@ -37,7 +37,7 @@ public class Node_mng {
       }
       if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
         node.reached = true;
-        System.out.println("Node num: " + node.num + " have reached the goal point.");
+        if(DEBUG) System.out.println("Node num: " + node.num + " have reached the goal point.");
       }
     }
     else if(node.point.distance(node.destination)<=node.move_speed){
