@@ -6,7 +6,9 @@ public class Environment {
     static final boolean FOG_USE = true;
     static final int TIME = 10;
     static final int EDGE_DIST = 2000;
-    static final int MAX_NODES = 10;
+    static final int INIT_MAX_NODES = 10;
+    private static final int[] max_nodes_change_time_array = {};
+    private static final int[] max_nodes_array = {};
 
     //------FOG SETTINGS------
     static final int FOG_STORAGE_SIZE = 500;
