@@ -14,7 +14,7 @@ public class Mode5 {
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
-      node_list.add(Node_mng.generate(node_list, node_leased));
+      node_list.add(Node_mng.spawn(node_leased));
       node_leased += 1;
     }
 

@@ -6,7 +6,7 @@ public class Node_mng {
   private static final boolean DEBUG = Environment.DEBUG;
   private static final int INIT = -1;
 
-  static Node_info generate(ArrayList<Node_info> node_list, int node_leased){
+  static Node_info spawn(int node_leased){
     Random rand = new Random();
     Point2D.Double start = new Point2D.Double();
     Point2D.Double destination = new Point2D.Double();
