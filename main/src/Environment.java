@@ -4,9 +4,12 @@ public class Environment {
     //------SIMULATION SETTINGS------
     static final boolean DEBUG = true;
     static final boolean FOG_USE = true;
-    static final int TIME = 10;
+    static final int TIME_LIMIT = 100;
     static final int EDGE_DIST = 2000;
     static final int INIT_MAX_NODES = 10;
+
+    //------MODE 5 SETTINGS------
+    private static final int STAGES = 0;
     private static final int[] max_nodes_change_time_array = {};
     private static final int[] max_nodes_array = {};
 
@@ -44,5 +47,21 @@ public class Environment {
 
       move_speed = move_speed_array[index];
       return move_speed;
+    }
+
+    static int change_stages(int time, int stage){
+      int result = stage;
+
+      if(stage < STAGES){
+        if(time == max_nodes_change_time_array[stage]){
+          result = stage + 1;
+        }
+      }
+
+      return result;
+    }
+
+    static int return_max_nodes(int stage){
+      return max_nodes_array[stage - 1];
     }
 }
