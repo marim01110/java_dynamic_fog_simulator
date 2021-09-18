@@ -35,6 +35,15 @@ public class Environment {
     https://www.ktr.mlit.go.jp/gaikan/pi_kouhou/jigyou_gaiyou2015/p6-7.pdf
     */
 
+    //------BATTERY SIMULATION SETTINGS------
+    static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
+    static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
+    static final int BATTERY_MIN_PERCENTAGE = 40;
+    static final double BATTERY_COMSUMPTION_BT_SEND = 2.0;
+    static final double BATTERY_COMSUMPTION_BT_RECV = 1.0;
+    static final double BATTERY_COMSUMPTION_CELL_SEND = 4.0;
+    static final double BATTERY_COMSUMPTION_CELL_RECV = 2.0;
+
     static Point2D.Double return_landmark_point(int index){
       var point = new Point2D.Double();
 
