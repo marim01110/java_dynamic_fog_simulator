@@ -1,8 +1,8 @@
 /*
 Used Java Version
-openjdk 11.0.12 2021-07-20
-OpenJDK Runtime Environment (build 11.0.12+7-post-Debian-2)
-OpenJDK 64-Bit Server VM (build 11.0.12+7-post-Debian-2, mixed mode)
+openjdk 17 2021-09-14
+OpenJDK Runtime Environment (build 17+35-2724)
+OpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)
 */
 
 import java.util.Scanner;
@@ -18,8 +18,9 @@ class Node_info{
   boolean goal_nearby;
   boolean reached;
   int move_speed;
+  double battery_remain_percentage;
 
-  public Node_info(int num, Point2D.Double point, Point2D.Double destination, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed){
+  public Node_info(int num, Point2D.Double point, Point2D.Double destination, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage){
     this.num = num;
     this.point = point;
     this.destination = destination;
@@ -28,6 +29,7 @@ class Node_info{
     this.goal_nearby = goal_nearby;
     this.reached = reached;
     this.move_speed = move_speed;
+    this.battery_remain_percentage = battery_remain_percentage;
   }
 }
 

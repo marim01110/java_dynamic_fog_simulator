@@ -4,9 +4,14 @@ public class Environment {
     //------SIMULATION SETTINGS------
     static final boolean DEBUG = true;
     static final boolean FOG_USE = true;
-    static final int TIME = 10;
+    static final int TIME_LIMIT = 100;
     static final int EDGE_DIST = 2000;
-    static final int MAX_NODES = 10;
+    static final int INIT_MAX_NODES = 10;
+
+    //------MODE 5 SETTINGS------
+    private static final int STAGES = 0;
+    private static final int[] max_nodes_change_time_array = {};
+    private static final int[] max_nodes_array = {};
 
     //------FOG SETTINGS------
     static final int FOG_STORAGE_SIZE = 500;
@@ -30,6 +35,15 @@ public class Environment {
     https://www.ktr.mlit.go.jp/gaikan/pi_kouhou/jigyou_gaiyou2015/p6-7.pdf
     */
 
+    //------BATTERY SIMULATION SETTINGS------
+    static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
+    static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
+    static final int BATTERY_MIN_PERCENTAGE = 40;
+    static final double BATTERY_COMSUMPTION_BT_SEND = 2.0;
+    static final double BATTERY_COMSUMPTION_BT_RECV = 1.0;
+    static final double BATTERY_COMSUMPTION_CELL_SEND = 4.0;
+    static final double BATTERY_COMSUMPTION_CELL_RECV = 2.0;
+
     static Point2D.Double return_landmark_point(int index){
       var point = new Point2D.Double();
 
@@ -42,5 +56,21 @@ public class Environment {
 
       move_speed = move_speed_array[index];
       return move_speed;
+    }
+
+    static int change_stages(int time, int stage){
+      int result = stage;
+
+      if(stage < STAGES){
+        if(time == max_nodes_change_time_array[stage]){
+          result = stage + 1;
+        }
+      }
+
+      return result;
+    }
+
+    static int return_max_nodes(int stage){
+      return max_nodes_array[stage - 1];
     }
 }

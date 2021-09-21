@@ -6,11 +6,12 @@ public class Node_mng {
   private static final boolean DEBUG = Environment.DEBUG;
   private static final int INIT = -1;
 
-  static Node_info generate(ArrayList<Node_info> node_list, int node_leased){
+  static Node_info spawn(int node_leased){
     Random rand = new Random();
     Point2D.Double start = new Point2D.Double();
     Point2D.Double destination = new Point2D.Double();
     int point_index, destination_index, data_refresh_time, move_speed, move_speed_index;
+    double battery_remain_percentage;
 
     do{
       point_index = rand.nextInt(Environment.LANDMARKS);
@@ -22,8 +23,9 @@ public class Node_mng {
     destination.setLocation(Environment.return_landmark_point(destination_index));
     data_refresh_time = rand.nextInt(5) + 1;
     move_speed = Environment.return_move_speed(move_speed_index);
+    battery_remain_percentage = rand.nextDouble(Environment.BATTERY_INIT_MAX_PERCENTAGE - Environment.BATTERY_INIT_MIN_PERCENTAGE) + Environment.BATTERY_INIT_MIN_PERCENTAGE;
 
-    var newnode = new Node_info(node_leased, start, destination, data_refresh_time, false, false, false, move_speed);
+    var newnode = new Node_info(node_leased, start, destination, data_refresh_time, false, false, false, move_speed, battery_remain_percentage);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
     return newnode;
   }

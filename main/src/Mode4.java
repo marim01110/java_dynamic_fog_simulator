@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Mode4 {
   private static final boolean DEBUG = Environment.DEBUG;
-  private static final int MAX_NODES = Environment.MAX_NODES;
+  private static int MAX_NODES = Environment.INIT_MAX_NODES;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
@@ -14,7 +14,7 @@ public class Mode4 {
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
-      node_list.add(Node_mng.generate(node_list, node_leased));
+      node_list.add(Node_mng.spawn(node_leased));
       node_leased += 1;
     }
 
@@ -22,7 +22,7 @@ public class Mode4 {
     time_count = 0;
     if(Environment.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
 
-    while(time_count < Environment.TIME){
+    while(time_count < Environment.TIME_LIMIT){
       if(Environment.FOG_USE){
         if((time_count % Environment.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
       }
@@ -44,7 +44,7 @@ public class Mode4 {
       //Data Transfer Process
       Data_mng.transfer(node_list, dynamic_fog_list, network_contents_list, last_used, time_count);
 
-      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Environment.TIME + "% done.)");
+      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Environment.TIME_LIMIT + "% done.)");
     }
     Statistics.print_info();
   }
