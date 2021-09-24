@@ -116,26 +116,30 @@ public class Data_mng {
 
   static void transfer(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int time_count){
     boolean transfer;
+    Node_info current_node;
     int need_data_num;
     int nearest_dynamic_fog;
 
     for(int i = 0; i < node_list.size(); i++){
       transfer = false;
-      if(time_count % node_list.get(i).data_refresh_time == 0) transfer = true;
+      current_node = node_list.get(i);
+
+      if(time_count % current_node.data_refresh_time == 0) transfer = true;
 
       if(transfer){
         need_data_num = select();
         update_delete_order(network_contents_list, last_used, need_data_num);
         
         if(Environment.FOG_USE){
-          nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, node_list.get(i).point);
+          nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, current_node.point);
         }
         else{
           nearest_dynamic_fog = INIT;
         }
-        if(DEBUG) System.out.println("Node_num: " + node_list.get(i).num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
+        if(DEBUG) System.out.println("Node_num: " + current_node.num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
   
-        if(nearest_dynamic_fog == INIT){
+        if(nearest_dynamic_fog == INIT){//Fog feature not used. so all files download from cloud.
+          Node_mng.battery_drain(current_node.battery_remain_percentage, "cellular", "recv");
           Statistics.dl_from_cloud += 1;
           if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
         }
@@ -143,12 +147,8 @@ public class Data_mng {
   
         Statistics.data_transfered += 1;
       }
-      else if(DEBUG) System.out.println("There is no data in Node_num " + node_list.get(i).num + " to be transferred this time.");
+      else if(DEBUG) System.out.println("There is no data in Node_num " + current_node.num + " to be transferred this time.");
     }
-  }
-
-  static void transfer_new(){
-    
   }
 
   private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
