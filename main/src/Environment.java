@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 public class Environment {
     //------SIMULATION SETTINGS------
     static final boolean DEBUG = true;
-    static final boolean FOG_USE = false;
+    static final boolean FOG_USE = true;
     static final int TIME_LIMIT = 100;
     static final int EDGE_DIST = 2000;
     static final int INIT_MAX_NODES = 10;

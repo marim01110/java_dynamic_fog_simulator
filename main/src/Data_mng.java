@@ -116,9 +116,8 @@ public class Data_mng {
 
   static void transfer(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int time_count){
     boolean transfer;
-    Node_info current_node;
+    Node_info current_node, nearest_dynamic_fog = null;
     int need_data_num;
-    int nearest_dynamic_fog;
 
     for(int i = 0; i < node_list.size(); i++){
       transfer = false;
@@ -131,14 +130,15 @@ public class Data_mng {
         update_delete_order(network_contents_list, last_used, need_data_num);
         
         if(Environment.FOG_USE){
-          nearest_dynamic_fog = Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, current_node.point);
+          nearest_dynamic_fog = Node_mng.get_node_info(node_list, Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, current_node.point)); 
         }
-        else{
-          nearest_dynamic_fog = INIT;
+        if(DEBUG){
+          System.out.print("Node_num: " + current_node.num + ", Req. data: " + need_data_num);
+          if(nearest_dynamic_fog != null) System.out.println(", Nearest DF: " + nearest_dynamic_fog.num);
+          else System.out.println();
         }
-        if(DEBUG) System.out.println("Node_num: " + current_node.num + ", Req. data: " + need_data_num + ", Nearest DF: " + nearest_dynamic_fog);
-  
-        if(nearest_dynamic_fog == INIT){//Fog feature not used. so all files download from cloud.
+          
+        if(nearest_dynamic_fog == null){//Fog feature not used. so all files download from cloud.
           Node_mng.battery_drain(current_node.battery_remain_percentage, "cellular", "recv");
           Statistics.dl_from_cloud += 1;
           if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
@@ -151,7 +151,7 @@ public class Data_mng {
     }
   }
 
-  private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
+  private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, int need_data_num){
     boolean data_found = false;
     int need_data_index_num = INIT;
 
@@ -161,7 +161,7 @@ public class Data_mng {
 
     //Check variable hosted_by_total.
     if(network_contents_list.get(need_data_index_num).hosted_by_total == 0){
-      update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+      update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);
       data_found = true;
       Statistics.dl_from_cloud += 1;
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
@@ -170,7 +170,7 @@ public class Data_mng {
     //Search in the Nearest Dynamic Fog.
     if(data_found != true){
       for(int i = 0; i < network_contents_list.get(need_data_index_num).hosted_by_list.size(); i++){
-        if(nearest_dynamic_fog == network_contents_list.get(need_data_index_num).hosted_by_list.get(i)){
+        if(nearest_dynamic_fog.num == network_contents_list.get(need_data_index_num).hosted_by_list.get(i)){
           data_found = true;
           Statistics.dl_from_nearest_df += 1;
           if(DEBUG) System.out.println("Data was found in Nearest DF.");
@@ -181,7 +181,7 @@ public class Data_mng {
 
     //Copy from Local Network.
     if(data_found != true){
-      update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
+      update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);
       data_found = true;
       Statistics.dl_from_local += 1;
       if(DEBUG) System.out.println("Data Copied from Local Network.");
@@ -194,8 +194,9 @@ public class Data_mng {
     }
   }
 
-  private static void search_new(){
-
+  private static void search_new(Node_info current_node){
+    //Check distance DF and edge.
+    //current_node.point.distance(pt);
   }
 
   private static boolean info_exist(ArrayList<Data> network_contents_list, Integer data_num){

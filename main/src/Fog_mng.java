@@ -58,12 +58,12 @@ public class Fog_mng {
   static int set_nearest_dynamic_fog(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, Point2D.Double current_node){
     double distance = 9999;//Initialze distance
     double temp_distance;
-    int dynamic_fog_node_index_num = INIT;
+    Node_info dynamic_fog_node;
     int dynamic_fog_result = INIT;
 
     for(int i = 0; i < dynamic_fog_list.size(); i++){
-      dynamic_fog_node_index_num = Node_mng.get_index_num(node_list, dynamic_fog_list.get(i).node_num);
-      temp_distance = current_node.distance(node_list.get(dynamic_fog_node_index_num).point);
+      dynamic_fog_node = Node_mng.get_node_info(node_list, dynamic_fog_list.get(i).node_num);
+      temp_distance = current_node.distance(dynamic_fog_node.point);
       if(distance > temp_distance){
         distance = temp_distance;
         dynamic_fog_result = dynamic_fog_list.get(i).node_num;
