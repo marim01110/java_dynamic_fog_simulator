@@ -29,37 +29,37 @@ public class Data_mng {
 
   private static void create(ArrayList<Data> network_contents_list){
     Random rand = new Random();
-    var cached_by_list = new ArrayList<Integer>();
-    int data_num, data_size, cached_by_total;
+    var hosted_by_list = new ArrayList<Integer>();
+    int data_num, data_size, hosted_by_total;
 
     //Data Create Process
     data_num = cache_data_total;
     data_size = (rand.nextInt(39) + 1) * 5;
-    cached_by_total = 0;
+    hosted_by_total = 0;
 
-    var temp_Data = new Data(data_num, data_size, cached_by_total, cached_by_list);
+    var temp_Data = new Data(data_num, data_size, hosted_by_total, hosted_by_list);
     network_contents_list.add(temp_Data);
 
     cache_data_total += 1;
   }
 
   private static void update(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
-    var cached_by_list = new ArrayList<Integer>();
+    var hosted_by_list = new ArrayList<Integer>();
     var fog_stored_contents_list = new ArrayList<Integer>();
     int data_index_num = INIT;
     int dynamic_fog_index_num = INIT;
     int loop_count = 0;
-    int cached_by_total, total_capacity, used_capacity;
+    int hosted_by_total, total_capacity, used_capacity;
 
     data_index_num = get_index_num(network_contents_list, data_num);
 
     //Update network_contents_list Process
     Data data = network_contents_list.get(data_index_num);
-    cached_by_total = data.cached_by_total + 1;
-    for (int i = 0; i < data.cached_by_list.size(); i++) {
-      cached_by_list.add(data.cached_by_list.get(i));
+    hosted_by_total = data.hosted_by_total + 1;
+    for (int i = 0; i < data.hosted_by_list.size(); i++) {
+      hosted_by_list.add(data.hosted_by_list.get(i));
     }
-    cached_by_list.add(dynamic_fog_num);
+    hosted_by_list.add(dynamic_fog_num);
 
     dynamic_fog_index_num = Fog_mng.get_dynamic_fog_index_num(dynamic_fog_list, dynamic_fog_num);
 
@@ -91,7 +91,7 @@ public class Data_mng {
     }
 
     //Replace with new Info
-    var temp_Data = new Data(data_num, data.file_size, cached_by_total, cached_by_list);
+    var temp_Data = new Data(data_num, data.file_size, hosted_by_total, hosted_by_list);
     network_contents_list.remove(data_index_num);
     network_contents_list.add(temp_Data);
 
@@ -147,6 +147,10 @@ public class Data_mng {
     }
   }
 
+  static void transfer_new(){
+    
+  }
+
   private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int nearest_dynamic_fog, int need_data_num){
     boolean data_found = false;
     int need_data_index_num = INIT;
@@ -155,8 +159,8 @@ public class Data_mng {
 
     need_data_index_num = get_index_num(network_contents_list, need_data_num);
 
-    //Check variable cached_by_total.
-    if(network_contents_list.get(need_data_index_num).cached_by_total == 0){
+    //Check variable hosted_by_total.
+    if(network_contents_list.get(need_data_index_num).hosted_by_total == 0){
       update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, need_data_num);
       data_found = true;
       Statistics.dl_from_cloud += 1;
@@ -165,8 +169,8 @@ public class Data_mng {
 
     //Search in the Nearest Dynamic Fog.
     if(data_found != true){
-      for(int i = 0; i < network_contents_list.get(need_data_index_num).cached_by_list.size(); i++){
-        if(nearest_dynamic_fog == network_contents_list.get(need_data_index_num).cached_by_list.get(i)){
+      for(int i = 0; i < network_contents_list.get(need_data_index_num).hosted_by_list.size(); i++){
+        if(nearest_dynamic_fog == network_contents_list.get(need_data_index_num).hosted_by_list.get(i)){
           data_found = true;
           Statistics.dl_from_nearest_df += 1;
           if(DEBUG) System.out.println("Data was found in Nearest DF.");
@@ -188,6 +192,10 @@ public class Data_mng {
       System.out.println("Quit the program.");
       System.exit(-1);
     }
+  }
+
+  private static void search_new(){
+
   }
 
   private static boolean info_exist(ArrayList<Data> network_contents_list, Integer data_num){
@@ -237,15 +245,15 @@ public class Data_mng {
     }
 
     delete_file_index_num = get_index_num(network_contents_list, delete_file_num);
-    //Delete from cached_by_list
+    //Delete from hosted_by_list
     data = network_contents_list.get(delete_file_index_num);
-    for(int i = 0; i < data.cached_by_list.size(); i++){
-      if(data.cached_by_list.get(i) == dynamic_fog_num){
-        data.cached_by_list.remove(i);
+    for(int i = 0; i < data.hosted_by_list.size(); i++){
+      if(data.hosted_by_list.get(i) == dynamic_fog_num){
+        data.hosted_by_list.remove(i);
         break;
       }
     }
-    data.cached_by_total -= 1;
+    data.hosted_by_total -= 1;
   }
 
   static void print_detail(ArrayList<Data> network_contents_list){
@@ -257,8 +265,8 @@ public class Data_mng {
         System.out.println();
         System.out.println("Data num: " + data.num);
         System.out.println("Data size: " + data.file_size);
-        System.out.println("Cached by total: " + data.cached_by_total);
-        System.out.println("Cached by: " + data.cached_by_list);
+        System.out.println("Cached by total: " + data.hosted_by_total);
+        System.out.println("Cached by: " + data.hosted_by_list);
         System.out.println();
       }
     }
