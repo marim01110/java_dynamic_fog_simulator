@@ -194,9 +194,42 @@ public class Data_mng {
     }
   }
 
-  private static void search_new(Node_info current_node){
+  private static void search_new(Node_info current_node, Node_info nearest_dynamic_fog){
+    double distance_df_edge;
+
     //Check distance DF and edge.
-    //current_node.point.distance(pt);
+    distance_df_edge = current_node.point.distance(nearest_dynamic_fog.point);
+    if(Environment.BT_CONNECTION_RANGE >= distance_df_edge){
+      /*if(the data in nearest df){
+
+      }
+      else{
+        if(the data in LAN){
+          //Write the code which control file copy is another function.
+        }
+        else{
+          //The requested data is not found in Local Network (DL from Cloud and send by bluetooth).
+          Node_mng.battery_drain(nearest_dynamic_fog.battery_remain_percentage, "cellular", "recv");
+          Node_mng.battery_drain(nearest_dynamic_fog.battery_remain_percentage, "bluetooth", "send");
+          Node_mng.battery_drain(current_node.battery_remain_percentage, "bluetooth", "recv");
+          Statistics.dl_from_cloud += 1;
+          if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+        }
+      }*/
+    }
+    else{
+      /*if(the data in LAN){
+        //Write the code which control file copy is another function.
+      }
+      else{
+        //The requested data is not found in Local Network (DL from Cloud and send by cellular).
+        Node_mng.battery_drain(nearest_dynamic_fog.battery_remain_percentage, "cellular", "recv");
+        Node_mng.battery_drain(nearest_dynamic_fog.battery_remain_percentage, "cellular", "send");
+        Node_mng.battery_drain(current_node.battery_remain_percentage, "cellular", "recv");
+        Statistics.dl_from_cloud += 1;
+        if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+      }*/
+    }
   }
 
   private static boolean info_exist(ArrayList<Data> network_contents_list, Integer data_num){

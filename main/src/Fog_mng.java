@@ -103,6 +103,7 @@ public class Fog_mng {
     int dynamic_fogs_required;
     Storage node;
 
+    System.out.println("Nodes active: " + node_list.size());
     dynamic_fogs_required = node_list.size() * Environment.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node: ");
     for(int i = 0; i < dynamic_fog_list.size(); i++){

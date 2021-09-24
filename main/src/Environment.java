@@ -7,6 +7,7 @@ public class Environment {
     static final int TIME_LIMIT = 100;
     static final int EDGE_DIST = 2000;
     static final int INIT_MAX_NODES = 10;
+    static final double BT_CONNECTION_RANGE = 50;
 
     //------MODE 5 SETTINGS------
     private static final int STAGES = 0;
