@@ -194,18 +194,42 @@ public class Data_mng {
     }
   }
 
-  private static void search_new(Node_info current_node, Node_info nearest_dynamic_fog){
+  private static void search_new(ArrayList<Data> network_contents_list, Node_info current_node, Node_info nearest_dynamic_fog, int need_data_num){
     double distance_df_edge;
+    Data need_data = null;
+    boolean found_in_df = false, found_in_lan = false;
+    
+    //Get need_data
+    for(int i = 0; i < network_contents_list.size(); i++){
+      if(need_data_num == network_contents_list.get(i).num){
+        need_data = network_contents_list.get(i);
+        break;
+      }
+    }
 
-    //Check distance DF and edge.
+    //Data search in the nearest Dynamic Fog
+    for(int i = 0; i < need_data.hosted_by_list.size(); i++){
+      if(nearest_dynamic_fog.num == need_data.hosted_by_list.get(i)){
+        found_in_df = true;
+        break;
+      }
+    }
+
+    //Check distance the nearest DF and edge.
     distance_df_edge = current_node.point.distance(nearest_dynamic_fog.point);
     if(Environment.BT_CONNECTION_RANGE >= distance_df_edge){
-      /*if(the data in nearest df){
-
+      if(found_in_df){
+        //The requested data is found in the nearest DF (and get by bluetooth).
+        Node_mng.battery_drain(nearest_dynamic_fog.battery_remain_percentage, "bluetooth", "send");
+        Node_mng.battery_drain(current_node.battery_remain_percentage, "bluetooth", "recv");
       }
       else{
-        if(the data in LAN){
-          //Write the code which control file copy is another function.
+        //Data search in Local Network
+        if(need_data.hosted_by_total > 0) found_in_lan = true;
+        if(found_in_lan){
+          //Check distance the second nearest DF and edge.
+          
+          /*Write the code which control file copy is another function.*/
         }
         else{
           //The requested data is not found in Local Network (DL from Cloud and send by bluetooth).
@@ -215,12 +239,12 @@ public class Data_mng {
           Statistics.dl_from_cloud += 1;
           if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
         }
-      }*/
+      }
     }
     else{
       /*if(the data in LAN){
-        //Write the code which control file copy is another function.
-      }
+        /*Write the code which control file copy is another function.*/
+      /*}
       else{
         //The requested data is not found in Local Network (DL from Cloud and send by cellular).
         Node_mng.battery_drain(nearest_dynamic_fog.battery_remain_percentage, "cellular", "recv");
