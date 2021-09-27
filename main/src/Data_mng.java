@@ -49,7 +49,6 @@ public class Data_mng {
     var fog_stored_contents_list = new ArrayList<Integer>();
     Data_info data;
     Fog_info dynamic_fog;
-    int dynamic_fog_index_num = INIT;
     int loop_count = 0;
     int hosted_by_total, total_capacity, used_capacity;
 
