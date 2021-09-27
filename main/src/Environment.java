@@ -6,7 +6,7 @@ public class Environment {
     static final boolean FOG_USE = true;
     static final int TIME_LIMIT = 100;
     static final int EDGE_DIST = 2000;
-    static final int INIT_MAX_NODES = 10;
+    static final int INIT_MAX_NODES = 1000;
     static final double BT_CONNECTION_RANGE = 50;
 
     //------MODE 5 SETTINGS------

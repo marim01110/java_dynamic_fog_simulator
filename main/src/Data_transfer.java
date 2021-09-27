@@ -148,17 +148,24 @@ public class Data_transfer {
     Fog_info dynamic_fog_has_data_fog_info;
     boolean data_downloaded = false;
     int dynamic_fog_has_data_num;
-/*
+
     //Search DF which has requested data
+/*
+    System.out.println(need_data.hosted_by_list);
     dynamic_fog_has_data_num = need_data.hosted_by_list.get(rand.nextInt(need_data.hosted_by_total));
+    System.out.println(dynamic_fog_has_data_num);
     dynamic_fog_has_data_fog_info = Fog_mng.get_fog_info(dynamic_fog_list, dynamic_fog_has_data_num);
     dynamic_fog_has_data_node_info = Node_mng.get_node_info(node_list, dynamic_fog_has_data_fog_info.node_num);
     
-    Node_mng.battery_drain(dynamic_fog_has_data_node_info, "cellular", "send");//UL to the nearest DF.*/
+    //Data copy from Local Network to nearest Dynamic Fog
+    Node_mng.battery_drain(dynamic_fog_has_data_node_info, "cellular", "send");//UL to the nearest DF.
+    //A bug found. (2021/9/28 2:32 a.m.)
+    */
     Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from DF on Local Network.
 
     Data_mng.update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
 
+    //Data transfer to Edge
     Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
     Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.
     data_downloaded = true;
