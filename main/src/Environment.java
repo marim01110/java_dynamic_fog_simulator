@@ -7,6 +7,7 @@ public class Environment {
     static final int TIME_LIMIT = 100;
     static final int EDGE_DIST = 2000;
     static final int INIT_MAX_NODES = 10;
+    static final double BT_CONNECTION_RANGE = 50;
 
     //------MODE 5 SETTINGS------
     private static final int STAGES = 0;
@@ -17,6 +18,7 @@ public class Environment {
     static final int FOG_STORAGE_SIZE = 500;
     static final boolean CONTENTS_TYPES_FIXED = true;
     static final int CONTENTS_TYPES_MAX = 10;
+    static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
     static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
     static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
 

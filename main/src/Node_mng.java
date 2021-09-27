@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Node_mng {
   private static final boolean DEBUG = Environment.DEBUG;
-  private static final int INIT = -1;
 
   static Node_info spawn(int node_leased){
     Random rand = new Random();
@@ -51,18 +50,51 @@ public class Node_mng {
     }
   }
 
-  static int get_index_num(ArrayList<Node_info> node_list, int node_num){
-    int result = INIT;
+  static Node_info get_node_info(ArrayList<Node_info> node_list, int node_num){
+    Node_info result = null;
 
     for(int i = 0; i < node_list.size(); i++){
       if(node_num == node_list.get(i).num){
-        result = i;
+        result = node_list.get(i);
         break;
       }
     }
-    if(result == INIT){
+    //If not found ...
+    if(result == null){
       System.out.println("Requested node: " + node_num + " is Not Found.");
     }
     return result;
+  }
+
+  static void battery_drain(double current_battery_level, String communication_method, String recv_or_send){
+    switch(communication_method){
+      case "bluetooth": switch(recv_or_send){
+                          case "recv":  current_battery_level -= Environment.BATTERY_COMSUMPTION_BT_RECV;
+                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_BT_RECV;
+                                        break;
+                          case "send":  current_battery_level -= Environment.BATTERY_COMSUMPTION_BT_SEND;
+                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_BT_SEND;
+                                        break;
+                          default:      System.out.println("Not enough arguments given. Simulation aborted.");
+                                        System.exit(-1);
+                                        break;
+                        }
+                        break;
+      case "cellular":  switch(recv_or_send){
+                          case "recv":  current_battery_level -= Environment.BATTERY_COMSUMPTION_CELL_RECV;
+                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_CELL_RECV;
+                                        break;
+                          case "send":  current_battery_level -= Environment.BATTERY_COMSUMPTION_CELL_SEND;
+                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_CELL_SEND;
+                                        break;
+                          default:      System.out.println("Not enough arguments given. Simulation aborted.");
+                                        System.exit(-1);
+                                        break;
+                        }
+                        break;
+      default:          System.out.println("Not enough arguments given. Simulation aborted.");
+                        System.exit(-1);
+                        break;
+    }
   }
 }
