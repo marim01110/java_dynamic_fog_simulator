@@ -6,19 +6,20 @@ public class Data_mng {
   private static final int INIT = -1;
   static int cache_data_total = 0;
 
-  static int get_index_num(ArrayList<Data_info> network_contents_list, int need_data_num){
-    int result = INIT;
+  static Data_info get_data_info(ArrayList<Data_info> network_contents_list, int need_data_num){
+    Data_info data = null;
 
     for(int i = 0; i < network_contents_list.size(); i++){
       if(need_data_num == network_contents_list.get(i).num){
-        result = i;
+        data = network_contents_list.get(i);
         break;
       }
     }
-    if(result == INIT){
+    if(data == null){
       System.out.println("Requested data: " + need_data_num + " is Not Found.");
     }
-    return result;
+
+    return data;
   }
 
   static void fixed_init(ArrayList<Data_info> network_contents_list){
@@ -46,15 +47,13 @@ public class Data_mng {
   private static void update(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
     var hosted_by_list = new ArrayList<Integer>();
     var fog_stored_contents_list = new ArrayList<Integer>();
-    int data_index_num = INIT;
+    Data_info data;
     int dynamic_fog_index_num = INIT;
     int loop_count = 0;
     int hosted_by_total, total_capacity, used_capacity;
 
-    data_index_num = get_index_num(network_contents_list, data_num);
-
     //Update network_contents_list Process
-    Data_info data = network_contents_list.get(data_index_num);
+    data = get_data_info(network_contents_list, data_num);
     hosted_by_total = data.hosted_by_total + 1;
     for (int i = 0; i < data.hosted_by_list.size(); i++) {
       hosted_by_list.add(data.hosted_by_list.get(i));
@@ -92,7 +91,7 @@ public class Data_mng {
 
     //Replace with new Info
     var temp_Data = new Data_info(data_num, data.file_size, hosted_by_total, hosted_by_list);
-    network_contents_list.remove(data_index_num);
+    network_contents_list.remove(data);
     network_contents_list.add(temp_Data);
 
     //Replace with new Dynamic_Fog Information
@@ -155,14 +154,14 @@ public class Data_mng {
 
   private static void search(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, int need_data_num){
     boolean data_found = false;
-    int need_data_index_num = INIT;
+    Data_info data = null;
 
     if(info_exist(network_contents_list, need_data_num) != true) create(network_contents_list);
 
-    need_data_index_num = get_index_num(network_contents_list, need_data_num);
+    data = get_data_info(network_contents_list, need_data_num);
 
     //Check variable hosted_by_total.
-    if(network_contents_list.get(need_data_index_num).hosted_by_total == 0){
+    if(data.hosted_by_total == 0){
       update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);
       data_found = true;
       Statistics.dl_from_cloud += 1;
@@ -171,8 +170,8 @@ public class Data_mng {
 
     //Search in the Nearest Dynamic Fog.
     if(data_found != true){
-      for(int i = 0; i < network_contents_list.get(need_data_index_num).hosted_by_list.size(); i++){
-        if(nearest_dynamic_fog.num == network_contents_list.get(need_data_index_num).hosted_by_list.get(i)){
+      for(int i = 0; i < data.hosted_by_list.size(); i++){
+        if(nearest_dynamic_fog.num == data.hosted_by_list.get(i)){
           data_found = true;
           Statistics.dl_from_nearest_df += 1;
           if(DEBUG) System.out.println("Data was found in Nearest DF.");
@@ -259,12 +258,6 @@ public class Data_mng {
     }
   }
 
-  private static void copy_control(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list ,Data_info need_data){
-    if(need_data.hosted_by_total <= dynamic_fog_list.size() * Environment.MAX_PERCENTAGE_OF_DUPLICATION){
-      //update(dynamic_fog_list, network_contents_list, last_used, dynamic_fog_num, data_num);
-    }
-  }
-
   private static boolean info_exist(ArrayList<Data_info> network_contents_list, Integer data_num){
     boolean result = false;
 
@@ -289,14 +282,12 @@ public class Data_mng {
   private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
     Data_info data;
     int delete_file_num = INIT;
-    int delete_file_index_num = INIT;
 
     //if(DEBUG) System.out.println("Current delete order is " + last_used);
 
     // Delete from fog_stored_contents_list
     for(int i = 0; i < last_used.size(); i++){
       for(int j = 0; j < fog_stored_contents_list.size(); j++){
-        //if(last_used.get(i) == fog_stored_contents_list.get(j)){//Not Works
         if((last_used.get(i) - fog_stored_contents_list.get(j)) == 0){
           fog_stored_contents_list.remove(j);
           delete_file_num = last_used.get(i);
@@ -311,9 +302,8 @@ public class Data_mng {
       System.exit(-1);
     }
 
-    delete_file_index_num = get_index_num(network_contents_list, delete_file_num);
     //Delete from hosted_by_list
-    data = network_contents_list.get(delete_file_index_num);
+    data = get_data_info(network_contents_list, delete_file_num);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       if(data.hosted_by_list.get(i) == dynamic_fog_num){
         data.hosted_by_list.remove(i);

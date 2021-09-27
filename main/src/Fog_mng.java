@@ -56,10 +56,10 @@ public class Fog_mng {
 
   static ArrayList<Integer> search_near_dynamic_fogs(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, Node_info current_node){
     var result = new ArrayList<Integer>();
-    double distance_calc_min, temp_distance, distance = 9999;//Initialize distance
+    double /*distance_calc_min, */temp_distance, distance = 9999;//Initialize distance
     Node_info dynamic_fog_node;
     int nearest_dynamic_fog_node_num = INIT;
-    boolean reset;
+    //boolean reset;
 
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       dynamic_fog_node = Node_mng.get_node_info(node_list, dynamic_fog_list.get(i).node_num);
@@ -117,13 +117,14 @@ public class Fog_mng {
   }
 
   static int calc_used_capacity(ArrayList<Data_info> network_contents_list, ArrayList<Integer> fog_stored_contents_list){
+    Data_info data;
     int used_capacity = 0;
-    int file_num, file_index_num;
+    int data_num;
     
     for(int i = 0; i < fog_stored_contents_list.size(); i++){
-      file_num = fog_stored_contents_list.get(i);
-      file_index_num = Data_mng.get_index_num(network_contents_list, file_num);
-      used_capacity += network_contents_list.get(file_index_num).file_size;
+      data_num = fog_stored_contents_list.get(i);
+      data = Data_mng.get_data_info(network_contents_list, data_num);
+      used_capacity += data.file_size;
     }
     return used_capacity;
   }
