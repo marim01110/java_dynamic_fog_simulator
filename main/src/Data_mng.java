@@ -6,7 +6,7 @@ public class Data_mng {
   private static final int INIT = -1;
   static int cache_data_total = 0;
 
-  static int get_index_num(ArrayList<Data> network_contents_list, int need_data_num){
+  static int get_index_num(ArrayList<Data_info> network_contents_list, int need_data_num){
     int result = INIT;
 
     for(int i = 0; i < network_contents_list.size(); i++){
@@ -21,13 +21,13 @@ public class Data_mng {
     return result;
   }
 
-  static void fixed_init(ArrayList<Data> network_contents_list){
+  static void fixed_init(ArrayList<Data_info> network_contents_list){
     for (int i = 0; i < Environment.CONTENTS_TYPES_MAX; i++) {
       create(network_contents_list);
     }
   }
 
-  private static void create(ArrayList<Data> network_contents_list){
+  private static void create(ArrayList<Data_info> network_contents_list){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
     int data_num, data_size, hosted_by_total;
@@ -37,13 +37,13 @@ public class Data_mng {
     data_size = (rand.nextInt(39) + 1) * 5;
     hosted_by_total = 0;
 
-    var temp_Data = new Data(data_num, data_size, hosted_by_total, hosted_by_list);
+    var temp_Data = new Data_info(data_num, data_size, hosted_by_total, hosted_by_list);
     network_contents_list.add(temp_Data);
 
     cache_data_total += 1;
   }
 
-  private static void update(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
+  private static void update(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
     var hosted_by_list = new ArrayList<Integer>();
     var fog_stored_contents_list = new ArrayList<Integer>();
     int data_index_num = INIT;
@@ -54,7 +54,7 @@ public class Data_mng {
     data_index_num = get_index_num(network_contents_list, data_num);
 
     //Update network_contents_list Process
-    Data data = network_contents_list.get(data_index_num);
+    Data_info data = network_contents_list.get(data_index_num);
     hosted_by_total = data.hosted_by_total + 1;
     for (int i = 0; i < data.hosted_by_list.size(); i++) {
       hosted_by_list.add(data.hosted_by_list.get(i));
@@ -91,13 +91,13 @@ public class Data_mng {
     }
 
     //Replace with new Info
-    var temp_Data = new Data(data_num, data.file_size, hosted_by_total, hosted_by_list);
+    var temp_Data = new Data_info(data_num, data.file_size, hosted_by_total, hosted_by_list);
     network_contents_list.remove(data_index_num);
     network_contents_list.add(temp_Data);
 
     //Replace with new Dynamic_Fog Information
     dynamic_fog_list.remove(dynamic_fog_index_num);
-    var temp_Storage = new Storage(dynamic_fog_num, total_capacity, used_capacity, fog_stored_contents_list);
+    var temp_Storage = new Fog_info(dynamic_fog_num, total_capacity, used_capacity, fog_stored_contents_list);
     dynamic_fog_list.add(temp_Storage);
   }
 
@@ -114,10 +114,11 @@ public class Data_mng {
     return need_data_num;
   }
 
-  static void transfer(ArrayList<Node_info> node_list, ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int time_count){
+  static void transfer(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int time_count){
     boolean transfer;
     Node_info current_node, nearest_dynamic_fog = null;
     int need_data_num;
+    var near_dynamic_fogs_list = new ArrayList<Integer>();
 
     for(int i = 0; i < node_list.size(); i++){
       transfer = false;
@@ -130,7 +131,8 @@ public class Data_mng {
         update_delete_order(network_contents_list, last_used, need_data_num);
         
         if(Environment.FOG_USE){
-          nearest_dynamic_fog = Node_mng.get_node_info(node_list, Fog_mng.set_nearest_dynamic_fog(node_list, dynamic_fog_list, current_node.point)); 
+          near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node_list, dynamic_fog_list, current_node);
+          nearest_dynamic_fog = Node_mng.get_node_info(node_list, near_dynamic_fogs_list.get(0)); 
         }
         if(DEBUG){
           System.out.print("Node_num: " + current_node.num + ", Req. data: " + need_data_num);
@@ -151,7 +153,7 @@ public class Data_mng {
     }
   }
 
-  private static void search(ArrayList<Storage> dynamic_fog_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, int need_data_num){
+  private static void search(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, int need_data_num){
     boolean data_found = false;
     int need_data_index_num = INIT;
 
@@ -194,9 +196,9 @@ public class Data_mng {
     }
   }
 
-  private static void search_new(ArrayList<Data> network_contents_list, Node_info current_node, Node_info nearest_dynamic_fog, int need_data_num){
+  private static void search_new(ArrayList<Data_info> network_contents_list, Node_info current_node, Node_info nearest_dynamic_fog, int need_data_num){
     double distance_df_edge;
-    Data need_data = null;
+    Data_info need_data = null;
     boolean found_in_df = false, found_in_lan = false;
     
     //Get need_data
@@ -228,8 +230,8 @@ public class Data_mng {
         if(need_data.hosted_by_total > 0) found_in_lan = true;
         if(found_in_lan){
           //Check distance the second nearest DF and edge.
-          
-          /*Write the code which control file copy is another function.*/
+          //Write the code which control file copy is another function.
+          //copy_control();
         }
         else{
           //The requested data is not found in Local Network (DL from Cloud and send by bluetooth).
@@ -243,7 +245,8 @@ public class Data_mng {
     }
     else{
       /*if(the data in LAN){
-        /*Write the code which control file copy is another function.*/
+        //Write the code which control file copy is another function.
+        copy_control();
       /*}
       else{
         //The requested data is not found in Local Network (DL from Cloud and send by cellular).
@@ -256,7 +259,13 @@ public class Data_mng {
     }
   }
 
-  private static boolean info_exist(ArrayList<Data> network_contents_list, Integer data_num){
+  private static void copy_control(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list ,Data_info need_data){
+    if(need_data.hosted_by_total <= dynamic_fog_list.size() * Environment.MAX_PERCENTAGE_OF_DUPLICATION){
+      //update(dynamic_fog_list, network_contents_list, last_used, dynamic_fog_num, data_num);
+    }
+  }
+
+  private static boolean info_exist(ArrayList<Data_info> network_contents_list, Integer data_num){
     boolean result = false;
 
     for(int i = 0; i < network_contents_list.size(); i++){
@@ -268,7 +277,7 @@ public class Data_mng {
     return result;
   }
 
-  private static void update_delete_order(ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int data_num){
+  private static void update_delete_order(ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int data_num){
     for(int i = 0; i < last_used.size(); i++){
       if(last_used.get(i) == data_num){
         last_used.remove(i);
@@ -277,8 +286,8 @@ public class Data_mng {
     last_used.add(data_num);
   }
 
-  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, ArrayList<Data> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
-    Data data;
+  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
+    Data_info data;
     int delete_file_num = INIT;
     int delete_file_index_num = INIT;
 
@@ -314,8 +323,8 @@ public class Data_mng {
     data.hosted_by_total -= 1;
   }
 
-  static void print_detail(ArrayList<Data> network_contents_list){
-    Data data;
+  static void print_detail(ArrayList<Data_info> network_contents_list){
+    Data_info data;
 
     try {
       for(int i = 0; i < network_contents_list.size(); i++){

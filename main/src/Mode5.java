@@ -6,8 +6,8 @@ public class Mode5 {
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
-    var dynamic_fog_list = new ArrayList<Storage>();
-    var network_contents_list = new ArrayList<Data>();
+    var dynamic_fog_list = new ArrayList<Fog_info>();
+    var network_contents_list = new ArrayList<Data_info>();
     var last_used = new ArrayList<Integer>();
     int stage = 0;
     int node_leased = 0;

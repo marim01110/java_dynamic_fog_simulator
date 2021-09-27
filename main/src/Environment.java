@@ -18,6 +18,7 @@ public class Environment {
     static final int FOG_STORAGE_SIZE = 500;
     static final boolean CONTENTS_TYPES_FIXED = true;
     static final int CONTENTS_TYPES_MAX = 10;
+    static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
     static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
     static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
 

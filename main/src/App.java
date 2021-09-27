@@ -33,13 +33,13 @@ class Node_info{
   }
 }
 
-class Storage{
+class Fog_info{
   int node_num;
   int total_capacity;
   int used_capacity;
   ArrayList<Integer> fog_stored_contents_list = new ArrayList<>();
 
-  public Storage(int node_num, int total_capacity, int used_capacity, ArrayList<Integer> fog_stored_contents_list){
+  public Fog_info(int node_num, int total_capacity, int used_capacity, ArrayList<Integer> fog_stored_contents_list){
     this.node_num = node_num;
     this.total_capacity = total_capacity;
     this.used_capacity = used_capacity;
@@ -47,13 +47,13 @@ class Storage{
   }
 }
 
-class Data{
+class Data_info{
   int num;
   int file_size;
   int hosted_by_total;
   ArrayList<Integer> hosted_by_list = new ArrayList<>();
 
-  public Data(int num, int file_size, int hosted_by_total, ArrayList<Integer> hosted_by_list){
+  public Data_info(int num, int file_size, int hosted_by_total, ArrayList<Integer> hosted_by_list){
     this.num = num;
     this.file_size = file_size;
     this.hosted_by_total = hosted_by_total;
