@@ -41,10 +41,10 @@ public class Environment {
     static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
     static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
     static final int BATTERY_MIN_PERCENTAGE = 40;
-    static final double BATTERY_COMSUMPTION_BT_SEND = 2.0;
-    static final double BATTERY_COMSUMPTION_BT_RECV = 1.0;
-    static final double BATTERY_COMSUMPTION_CELL_SEND = 4.0;
-    static final double BATTERY_COMSUMPTION_CELL_RECV = 2.0;
+    static final double BATTERY_COMSUMPTION_BT_SEND = 0.2;
+    static final double BATTERY_COMSUMPTION_BT_RECV = 0.1;
+    static final double BATTERY_COMSUMPTION_CELL_SEND = 0.4;
+    static final double BATTERY_COMSUMPTION_CELL_RECV = 0.2;
 
     static Point2D.Double return_landmark_point(int index){
       var point = new Point2D.Double();
