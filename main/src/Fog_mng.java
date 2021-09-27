@@ -5,6 +5,22 @@ public class Fog_mng {
   private static final boolean DEBUG = Environment.DEBUG;
   private static final int INIT = -1;
 
+  static Fog_info get_fog_info(ArrayList<Fog_info> dynamic_fog_list, int dynamic_fog_num){
+    Fog_info dynamic_fog = null;
+
+    for(int i = 0; i < dynamic_fog_list.size(); i++){
+      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
+        dynamic_fog = dynamic_fog_list.get(i);
+        break;
+      }
+    }
+    if(dynamic_fog == null){
+      System.out.println("Requested fog: " + dynamic_fog_num + " is Not Found.");
+    }
+
+    return dynamic_fog;
+  }
+
   static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Fog_info> dynamic_fog_list){
     Random rand = new Random();
     int dynamic_fogs_required, counter, dynamic_fog_candidate;
@@ -99,21 +115,6 @@ public class Fog_mng {
       }while(reset);
     }*/
     return result;
-  }
-
-  static int get_dynamic_fog_index_num(ArrayList<Fog_info> dynamic_fog_list, int dynamic_fog_num){
-    int dynamic_fog_index_num = INIT;
-
-    for(int i = 0; i < dynamic_fog_list.size(); i++){
-      if(dynamic_fog_list.get(i).node_num == dynamic_fog_num){
-        dynamic_fog_index_num = i;
-        break;
-      }
-    }
-    if(dynamic_fog_index_num == INIT){
-      System.out.println("Requested fog: " + dynamic_fog_num + " is Not Found.");
-    }
-    return dynamic_fog_index_num;
   }
 
   static int calc_used_capacity(ArrayList<Data_info> network_contents_list, ArrayList<Integer> fog_stored_contents_list){
