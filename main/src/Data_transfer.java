@@ -7,14 +7,15 @@ public class Data_transfer {
   static void start(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int time_count){
     boolean transfer;
     Node_info current_node, nearest_dynamic_fog = null;
-    int need_data_num;
+    int reflesh_node, need_data_num;
     var near_dynamic_fogs_list = new ArrayList<Integer>();
 
+    reflesh_node = time_count % Settings.CONTENTS_REFLESH_TIME;
     for(int i = 0; i < node_list.size(); i++){
       transfer = false;
       current_node = node_list.get(i);
 
-      if(time_count % current_node.data_refresh_time == 0) transfer = true;
+      if(reflesh_node == current_node.data_refresh_time) transfer = true;
 
       if(transfer){
         need_data_num = Data_mng.select();

@@ -50,12 +50,14 @@ class Fog_info{
 class Data_info{
   int num;
   int file_size;
+  int expire;
   int hosted_by_total;
   ArrayList<Integer> hosted_by_list = new ArrayList<>();
 
-  public Data_info(int num, int file_size, int hosted_by_total, ArrayList<Integer> hosted_by_list){
+  public Data_info(int num, int file_size, int expire, int hosted_by_total, ArrayList<Integer> hosted_by_list){
     this.num = num;
     this.file_size = file_size;
+    this.expire = expire;
     this.hosted_by_total = hosted_by_total;
     this.hosted_by_list = hosted_by_list;
   }

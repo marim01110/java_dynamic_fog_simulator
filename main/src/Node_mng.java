@@ -20,7 +20,7 @@ public class Node_mng {
 
     start.setLocation(Environment.return_landmark_point(point_index));
     destination.setLocation(Environment.return_landmark_point(destination_index));
-    data_refresh_time = rand.nextInt(5) + 1;
+    data_refresh_time = rand.nextInt(Settings.CONTENTS_REFLESH_TIME);
     move_speed = Environment.return_move_speed(move_speed_index);
     battery_remain_percentage = rand.nextDouble(Settings.BATTERY_INIT_MAX_PERCENTAGE - Settings.BATTERY_INIT_MIN_PERCENTAGE) + Settings.BATTERY_INIT_MIN_PERCENTAGE;
 
