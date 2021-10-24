@@ -59,6 +59,11 @@ public class Data_transfer {
       }
     }
 
+    if(need_data == null){
+      Data_mng.create(network_contents_list);
+      System.out.println("ERROR!! YEAH!");
+    }
+
     //Data search in the nearest Dynamic Fog
     for(int i = 0; i < need_data.hosted_by_list.size(); i++){
       if(nearest_dynamic_fog.num == need_data.hosted_by_list.get(i)){

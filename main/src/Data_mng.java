@@ -22,8 +22,10 @@ public class Data_mng {
     return data;
   }
 
-  static void fixed_init(ArrayList<Data_info> network_contents_list){
-    for (int i = 0; i < Settings.CONTENTS_TYPES_MAX; i++) {
+  static void fixed_respawn(ArrayList<Data_info> network_contents_list){
+    int contents = network_contents_list.size();
+
+    for (int i = contents; i < Settings.CONTENTS_TYPES_MAX; i++) {
       create(network_contents_list);
     }
   }
@@ -102,12 +104,39 @@ public class Data_mng {
     dynamic_fog_list.add(temp_Storage);
   }
 
+  static void delete(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list, int delete_file_num){
+    Data_info data;
+    Fog_info fog_node;
+    var new_fog_stored_contents_list = new ArrayList<Integer>();
+    int new_used_capacity;
+
+    //Load data_hosted_list
+    data = get_data_info(network_contents_list, delete_file_num);
+    for(int i = 0; i < data.hosted_by_list.size(); i++){
+      //Load Fog info
+      fog_node = Fog_mng.get_fog_info(dynamic_fog_list, data.hosted_by_list.get(i));
+      for(int j = 0; j < fog_node.fog_stored_contents_list.size(); j++){
+        if(fog_node.fog_stored_contents_list.get(j) != delete_file_num){
+          new_fog_stored_contents_list.add(fog_node.fog_stored_contents_list.get(j));
+        }
+      }
+      new_used_capacity = Fog_mng.calc_used_capacity(network_contents_list, new_fog_stored_contents_list);
+      var new_fog_info = new Fog_info(fog_node.node_num, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
+
+      //Replace with new info
+      dynamic_fog_list.remove(fog_node);
+      dynamic_fog_list.add(new_fog_info);
+    }
+    network_contents_list.remove(data);
+    Environment.file_deleted += 1;
+  }
+
   static int select(){
     int need_data_num;
     Random rand = new Random();
 
     if(Settings.CONTENTS_TYPES_FIXED){
-      need_data_num = rand.nextInt(Settings.CONTENTS_TYPES_MAX);
+      need_data_num = rand.nextInt(Settings.CONTENTS_TYPES_MAX) + Environment.file_deleted;
     }
     else{
       need_data_num = rand.nextInt(cache_data_total + 1);
@@ -127,7 +156,7 @@ public class Data_mng {
     return result;
   }
 
-  static void valid_check(ArrayList<Data_info> network_contents_list){
+  static void valid_check(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list){
     int current_time  = Environment.time_count;
     Data_info data;
 
@@ -136,10 +165,9 @@ public class Data_mng {
       if(data.expire_after <= current_time){
         if(DEBUG){
           System.out.println("Data num: " + data.num + " is not valid.");
-
           System.out.println("Deleting ...");
         }
-        network_contents_list.remove(i);
+        delete(network_contents_list, dynamic_fog_list, data.num);
         i -= 1;
       }
     }

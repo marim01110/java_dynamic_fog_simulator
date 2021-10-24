@@ -20,12 +20,12 @@ public class Mode5 {
 
     //Simuration Start
     Environment.time_count = 0;
-    if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
       }
+      if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn(network_contents_list);
 
       //Change MAX_NODES value.
       stage = Environment.change_stages(Environment.time_count, stage);
@@ -70,7 +70,7 @@ public class Mode5 {
 
       //Data Transfer Process
       Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, Environment.time_count);
-      Data_mng.valid_check(network_contents_list);
+      Data_mng.valid_check(network_contents_list, dynamic_fog_list);
 
       System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
     }
