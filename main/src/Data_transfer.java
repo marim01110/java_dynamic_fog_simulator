@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
@@ -149,11 +149,11 @@ public class Data_transfer {
   }
 
   private static boolean search_with_copy_controled(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
-    var rand = new Random();
-    Node_info dynamic_fog_has_data_node_info;
-    Fog_info dynamic_fog_has_data_fog_info;
+    //var rand = new Random();
+    //Node_info dynamic_fog_has_data_node_info;
+    //Fog_info dynamic_fog_has_data_fog_info;
     boolean data_downloaded = false;
-    int dynamic_fog_has_data_num;
+    //int dynamic_fog_has_data_num;
 
     //Search DF which has requested data
 /*

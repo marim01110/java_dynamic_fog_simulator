@@ -23,7 +23,7 @@ public class Mode4 {
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
-        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
+        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_list, node_leased, dynamic_fog_list);
       }
 
       //Node Move Process

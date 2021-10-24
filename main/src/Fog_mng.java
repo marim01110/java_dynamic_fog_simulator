@@ -16,12 +16,14 @@ public class Fog_mng {
     }
     if(dynamic_fog == null){
       System.out.println("Requested fog: " + dynamic_fog_num + " is Not Found.");
+      System.out.println("Quit the program.");
+      System.exit(-1);
     }
 
     return dynamic_fog;
   }
 
-  static void dynamic_fog_set(ArrayList<Node_info> node_list, int node_leased, ArrayList<Fog_info> dynamic_fog_list){
+  static void register(ArrayList<Node_info> node_list, int node_leased, ArrayList<Fog_info> dynamic_fog_list){
     Random rand = new Random();
     int dynamic_fogs_required, counter, dynamic_fog_candidate;
     boolean error;
@@ -61,12 +63,31 @@ public class Fog_mng {
     }
   }
 
-  static void dynamic_fog_dead_judge(ArrayList<Node_info> node_list, int node_list_index, ArrayList<Fog_info> dynamic_fog_list){
-    for(int j = 0; j < dynamic_fog_list.size(); j++){
-      if(dynamic_fog_list.get(j).node_num == node_list.get(node_list_index).num){
-        if(DEBUG) System.out.println("Dynamic_Fog Node " + dynamic_fog_list.get(j).node_num + " is now deleting.");
-        dynamic_fog_list.remove(j);
+  private static void unregister(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list, Fog_info delete_df){
+    Data_info data;
+    var new_hosted_by_list = new ArrayList<Integer>();
+
+    if(DEBUG) System.out.println("Dynamic_Fog Node " + delete_df.node_num + " is now deleting.");
+    for(int i = 0; i < delete_df.fog_stored_contents_list.size(); i++){
+      data = null;
+      data = Data_mng.get_data_info(network_contents_list, delete_df.fog_stored_contents_list.get(i));
+
+      //Creating new info
+      for(int j = 0; j < data.hosted_by_list.size(); j++){
+        if(data.hosted_by_list.get(j) != delete_df.node_num) new_hosted_by_list.add(data.hosted_by_list.get(j));
       }
+      var new_data = new Data_info(data.num, data.file_size, data.expire_after, new_hosted_by_list.size(), new_hosted_by_list);
+
+      //Replace with new info
+      network_contents_list.remove(data);
+      network_contents_list.add(new_data);
+    }
+    dynamic_fog_list.remove(delete_df);
+  }
+
+  static void dynamic_fog_dead_judge(ArrayList<Node_info> node_list, ArrayList<Data_info> network_contents_list, int node_list_index, ArrayList<Fog_info> dynamic_fog_list){
+    for(int j = 0; j < dynamic_fog_list.size(); j++){
+      if(dynamic_fog_list.get(j).node_num == node_list.get(node_list_index).num) unregister(network_contents_list, dynamic_fog_list, dynamic_fog_list.get(j));
     }
   }
 

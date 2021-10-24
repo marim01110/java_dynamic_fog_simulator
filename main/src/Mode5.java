@@ -23,7 +23,7 @@ public class Mode5 {
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
-        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
+        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_list, node_leased, dynamic_fog_list);
       }
       if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn(network_contents_list);
 
@@ -53,7 +53,7 @@ public class Mode5 {
         }
 
         if(node_list.get(i).reached == true) {
-          Fog_mng.dynamic_fog_dead_judge(node_list, i, dynamic_fog_list);
+          Fog_mng.dynamic_fog_dead_judge(node_list, network_contents_list, i, dynamic_fog_list);
           if(DEBUG) System.out.println("Node " + node_list.get(i).num + " is now deleteing.");
           node_list.remove(i);
           i -= 1;

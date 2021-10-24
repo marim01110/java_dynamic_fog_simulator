@@ -16,7 +16,7 @@ public class Settings {
       //------FOG SETTINGS------
       static final int FOG_STORAGE_SIZE = 100000;
       static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/10/24 11:40 p.m.).
-      static final int CONTENTS_TYPES_MAX = 500;
+      static final int CONTENTS_TYPES_MAX = 10;
       static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
       static final int CONTENTS_EXPIRE_AFTER = 6;
       static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
