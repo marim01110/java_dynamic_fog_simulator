@@ -117,8 +117,10 @@ public class Data_mng {
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       //Load Fog info
       fog_node = Fog_mng.get_fog_info(dynamic_fog_list, data.hosted_by_list.get(i));
+
       for(int j = 0; j < fog_node.fog_stored_contents_list.size(); j++){
         if(fog_node.fog_stored_contents_list.get(j) != delete_file_num){
+          System.out.println(j + ", " + fog_node.fog_stored_contents_list.size());
           new_fog_stored_contents_list.add(fog_node.fog_stored_contents_list.get(j));
         }
       }

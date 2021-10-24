@@ -62,8 +62,6 @@ public class Node_mng {
     //If not found ...
     if(result == null){
       System.out.println("Requested node: " + node_num + " is Not Found.");
-      System.out.println("Quit the program.");
-      System.exit(-1);
     }
     return result;
   }

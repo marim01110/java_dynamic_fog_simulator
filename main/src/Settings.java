@@ -1,10 +1,10 @@
 public class Settings {
       //------SIMULATION SETTINGS------
-      static final boolean DEBUG = true;
+      static final boolean DEBUG = false;
       static final boolean FOG_USE = true;
       static final int SIM_TIME = 43200;
       static final int EDGE_DIST = 2000;
-      static final int INIT_MAX_NODES = 10;
+      static final int INIT_MAX_NODES = 4000;
       static final int CONTENTS_REFLESH_TIME = 60;
       static final double BT_CONNECTION_RANGE = 50;
   
@@ -18,7 +18,7 @@ public class Settings {
       static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/10/24 11:40 p.m.).
       static final int CONTENTS_TYPES_MAX = 10;
       static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
-      static final int CONTENTS_EXPIRE_AFTER = 6;
+      static final int CONTENTS_EXPIRE_AFTER = 600;
       static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
       static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
   
