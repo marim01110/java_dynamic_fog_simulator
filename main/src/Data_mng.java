@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Data_mng {
-  //private static final boolean DEBUG = Environment.DEBUG;
+  private static final boolean DEBUG = Settings.DEBUG;
   private static final int INIT = -1;
   static int cache_data_total = 0;
 
@@ -125,6 +125,24 @@ public class Data_mng {
       if(result == true) break;
     }
     return result;
+  }
+
+  static void valid_check(ArrayList<Data_info> network_contents_list){
+    int current_time  = Environment.time_count;
+    Data_info data;
+
+    for(int i = 0; i < network_contents_list.size(); i++){
+      data = network_contents_list.get(i);
+      if(data.expire_after <= current_time){
+        if(DEBUG){
+          System.out.println("Data num: " + data.num + " is not valid.");
+
+          System.out.println("Deleting ...");
+        }
+        network_contents_list.remove(i);
+        i -= 1;
+      }
+    }
   }
 
   static void update_delete_order(ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int data_num){
