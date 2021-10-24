@@ -132,6 +132,7 @@ public class Fog_mng {
 
   static void print_detail(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list){
     int dynamic_fogs_required;
+    Node_info node_info;
     Fog_info node;
 
     System.out.println("Nodes active: " + node_list.size());
@@ -146,9 +147,10 @@ public class Fog_mng {
     try{
       for(int i = 0; i < dynamic_fog_list.size(); i++){
         node = dynamic_fog_list.get(i);
+        node_info = Node_mng.get_node_info(node_list, node.node_num);
         System.out.println();
         System.out.println("Dynamic_Fog_index: " + i + ", Node_num: " + node.node_num);
-        System.out.println("Total cap. " + node.total_capacity + ", Used cap. " + node.used_capacity);
+        System.out.println("Total cap. " + node.total_capacity + ", Used cap. " + node.used_capacity + ", Battery remain: " + node_info.battery_remain_percentage + "%");
         System.out.println("Cached Data Num: " + node.fog_stored_contents_list);
         System.out.println();
       }

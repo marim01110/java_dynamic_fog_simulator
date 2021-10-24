@@ -66,13 +66,13 @@ public class Node_mng {
     return result;
   }
 
-  static void battery_drain(double current_battery_level, String communication_method, String recv_or_send){
+  static void battery_drain(Node_info node, String communication_method, String recv_or_send){
     switch(communication_method){
       case "bluetooth": switch(recv_or_send){
-                          case "recv":  current_battery_level -= Environment.BATTERY_COMSUMPTION_BT_RECV;
+                          case "recv":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_BT_RECV;
                                         Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_BT_RECV;
                                         break;
-                          case "send":  current_battery_level -= Environment.BATTERY_COMSUMPTION_BT_SEND;
+                          case "send":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_BT_SEND;
                                         Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_BT_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
@@ -81,10 +81,10 @@ public class Node_mng {
                         }
                         break;
       case "cellular":  switch(recv_or_send){
-                          case "recv":  current_battery_level -= Environment.BATTERY_COMSUMPTION_CELL_RECV;
+                          case "recv":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_CELL_RECV;
                                         Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_CELL_RECV;
                                         break;
-                          case "send":  current_battery_level -= Environment.BATTERY_COMSUMPTION_CELL_SEND;
+                          case "send":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_CELL_SEND;
                                         Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_CELL_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");

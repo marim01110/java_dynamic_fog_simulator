@@ -70,7 +70,7 @@ public class Mode5 {
       }
 
       //Data Transfer Process
-      Data_mng.transfer(node_list, dynamic_fog_list, network_contents_list, last_used, time_count);
+      Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, time_count);
 
       System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Environment.TIME_LIMIT + "% done.)");
     }
