@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Mode5 {
-  private static final boolean DEBUG = Environment.DEBUG;
-  private static int MAX_NODES = Environment.INIT_MAX_NODES;
+  private static final boolean DEBUG = Settings.DEBUG;
+  private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
   static void main(){
     var node_list = new ArrayList<Node_info>();
@@ -21,11 +21,11 @@ public class Mode5 {
 
     //Simuration Start
     time_count = 0;
-    if(Environment.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
+    if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
 
-    while(time_count < Environment.TIME_LIMIT){
-      if(Environment.FOG_USE){
-        if((time_count % Environment.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
+    while(time_count < Settings.TIME_LIMIT){
+      if(Settings.FOG_USE){
+        if((time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
       }
 
       //Change MAX_NODES value.
@@ -62,7 +62,7 @@ public class Mode5 {
       }
 
       time_count += 1;
-      if(Environment.FOG_USE){
+      if(Settings.FOG_USE){
         if(DEBUG){
           System.out.println("");
           Fog_mng.print_detail(node_list, dynamic_fog_list);
@@ -72,7 +72,7 @@ public class Mode5 {
       //Data Transfer Process
       Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, time_count);
 
-      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Environment.TIME_LIMIT + "% done.)");
+      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Settings.TIME_LIMIT + "% done.)");
     }
     Statistics.print_info();
   }

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Fog_mng {
-  private static final boolean DEBUG = Environment.DEBUG;
+  private static final boolean DEBUG = Settings.DEBUG;
   private static final int INIT = -1;
 
   static Fog_info get_fog_info(ArrayList<Fog_info> dynamic_fog_list, int dynamic_fog_num){
@@ -26,7 +26,7 @@ public class Fog_mng {
     int dynamic_fogs_required, counter, dynamic_fog_candidate;
     boolean error;
     
-    dynamic_fogs_required = node_list.size() * Environment.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    dynamic_fogs_required = node_list.size() * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     if(dynamic_fogs_required > dynamic_fog_list.size()){
       while(dynamic_fogs_required > dynamic_fog_list.size()){
         error = false;
@@ -52,7 +52,7 @@ public class Fog_mng {
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
           var fog_stored_contents_list = new ArrayList<Integer>();
-          var temp = new Fog_info(dynamic_fog_candidate, Environment.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
+          var temp = new Fog_info(dynamic_fog_candidate, Settings.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
           dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }
@@ -84,7 +84,7 @@ public class Fog_mng {
         distance = temp_distance;
         nearest_dynamic_fog_node_num = dynamic_fog_node.num;
       }
-      if(temp_distance <= Environment.BT_CONNECTION_RANGE){
+      if(temp_distance <= Settings.BT_CONNECTION_RANGE){
         result.add(dynamic_fog_node.num);
       }
     }
@@ -136,7 +136,7 @@ public class Fog_mng {
     Fog_info node;
 
     System.out.println("Nodes active: " + node_list.size());
-    dynamic_fogs_required = node_list.size() * Environment.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    dynamic_fogs_required = node_list.size() * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     System.out.print(dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node: ");
     for(int i = 0; i < dynamic_fog_list.size(); i++){
       if(i != 0) System.out.print(", ");

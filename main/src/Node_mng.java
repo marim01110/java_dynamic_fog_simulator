@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Node_mng {
-  private static final boolean DEBUG = Environment.DEBUG;
+  private static final boolean DEBUG = Settings.DEBUG;
 
   static Node_info spawn(int node_leased){
     Random rand = new Random();
@@ -13,16 +13,16 @@ public class Node_mng {
     double battery_remain_percentage;
 
     do{
-      point_index = rand.nextInt(Environment.LANDMARKS);
-      destination_index = rand.nextInt(Environment.LANDMARKS);
+      point_index = rand.nextInt(Settings.LANDMARKS);
+      destination_index = rand.nextInt(Settings.LANDMARKS);
     }while(point_index == destination_index);
-    move_speed_index = rand.nextInt(Environment.MOVE_SPEEDS);
+    move_speed_index = rand.nextInt(Settings.MOVE_SPEEDS);
 
     start.setLocation(Environment.return_landmark_point(point_index));
     destination.setLocation(Environment.return_landmark_point(destination_index));
     data_refresh_time = rand.nextInt(5) + 1;
     move_speed = Environment.return_move_speed(move_speed_index);
-    battery_remain_percentage = rand.nextDouble(Environment.BATTERY_INIT_MAX_PERCENTAGE - Environment.BATTERY_INIT_MIN_PERCENTAGE) + Environment.BATTERY_INIT_MIN_PERCENTAGE;
+    battery_remain_percentage = rand.nextDouble(Settings.BATTERY_INIT_MAX_PERCENTAGE - Settings.BATTERY_INIT_MIN_PERCENTAGE) + Settings.BATTERY_INIT_MIN_PERCENTAGE;
 
     var newnode = new Node_info(node_leased, start, destination, data_refresh_time, false, false, false, move_speed, battery_remain_percentage);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
@@ -69,11 +69,11 @@ public class Node_mng {
   static void battery_drain(Node_info node, String communication_method, String recv_or_send){
     switch(communication_method){
       case "bluetooth": switch(recv_or_send){
-                          case "recv":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_BT_RECV;
-                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_BT_RECV;
+                          case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_BT_RECV;
+                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_BT_RECV;
                                         break;
-                          case "send":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_BT_SEND;
-                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_BT_SEND;
+                          case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_BT_SEND;
+                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_BT_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);
@@ -81,11 +81,11 @@ public class Node_mng {
                         }
                         break;
       case "cellular":  switch(recv_or_send){
-                          case "recv":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_CELL_RECV;
-                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_CELL_RECV;
+                          case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_RECV;
+                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_CELL_RECV;
                                         break;
-                          case "send":  node.battery_remain_percentage -= Environment.BATTERY_COMSUMPTION_CELL_SEND;
-                                        Statistics.power_comsumption_total += Environment.BATTERY_COMSUMPTION_CELL_SEND;
+                          case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_SEND;
+                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_CELL_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);

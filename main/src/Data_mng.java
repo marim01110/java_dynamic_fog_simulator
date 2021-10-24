@@ -23,7 +23,7 @@ public class Data_mng {
   }
 
   static void fixed_init(ArrayList<Data_info> network_contents_list){
-    for (int i = 0; i < Environment.CONTENTS_TYPES_MAX; i++) {
+    for (int i = 0; i < Settings.CONTENTS_TYPES_MAX; i++) {
       create(network_contents_list);
     }
   }
@@ -104,8 +104,8 @@ public class Data_mng {
     int need_data_num;
     Random rand = new Random();
 
-    if(Environment.CONTENTS_TYPES_FIXED){
-      need_data_num = rand.nextInt(Environment.CONTENTS_TYPES_MAX);
+    if(Settings.CONTENTS_TYPES_FIXED){
+      need_data_num = rand.nextInt(Settings.CONTENTS_TYPES_MAX);
     }
     else{
       need_data_num = rand.nextInt(cache_data_total + 1);

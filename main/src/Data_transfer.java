@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Data_transfer {
-  private static final boolean DEBUG = Environment.DEBUG;
+  private static final boolean DEBUG = Settings.DEBUG;
   
   static void start(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int time_count){
     boolean transfer;
@@ -20,7 +20,7 @@ public class Data_transfer {
         need_data_num = Data_mng.select();
         Data_mng.update_delete_order(network_contents_list, last_used, need_data_num);
         
-        if(Environment.FOG_USE){
+        if(Settings.FOG_USE){
           near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node_list, dynamic_fog_list, current_node);
           nearest_dynamic_fog = Node_mng.get_node_info(node_list, near_dynamic_fogs_list.get(0)); 
         }
@@ -71,7 +71,7 @@ public class Data_transfer {
 
     //Check distance the nearest DF and edge.
     distance_df_edge = current_node.point.distance(nearest_dynamic_fog.point);
-    if(Environment.BT_CONNECTION_RANGE >= distance_df_edge){
+    if(Settings.BT_CONNECTION_RANGE >= distance_df_edge){
       if(found_in_df){
         //The requested data is found in the nearest DF (and get by bluetooth).
         Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
