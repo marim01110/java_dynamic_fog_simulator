@@ -11,7 +11,6 @@ public class Mode5 {
     var last_used = new ArrayList<Integer>();
     int stage = 0;
     int node_leased = 0;
-    int time_count;
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
@@ -20,16 +19,16 @@ public class Mode5 {
     }
 
     //Simuration Start
-    time_count = 0;
+    Environment.time_count = 0;
     if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_init(network_contents_list);
 
-    while(time_count < Settings.SIM_TIME){
+    while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
-        if((time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
+        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.dynamic_fog_set(node_list, node_leased, dynamic_fog_list);
       }
 
       //Change MAX_NODES value.
-      stage = Environment.change_stages(time_count, stage);
+      stage = Environment.change_stages(Environment.time_count, stage);
       if(stage != 0){
         MAX_NODES = Environment.return_max_nodes(stage);
       }
@@ -61,7 +60,7 @@ public class Mode5 {
         }
       }
 
-      time_count += 1;
+      Environment.time_count += 1;
       if(Settings.FOG_USE){
         if(DEBUG){
           System.out.println("");
@@ -70,9 +69,9 @@ public class Mode5 {
       }
 
       //Data Transfer Process
-      Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, time_count);
+      Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, Environment.time_count);
 
-      System.out.println("Processed time_count " + time_count + " (" + time_count * 100 / Settings.SIM_TIME + "% done.)");
+      System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
     }
     Statistics.print_info();
   }

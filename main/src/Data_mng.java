@@ -31,16 +31,16 @@ public class Data_mng {
   static void create(ArrayList<Data_info> network_contents_list){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
-    int data_num, data_size, data_expire, hosted_by_total;
+    int data_num, data_size, data_expire_after, hosted_by_total;
 
     //Data Create Process
     data_num = cache_data_total;
     data_size = (rand.nextInt(39) + 1) * 5;
-    data_expire = Settings.CONTENTS_EXPIRE_AFTER;
+    data_expire_after = Environment.time_count + Settings.CONTENTS_EXPIRE_AFTER;
     
     hosted_by_total = 0;
 
-    var temp_Data = new Data_info(data_num, data_size, data_expire, hosted_by_total, hosted_by_list);
+    var temp_Data = new Data_info(data_num, data_size, data_expire_after, hosted_by_total, hosted_by_list);
     network_contents_list.add(temp_Data);
 
     cache_data_total += 1;
@@ -92,7 +92,7 @@ public class Data_mng {
     }
 
     //Replace with new Info
-    var temp_Data = new Data_info(data_num, data.file_size, data.expire, hosted_by_total, hosted_by_list);//Incomplete
+    var temp_Data = new Data_info(data_num, data.file_size, data.expire_after, hosted_by_total, hosted_by_list);//Incomplete
     network_contents_list.remove(data);
     network_contents_list.add(temp_Data);
 

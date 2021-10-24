@@ -1,6 +1,8 @@
 import java.awt.geom.Point2D;
 
 public class Environment {
+    static int time_count;
+
     static Point2D.Double return_landmark_point(int index){
       var point = new Point2D.Double();
 
