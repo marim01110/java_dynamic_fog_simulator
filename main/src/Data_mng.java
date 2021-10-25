@@ -6,12 +6,12 @@ public class Data_mng {
   private static final int INIT = -1;
   static int cache_data_total = 0;
 
-  static Data_info get_data_info(ArrayList<Data_info> network_contents_list, int need_data_num){
+  static Data_info get_data_info(int need_data_num){
     Data_info data = null;
 
-    for(int i = 0; i < network_contents_list.size(); i++){
-      if(need_data_num == network_contents_list.get(i).num){
-        data = network_contents_list.get(i);
+    for(int i = 0; i < Environment.network_contents_list.size(); i++){
+      if(need_data_num == Environment.network_contents_list.get(i).num){
+        data = Environment.network_contents_list.get(i);
         break;
       }
     }
@@ -24,15 +24,15 @@ public class Data_mng {
     return data;
   }
 
-  static void fixed_respawn(ArrayList<Data_info> network_contents_list){
-    int contents = network_contents_list.size();
+  static void fixed_respawn(){
+    int contents = Environment.network_contents_list.size();
 
     for (int i = contents; i < Settings.CONTENTS_TYPES_MAX; i++) {
-      create(network_contents_list);
+      create();
     }
   }
 
-  static void create(ArrayList<Data_info> network_contents_list){
+  static void create(){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
     int data_num, data_size, data_expire_after, hosted_by_total;
@@ -45,12 +45,12 @@ public class Data_mng {
     hosted_by_total = 0;
 
     var temp_Data = new Data_info(data_num, data_size, data_expire_after, hosted_by_total, hosted_by_list);
-    network_contents_list.add(temp_Data);
+    Environment.network_contents_list.add(temp_Data);
 
     cache_data_total += 1;
   }
 
-  static void update(ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
+  static void update(ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
     var hosted_by_list = new ArrayList<Integer>();
     var fog_stored_contents_list = new ArrayList<Integer>();
     Data_info data;
@@ -59,7 +59,7 @@ public class Data_mng {
     int hosted_by_total, total_capacity, used_capacity;
 
     //Update network_contents_list Process
-    data = get_data_info(network_contents_list, data_num);
+    data = get_data_info(data_num);
     hosted_by_total = data.hosted_by_total + 1;
     for (int i = 0; i < data.hosted_by_list.size(); i++) {
       hosted_by_list.add(data.hosted_by_list.get(i));
@@ -77,15 +77,15 @@ public class Data_mng {
     catch(Exception e){} //If fog_stored_contents_list is empty, do nothing.
     fog_stored_contents_list.add(data_num);
     total_capacity = dynamic_fog.total_capacity;
-    used_capacity = Fog_mng.calc_used_capacity(network_contents_list, fog_stored_contents_list);
+    used_capacity = Fog_mng.calc_used_capacity(fog_stored_contents_list);
 
     //Check Used Capacity and remove files
     while(total_capacity < used_capacity){
 
       //Decide a file to delete and delete from fog_stored_contents_list
-      delete_older_file(fog_stored_contents_list, network_contents_list, last_used, dynamic_fog_num);
+      delete_older_file(fog_stored_contents_list, last_used, dynamic_fog_num);
 
-      used_capacity = Fog_mng.calc_used_capacity(network_contents_list, fog_stored_contents_list);
+      used_capacity = Fog_mng.calc_used_capacity(fog_stored_contents_list);
       
       loop_count += 1;
       if(loop_count > 10){
@@ -97,8 +97,8 @@ public class Data_mng {
 
     //Replace with new Info
     var temp_Data = new Data_info(data_num, data.file_size, data.expire_after, hosted_by_total, hosted_by_list);//Incomplete
-    network_contents_list.remove(data);
-    network_contents_list.add(temp_Data);
+    Environment.network_contents_list.remove(data);
+    Environment.network_contents_list.add(temp_Data);
 
     //Replace with new Dynamic_Fog Information
     Environment.dynamic_fog_list.remove(dynamic_fog);
@@ -106,7 +106,7 @@ public class Data_mng {
     Environment.dynamic_fog_list.add(temp_Storage);
   }
 
-  private static void delete(ArrayList<Data_info> network_contents_list, int delete_file_num){
+  private static void delete(int delete_file_num){
     Data_info data;
     Fog_info fog_node;
     var new_fog_stored_contents_list = new ArrayList<Integer>();
@@ -114,7 +114,7 @@ public class Data_mng {
     int new_used_capacity;
 
     //Load data_hosted_list
-    data = get_data_info(network_contents_list, delete_file_num);
+    data = get_data_info(delete_file_num);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       //Load Fog info
       fog_node = Fog_mng.get_fog_info(data.hosted_by_list.get(i));
@@ -124,14 +124,14 @@ public class Data_mng {
       obj = delete_file_num;
       new_fog_stored_contents_list.remove(obj);
 
-      new_used_capacity = Fog_mng.calc_used_capacity(network_contents_list, new_fog_stored_contents_list);
+      new_used_capacity = Fog_mng.calc_used_capacity(new_fog_stored_contents_list);
       var new_fog_info = new Fog_info(fog_node.node_num, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
 
       //Replace with new info
       Environment.dynamic_fog_list.remove(fog_node);
       Environment.dynamic_fog_list.add(new_fog_info);
     }
-    network_contents_list.remove(data);
+    Environment.network_contents_list.remove(data);
     Environment.file_deleted += 1;
   }
 
@@ -148,11 +148,11 @@ public class Data_mng {
     return need_data_num;
   }
 
-  static boolean info_exist(ArrayList<Data_info> network_contents_list, Integer data_num){
+  static boolean info_exist(Integer data_num){
     boolean result = false;
 
-    for(int i = 0; i < network_contents_list.size(); i++){
-      if(network_contents_list.get(i).num == data_num){
+    for(int i = 0; i < Environment.network_contents_list.size(); i++){
+      if(Environment.network_contents_list.get(i).num == data_num){
         result = true;
       }
       if(result == true) break;
@@ -160,24 +160,24 @@ public class Data_mng {
     return result;
   }
 
-  static void valid_check(ArrayList<Data_info> network_contents_list){
+  static void valid_check(){
     int current_time  = Environment.time_count;
     Data_info data;
 
-    for(int i = 0; i < network_contents_list.size(); i++){
-      data = network_contents_list.get(i);
+    for(int i = 0; i < Environment.network_contents_list.size(); i++){
+      data = Environment.network_contents_list.get(i);
       if(data.expire_after <= current_time){
         if(DEBUG){
           System.out.println("Data num: " + data.num + " is not valid.");
           System.out.println("Deleting ...");
         }
-        delete(network_contents_list, data.num);
+        delete(data.num);
         i -= 1;
       }
     }
   }
 
-  static void update_delete_order(ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int data_num){
+  static void update_delete_order(ArrayList<Integer> last_used, int data_num){
     for(int i = 0; i < last_used.size(); i++){
       if(last_used.get(i) == data_num){
         last_used.remove(i);
@@ -186,7 +186,7 @@ public class Data_mng {
     last_used.add(data_num);
   }
 
-  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
+  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
     Data_info data;
     int delete_file_num = INIT;
 
@@ -210,7 +210,7 @@ public class Data_mng {
     }
 
     //Delete from hosted_by_list
-    data = get_data_info(network_contents_list, delete_file_num);
+    data = get_data_info(delete_file_num);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       if(data.hosted_by_list.get(i) == dynamic_fog_num){
         data.hosted_by_list.remove(i);
@@ -220,12 +220,12 @@ public class Data_mng {
     data.hosted_by_total -= 1;
   }
 
-  static void print_detail(ArrayList<Data_info> network_contents_list){
+  static void print_detail(){
     Data_info data;
 
     try {
-      for(int i = 0; i < network_contents_list.size(); i++){
-        data = network_contents_list.get(i);
+      for(int i = 0; i < Environment.network_contents_list.size(); i++){
+        data = Environment.network_contents_list.get(i);
         System.out.println();
         System.out.println("Data num: " + data.num);
         System.out.println("Data size: " + data.file_size);

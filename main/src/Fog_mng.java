@@ -63,7 +63,7 @@ public class Fog_mng {
     }
   }
 
-  private static void unregister(ArrayList<Data_info> network_contents_list, Fog_info delete_df){
+  private static void unregister(Fog_info delete_df){
     Data_info data;
     var new_hosted_by_list = new ArrayList<Integer>();
     Object obj;
@@ -71,7 +71,7 @@ public class Fog_mng {
     if(DEBUG) System.out.println("Dynamic_Fog Node " + delete_df.node_num + " is now deleting.");
     for(int i = 0; i < delete_df.fog_stored_contents_list.size(); i++){
       data = null;
-      data = Data_mng.get_data_info(network_contents_list, delete_df.fog_stored_contents_list.get(i));
+      data = Data_mng.get_data_info(delete_df.fog_stored_contents_list.get(i));
 
       //Creating new info
       new_hosted_by_list = data.hosted_by_list;
@@ -80,19 +80,19 @@ public class Fog_mng {
       var new_data = new Data_info(data.num, data.file_size, data.expire_after, new_hosted_by_list.size(), new_hosted_by_list);
 
       //Replace with new info
-      network_contents_list.remove(data);
-      network_contents_list.add(new_data);
+      Environment.network_contents_list.remove(data);
+      Environment.network_contents_list.add(new_data);
     }
     Environment.dynamic_fog_list.remove(delete_df);
   }
 
-  static void dynamic_fog_dead_judge(ArrayList<Node_info> node_list, ArrayList<Data_info> network_contents_list, int node_list_index){
+  static void dynamic_fog_dead_judge(int node_list_index){
     for(int j = 0; j < Environment.dynamic_fog_list.size(); j++){
-      if(Environment.dynamic_fog_list.get(j).node_num == node_list.get(node_list_index).num) unregister(network_contents_list, Environment.dynamic_fog_list.get(j));
+      if(Environment.dynamic_fog_list.get(j).node_num == Environment.node_list.get(node_list_index).num) unregister(Environment.dynamic_fog_list.get(j));
     }
   }
 
-  static ArrayList<Integer> search_near_dynamic_fogs(ArrayList<Node_info> node_list, Node_info current_node){
+  static ArrayList<Integer> search_near_dynamic_fogs(Node_info current_node){
     var result = new ArrayList<Integer>();
     double /*distance_calc_min, */temp_distance, distance = 9999;//Initialize distance
     Node_info dynamic_fog_node;
@@ -100,7 +100,7 @@ public class Fog_mng {
     //boolean reset;
 
     for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
-      dynamic_fog_node = Node_mng.get_node_info(node_list, Environment.dynamic_fog_list.get(i).node_num);
+      dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
       temp_distance = current_node.point.distance(dynamic_fog_node.point);
       if(distance > temp_distance){
         distance = temp_distance;
@@ -139,26 +139,26 @@ public class Fog_mng {
     return result;
   }
 
-  static int calc_used_capacity(ArrayList<Data_info> network_contents_list, ArrayList<Integer> fog_stored_contents_list){
+  static int calc_used_capacity(ArrayList<Integer> fog_stored_contents_list){
     Data_info data;
     int used_capacity = 0;
     int data_num;
     
     for(int i = 0; i < fog_stored_contents_list.size(); i++){
       data_num = fog_stored_contents_list.get(i);
-      data = Data_mng.get_data_info(network_contents_list, data_num);
+      data = Data_mng.get_data_info(data_num);
       used_capacity += data.file_size;
     }
     return used_capacity;
   }
 
-  static void print_detail(ArrayList<Node_info> node_list){
+  static void print_detail(){
     int dynamic_fogs_required;
     Node_info node_info;
     Fog_info node;
 
-    System.out.println("Nodes active: " + node_list.size());
-    dynamic_fogs_required = node_list.size() * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
+    System.out.println("Nodes active: " + Environment.node_list.size());
+    dynamic_fogs_required = Environment.node_list.size() * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     System.out.print(Environment.dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node: ");
     for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
       if(i != 0) System.out.print(", ");
@@ -169,7 +169,7 @@ public class Fog_mng {
     try{
       for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
         node = Environment.dynamic_fog_list.get(i);
-        node_info = Node_mng.get_node_info(node_list, node.node_num);
+        node_info = Node_mng.get_node_info(node.node_num);
         System.out.println();
         System.out.println("Dynamic_Fog_index: " + i + ", Node_num: " + node.node_num);
         System.out.println("Total cap. " + node.total_capacity + ", Used cap. " + node.used_capacity + ", Battery remain: " + node_info.battery_remain_percentage + "%");

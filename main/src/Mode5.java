@@ -5,7 +5,6 @@ public class Mode5 {
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
   static void main(){
-    var network_contents_list = new ArrayList<Data_info>();
     var last_used = new ArrayList<Integer>();
     int stage = 0;
     int node_leased = 0;
@@ -23,7 +22,7 @@ public class Mode5 {
       if(Settings.FOG_USE){
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_leased);
       }
-      if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn(network_contents_list);
+      if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn();
 
       //Change MAX_NODES value.
       stage = Environment.change_stages(Environment.time_count, stage);
@@ -51,7 +50,7 @@ public class Mode5 {
         }
 
         if(Environment.node_list.get(i).reached == true) {
-          Fog_mng.dynamic_fog_dead_judge(Environment.node_list, network_contents_list, i);
+          Fog_mng.dynamic_fog_dead_judge(i);
           if(DEBUG) System.out.println("Node " + Environment.node_list.get(i).num + " is now deleteing.");
           Environment.node_list.remove(i);
           i -= 1;
@@ -62,13 +61,13 @@ public class Mode5 {
       if(Settings.FOG_USE){
         if(DEBUG){
           System.out.println("");
-          Fog_mng.print_detail(Environment.node_list);
+          Fog_mng.print_detail();
         }
       }
 
       //Data Transfer Process
-      Data_transfer.start(Environment.node_list, network_contents_list, last_used, Environment.time_count);
-      Data_mng.valid_check(network_contents_list);
+      Data_transfer.start(last_used, Environment.time_count);
+      Data_mng.valid_check();
 
       System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
     }

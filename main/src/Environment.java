@@ -6,6 +6,7 @@ public class Environment {
     static int file_deleted = 0;
     static ArrayList<Node_info> node_list = new ArrayList<>();
     static ArrayList<Fog_info> dynamic_fog_list = new ArrayList<>();
+    static ArrayList<Data_info> network_contents_list = new ArrayList<>();
 
     static Point2D.Double return_landmark_point(int index){
       var point = new Point2D.Double();

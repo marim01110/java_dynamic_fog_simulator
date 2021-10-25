@@ -5,7 +5,6 @@ public class Mode4 {
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
   static void main(){
-    var network_contents_list = new ArrayList<Data_info>();
     var last_used = new ArrayList<Integer>();
     int node_leased = 0;
 
@@ -17,7 +16,7 @@ public class Mode4 {
 
     //Simuration Start
     Environment.time_count = 0;
-    if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn(network_contents_list);
+    if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn();
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
@@ -34,13 +33,13 @@ public class Mode4 {
       if(Settings.FOG_USE){
         if(DEBUG){
           System.out.println("");
-          Fog_mng.print_detail(Environment.node_list);
+          Fog_mng.print_detail();
         }
       }
 
       //Data Transfer Process
-      Data_transfer.start(Environment.node_list, network_contents_list, last_used, Environment.time_count);
-      Data_mng.valid_check(network_contents_list);
+      Data_transfer.start(last_used, Environment.time_count);
+      Data_mng.valid_check();
 
       System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
     }

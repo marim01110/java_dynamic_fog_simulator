@@ -1,6 +1,5 @@
 import java.util.Random;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 public class Node_mng {
   private static final boolean DEBUG = Settings.DEBUG;
@@ -50,12 +49,12 @@ public class Node_mng {
     }
   }
 
-  static Node_info get_node_info(ArrayList<Node_info> node_list, int node_num){
+  static Node_info get_node_info(int node_num){
     Node_info result = null;
 
-    for(int i = 0; i < node_list.size(); i++){
-      if(node_num == node_list.get(i).num){
-        result = node_list.get(i);
+    for(int i = 0; i < Environment.node_list.size(); i++){
+      if(node_num == Environment.node_list.get(i).num){
+        result = Environment.node_list.get(i);
         break;
       }
     }
