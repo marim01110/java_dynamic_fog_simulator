@@ -66,6 +66,7 @@ public class Fog_mng {
   private static void unregister(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list, Fog_info delete_df){
     Data_info data;
     var new_hosted_by_list = new ArrayList<Integer>();
+    Object obj;
 
     if(DEBUG) System.out.println("Dynamic_Fog Node " + delete_df.node_num + " is now deleting.");
     for(int i = 0; i < delete_df.fog_stored_contents_list.size(); i++){
@@ -73,9 +74,9 @@ public class Fog_mng {
       data = Data_mng.get_data_info(network_contents_list, delete_df.fog_stored_contents_list.get(i));
 
       //Creating new info
-      for(int j = 0; j < data.hosted_by_list.size(); j++){
-        if(data.hosted_by_list.get(j) != delete_df.node_num) new_hosted_by_list.add(data.hosted_by_list.get(j));
-      }
+      new_hosted_by_list = data.hosted_by_list;
+      obj = delete_df.node_num;
+      new_hosted_by_list.remove(obj);
       var new_data = new Data_info(data.num, data.file_size, data.expire_after, new_hosted_by_list.size(), new_hosted_by_list);
 
       //Replace with new info
