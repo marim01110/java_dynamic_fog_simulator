@@ -71,7 +71,7 @@ public class Mode5 {
       //Data Transfer Process
       Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, Environment.time_count);
       Data_mng.valid_check(network_contents_list, dynamic_fog_list);
-
+      Fog_mng.print_detail(node_list, dynamic_fog_list);
       System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
     }
     Statistics.print_info();

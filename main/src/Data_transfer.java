@@ -41,7 +41,7 @@ public class Data_transfer {
         }
         Statistics.data_transfered += 1;
       }
-      else if(DEBUG) System.out.println("There is no data in Node_num " + current_node.num + " to be transferred this time.");
+      //else if(DEBUG) System.out.println("There is no data in Node_num " + current_node.num + " to be transferred this time.");
     }
   }
 
@@ -116,6 +116,7 @@ public class Data_transfer {
         }
         else{
           //The requested data is not found in Local Network (DL from Cloud and send by bluetooth).
+          Data_mng.update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
           Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from Cloud.
           Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
           Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.

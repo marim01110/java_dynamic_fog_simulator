@@ -106,7 +106,7 @@ public class Data_mng {
     dynamic_fog_list.add(temp_Storage);
   }
 
-  static void delete(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list, int delete_file_num){
+  private static void delete(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list, int delete_file_num){
     Data_info data;
     Fog_info fog_node;
     var new_fog_stored_contents_list = new ArrayList<Integer>();
