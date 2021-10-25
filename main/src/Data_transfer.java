@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
   
-  static void start(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int time_count){
+  static void start(ArrayList<Node_info> node_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int time_count){
     boolean transfer;
     Node_info current_node, nearest_dynamic_fog = null;
     int reflesh_node, need_data_num;
@@ -22,7 +22,7 @@ public class Data_transfer {
         Data_mng.update_delete_order(network_contents_list, last_used, need_data_num);
         
         if(Settings.FOG_USE){
-          near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node_list, dynamic_fog_list, current_node);
+          near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node_list, current_node);
           nearest_dynamic_fog = Node_mng.get_node_info(node_list, near_dynamic_fogs_list.get(0)); 
         }
         if(DEBUG){
@@ -37,7 +37,7 @@ public class Data_transfer {
           if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
         }
         else{
-          search(node_list, dynamic_fog_list, network_contents_list, near_dynamic_fogs_list, last_used, current_node, need_data_num);
+          search(node_list, network_contents_list, near_dynamic_fogs_list, last_used, current_node, need_data_num);
         }
         Statistics.data_transfered += 1;
       }
@@ -45,7 +45,7 @@ public class Data_transfer {
     }
   }
 
-  private static void search(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> near_dynamic_fogs_list, ArrayList<Integer> last_used, Node_info current_node, int need_data_num){
+  private static void search(ArrayList<Node_info> node_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> near_dynamic_fogs_list, ArrayList<Integer> last_used, Node_info current_node, int need_data_num){
     double distance_df_edge;
     Data_info need_data = null;
     Node_info nearest_dynamic_fog = Node_mng.get_node_info(node_list, near_dynamic_fogs_list.get(0));
@@ -111,12 +111,12 @@ public class Data_transfer {
             }
           }
           if(data_downloaded != true){
-            data_downloaded = search_with_copy_controled(node_list, dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, current_node, need_data);
+            data_downloaded = search_with_copy_controled(node_list, network_contents_list, last_used, nearest_dynamic_fog, current_node, need_data);
           }
         }
         else{
           //The requested data is not found in Local Network (DL from Cloud and send by bluetooth).
-          Data_mng.update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+          Data_mng.update(network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
           Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from Cloud.
           Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
           Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.
@@ -128,11 +128,11 @@ public class Data_transfer {
     }
     else{
       if(found_in_lan){
-        data_downloaded = search_with_copy_controled(node_list, dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog, current_node, need_data);
+        data_downloaded = search_with_copy_controled(node_list, network_contents_list, last_used, nearest_dynamic_fog, current_node, need_data);
       }
       else{
         //The requested data is not found in Local Network (DL from Cloud and send by cellular).
-        Data_mng.update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        Data_mng.update(network_contents_list, last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
         Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from Cloud.
         Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "send");//UL to Edge.
         Node_mng.battery_drain(current_node, "cellular", "recv");//DL from DF.
@@ -149,7 +149,7 @@ public class Data_transfer {
     }
   }
 
-  private static boolean search_with_copy_controled(ArrayList<Node_info> node_list, ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
+  private static boolean search_with_copy_controled(ArrayList<Node_info> node_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
     //var rand = new Random();
     //Node_info dynamic_fog_has_data_node_info;
     //Fog_info dynamic_fog_has_data_fog_info;
@@ -170,7 +170,7 @@ public class Data_transfer {
     */
     Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from DF on Local Network.
 
-    Data_mng.update(dynamic_fog_list, network_contents_list, last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
+    Data_mng.update(network_contents_list, last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
 
     //Data transfer to Edge
     Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.

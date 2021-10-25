@@ -50,7 +50,7 @@ public class Data_mng {
     cache_data_total += 1;
   }
 
-  static void update(ArrayList<Fog_info> dynamic_fog_list, ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
+  static void update(ArrayList<Data_info> network_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
     var hosted_by_list = new ArrayList<Integer>();
     var fog_stored_contents_list = new ArrayList<Integer>();
     Data_info data;
@@ -66,7 +66,7 @@ public class Data_mng {
     }
     hosted_by_list.add(dynamic_fog_num);
 
-    dynamic_fog = Fog_mng.get_fog_info(dynamic_fog_list, dynamic_fog_num);
+    dynamic_fog = Fog_mng.get_fog_info(dynamic_fog_num);
 
     //Update dynamic_fog_list Process
     try{
@@ -101,12 +101,12 @@ public class Data_mng {
     network_contents_list.add(temp_Data);
 
     //Replace with new Dynamic_Fog Information
-    dynamic_fog_list.remove(dynamic_fog);
+    Environment.dynamic_fog_list.remove(dynamic_fog);
     var temp_Storage = new Fog_info(dynamic_fog_num, total_capacity, used_capacity, fog_stored_contents_list);
-    dynamic_fog_list.add(temp_Storage);
+    Environment.dynamic_fog_list.add(temp_Storage);
   }
 
-  private static void delete(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list, int delete_file_num){
+  private static void delete(ArrayList<Data_info> network_contents_list, int delete_file_num){
     Data_info data;
     Fog_info fog_node;
     var new_fog_stored_contents_list = new ArrayList<Integer>();
@@ -117,7 +117,7 @@ public class Data_mng {
     data = get_data_info(network_contents_list, delete_file_num);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       //Load Fog info
-      fog_node = Fog_mng.get_fog_info(dynamic_fog_list, data.hosted_by_list.get(i));
+      fog_node = Fog_mng.get_fog_info(data.hosted_by_list.get(i));
 
       //Create new Fog info
       new_fog_stored_contents_list = fog_node.fog_stored_contents_list;
@@ -128,8 +128,8 @@ public class Data_mng {
       var new_fog_info = new Fog_info(fog_node.node_num, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
 
       //Replace with new info
-      dynamic_fog_list.remove(fog_node);
-      dynamic_fog_list.add(new_fog_info);
+      Environment.dynamic_fog_list.remove(fog_node);
+      Environment.dynamic_fog_list.add(new_fog_info);
     }
     network_contents_list.remove(data);
     Environment.file_deleted += 1;
@@ -160,7 +160,7 @@ public class Data_mng {
     return result;
   }
 
-  static void valid_check(ArrayList<Data_info> network_contents_list, ArrayList<Fog_info> dynamic_fog_list){
+  static void valid_check(ArrayList<Data_info> network_contents_list){
     int current_time  = Environment.time_count;
     Data_info data;
 
@@ -171,7 +171,7 @@ public class Data_mng {
           System.out.println("Data num: " + data.num + " is not valid.");
           System.out.println("Deleting ...");
         }
-        delete(network_contents_list, dynamic_fog_list, data.num);
+        delete(network_contents_list, data.num);
         i -= 1;
       }
     }

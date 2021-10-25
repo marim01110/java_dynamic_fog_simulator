@@ -5,8 +5,6 @@ public class Mode5 {
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
   static void main(){
-    var node_list = new ArrayList<Node_info>();
-    var dynamic_fog_list = new ArrayList<Fog_info>();
     var network_contents_list = new ArrayList<Data_info>();
     var last_used = new ArrayList<Integer>();
     int stage = 0;
@@ -14,7 +12,7 @@ public class Mode5 {
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
-      node_list.add(Node_mng.spawn(node_leased));
+      Environment.node_list.add(Node_mng.spawn(node_leased));
       node_leased += 1;
     }
 
@@ -23,7 +21,7 @@ public class Mode5 {
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
-        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_list, node_leased, dynamic_fog_list);
+        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_leased);
       }
       if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn(network_contents_list);
 
@@ -34,28 +32,28 @@ public class Mode5 {
       }
 
       //Node replenishment.
-      while(node_list.size() < MAX_NODES){
-        node_list.add(Node_mng.spawn(node_leased));
+      while(Environment.node_list.size() < MAX_NODES){
+        Environment.node_list.add(Node_mng.spawn(node_leased));
         node_leased += 1;
       }
 
       //Node Move Process
-      for(int i = 0; i < node_list.size(); i++){
-        if(node_list.get(i).reached == false){
-          if(node_list.get(i).goal_nearby == false){
-            Move.decide_direction(node_list.get(i));
-            Node_mng.check_reach_goal(node_list.get(i));
+      for(int i = 0; i < Environment.node_list.size(); i++){
+        if(Environment.node_list.get(i).reached == false){
+          if(Environment.node_list.get(i).goal_nearby == false){
+            Move.decide_direction(Environment.node_list.get(i));
+            Node_mng.check_reach_goal(Environment.node_list.get(i));
           }
-          else if(node_list.get(i).goal_nearby == true){
-            Node_mng.check_reach_goal(node_list.get(i));
+          else if(Environment.node_list.get(i).goal_nearby == true){
+            Node_mng.check_reach_goal(Environment.node_list.get(i));
           }
-          if(DEBUG) System.out.println("Node "+ node_list.get(i).num + " (" + node_list.get(i).point.x + ", " + node_list.get(i).point.y + ")");
+          if(DEBUG) System.out.println("Node "+ Environment.node_list.get(i).num + " (" + Environment.node_list.get(i).point.x + ", " + Environment.node_list.get(i).point.y + ")");
         }
 
-        if(node_list.get(i).reached == true) {
-          Fog_mng.dynamic_fog_dead_judge(node_list, network_contents_list, i, dynamic_fog_list);
-          if(DEBUG) System.out.println("Node " + node_list.get(i).num + " is now deleteing.");
-          node_list.remove(i);
+        if(Environment.node_list.get(i).reached == true) {
+          Fog_mng.dynamic_fog_dead_judge(Environment.node_list, network_contents_list, i);
+          if(DEBUG) System.out.println("Node " + Environment.node_list.get(i).num + " is now deleteing.");
+          Environment.node_list.remove(i);
           i -= 1;
         }
       }
@@ -64,14 +62,14 @@ public class Mode5 {
       if(Settings.FOG_USE){
         if(DEBUG){
           System.out.println("");
-          Fog_mng.print_detail(node_list, dynamic_fog_list);
+          Fog_mng.print_detail(Environment.node_list);
         }
       }
 
       //Data Transfer Process
-      Data_transfer.start(node_list, dynamic_fog_list, network_contents_list, last_used, Environment.time_count);
-      Data_mng.valid_check(network_contents_list, dynamic_fog_list);
-      Fog_mng.print_detail(node_list, dynamic_fog_list);
+      Data_transfer.start(Environment.node_list, network_contents_list, last_used, Environment.time_count);
+      Data_mng.valid_check(network_contents_list);
+
       System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
     }
     Statistics.print_info();
