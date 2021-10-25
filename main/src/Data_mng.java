@@ -110,6 +110,7 @@ public class Data_mng {
     Data_info data;
     Fog_info fog_node;
     var new_fog_stored_contents_list = new ArrayList<Integer>();
+    Object obj;
     int new_used_capacity;
 
     //Load data_hosted_list
@@ -118,12 +119,11 @@ public class Data_mng {
       //Load Fog info
       fog_node = Fog_mng.get_fog_info(dynamic_fog_list, data.hosted_by_list.get(i));
 
-      for(int j = 0; j < fog_node.fog_stored_contents_list.size(); j++){
-        if(fog_node.fog_stored_contents_list.get(j) != delete_file_num){
-          System.out.println(j + ", " + fog_node.fog_stored_contents_list.size());
-          new_fog_stored_contents_list.add(fog_node.fog_stored_contents_list.get(j));
-        }
-      }
+      //Create new Fog info
+      new_fog_stored_contents_list = fog_node.fog_stored_contents_list;
+      obj = delete_file_num;
+      new_fog_stored_contents_list.remove(obj);
+
       new_used_capacity = Fog_mng.calc_used_capacity(network_contents_list, new_fog_stored_contents_list);
       var new_fog_info = new Fog_info(fog_node.node_num, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
 
