@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-//import java.util.Random;
+import java.util.Random;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
@@ -41,7 +41,6 @@ public class Data_transfer {
         }
         Statistics.data_transfered += 1;
       }
-      //else if(DEBUG) System.out.println("There is no data in Node_num " + current_node.num + " to be transferred this time.");
     }
   }
 
@@ -150,31 +149,29 @@ public class Data_transfer {
   }
 
   private static boolean search_with_copy_controled(ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
-    //var rand = new Random();
-    //Node_info dynamic_fog_has_data_node_info;
-    //Fog_info dynamic_fog_has_data_fog_info;
+    var rand = new Random();
+    int need_data_hosted_by_total, dynamic_fog_total_nodes;
+    Fog_info another_dynamic_fog = null;
     boolean data_downloaded = false;
-    //int dynamic_fog_has_data_num;
 
-    //Search DF which has requested data
-/*
-    System.out.println(need_data.hosted_by_list);
-    dynamic_fog_has_data_num = need_data.hosted_by_list.get(rand.nextInt(need_data.hosted_by_total));
-    System.out.println(dynamic_fog_has_data_num);
-    dynamic_fog_has_data_fog_info = Fog_mng.get_fog_info(dynamic_fog_list, dynamic_fog_has_data_num);
-    dynamic_fog_has_data_node_info = Node_mng.get_node_info(node_list, dynamic_fog_has_data_fog_info.node_num);
-    
-    //Data copy from Local Network to nearest Dynamic Fog
-    Node_mng.battery_drain(dynamic_fog_has_data_node_info, "cellular", "send");//UL to the nearest DF.
-    //A bug found. (2021/9/28 2:32 a.m.)
-    */
-    Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from DF on Local Network.
+    need_data_hosted_by_total = need_data.hosted_by_list.size();
+    dynamic_fog_total_nodes = Environment.dynamic_fog_list.size();
 
-    Data_mng.update(last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
+    if(DEBUG) System.out.println("hosted by " + need_data_hosted_by_total + " nodes, Max dupulication is " + dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100);
 
-    //Data transfer to Edge
-    Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
-    Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.
+    //another_dynamic_fog = Fog_mng.get_fog_info(rand.nextInt(dynamic_fog_total_nodes));/* Set dynamic fog which has need_data */
+    //System.out.println(another_dynamic_fog.node_num);
+
+    if(need_data_hosted_by_total <= dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100){
+      Data_mng.update(last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
+      /* Need to add power comsumption code */
+      if(DEBUG) System.out.println("Dupulicated");
+    }
+    else{
+      /* Need to add power comsumption code */
+      if(DEBUG) System.out.println("Dupulication cancelled");
+    }
+
     data_downloaded = true;
     Statistics.dl_from_local += 1;
     if(DEBUG) System.out.println("Data Copied from Local Network.");
