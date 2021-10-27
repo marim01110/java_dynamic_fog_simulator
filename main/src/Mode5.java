@@ -11,7 +11,7 @@ public class Mode5 {
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
-      Environment.node_list.add(Node_mng.spawn(node_leased));
+      Node_mng.spawn(node_leased);
       node_leased += 1;
     }
 
@@ -34,7 +34,7 @@ public class Mode5 {
 
       //Node replenishment.
       while(Environment.node_list.size() < MAX_NODES){
-        Environment.node_list.add(Node_mng.spawn(node_leased));
+        Node_mng.spawn(node_leased);
         node_leased += 1;
       }
 

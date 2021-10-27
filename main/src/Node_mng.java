@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 public class Node_mng {
   private static final boolean DEBUG = Settings.DEBUG;
 
-  static Node_info spawn(int node_leased){
+  static void spawn(int node_leased){
     Random rand = new Random();
     Point2D.Double start = new Point2D.Double();
     Point2D.Double destination = new Point2D.Double();
@@ -25,7 +25,7 @@ public class Node_mng {
 
     var newnode = new Node_info(node_leased, start, destination, data_refresh_time, false, false, false, move_speed, battery_remain_percentage);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
-    return newnode;
+    Environment.node_list.add(newnode);
   }
 
   static void check_reach_goal(Node_info node){
