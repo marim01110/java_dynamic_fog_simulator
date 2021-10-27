@@ -150,7 +150,7 @@ public class Data_transfer {
 
   private static boolean search_with_copy_controled(ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
     var rand = new Random();
-    int need_data_hosted_by_total, dynamic_fog_total_nodes;
+    int need_data_hosted_by_total, dynamic_fog_total_nodes, another_dynamic_fog_node_num;
     Fog_info another_dynamic_fog = null;
     boolean data_downloaded = false;
 
@@ -159,8 +159,9 @@ public class Data_transfer {
 
     if(DEBUG) System.out.println("hosted by " + need_data_hosted_by_total + " nodes, Max dupulication is " + dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100);
 
-    //another_dynamic_fog = Fog_mng.get_fog_info(rand.nextInt(dynamic_fog_total_nodes));/* Set dynamic fog which has need_data */
-    //System.out.println(another_dynamic_fog.node_num);
+    /* Set dynamic fog which has need_data */
+    another_dynamic_fog_node_num = Environment.dynamic_fog_list.get(rand.nextInt(dynamic_fog_total_nodes)).node_num;
+    another_dynamic_fog = Fog_mng.get_fog_info(another_dynamic_fog_node_num);
 
     if(need_data_hosted_by_total <= dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100){
       Data_mng.update(last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
