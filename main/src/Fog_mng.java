@@ -86,6 +86,17 @@ public class Fog_mng {
     Environment.dynamic_fog_list.remove(delete_df);
   }
 
+  static void keep_alive(){
+    Node_info node;
+
+    for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+      node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
+      if(node.goal_nearby == true){
+        
+      }
+    }
+  }
+
   static void dynamic_fog_dead_judge(int node_list_index){
     for(int j = 0; j < Environment.dynamic_fog_list.size(); j++){
       if(Environment.dynamic_fog_list.get(j).node_num == Environment.node_list.get(node_list_index).num) unregister(Environment.dynamic_fog_list.get(j));

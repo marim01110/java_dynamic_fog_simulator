@@ -20,6 +20,8 @@ public class Mode5 {
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
+        /* Dynamic node Scan */
+        //Fog_mng.keep_alive();
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_leased);
       }
       if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn();
@@ -40,8 +42,7 @@ public class Mode5 {
       for(int i = 0; i < Environment.node_list.size(); i++){
         if(Environment.node_list.get(i).reached == false){
           if(Environment.node_list.get(i).goal_nearby == false){
-            Move.decide_direction(Environment.node_list.get(i));
-            Node_mng.check_reach_goal(Environment.node_list.get(i));
+            Move.start(Environment.node_list.get(i));
           }
           else if(Environment.node_list.get(i).goal_nearby == true){
             Node_mng.check_reach_goal(Environment.node_list.get(i));

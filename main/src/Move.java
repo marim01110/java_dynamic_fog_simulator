@@ -5,6 +5,11 @@ import java.util.Random;
 public class Move {
   //private static final boolean DEBUG = App.DEBUG;
 
+  static void start(Node_info node){
+    decide_direction(node);
+    Node_mng.check_reach_goal(node);
+  }
+
   private static void negative_x(Point2D.Double point, int x){
     point.setLocation(point.x-x, point.y);
   }
@@ -87,7 +92,7 @@ public class Move {
     Move.move(node, candidate);
   }
 
-  static void decide_direction(Node_info node){
+  private static void decide_direction(Node_info node){
     double diff_x, diff_y;
     diff_x = node.destination.x - node.point.x;
     diff_y = node.destination.y - node.point.y;

@@ -74,6 +74,8 @@ public class App {
                   break;
       case 5:     Mode5.main();
                   break;
+      case 0:     test.main();
+                  break;
       default:    break;
     }
     scan.close();
