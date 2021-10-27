@@ -41,15 +41,9 @@ public class Mode5 {
       //Node Move Process
       for(int i = 0; i < Environment.node_list.size(); i++){
         if(Environment.node_list.get(i).reached == false){
-          if(Environment.node_list.get(i).goal_nearby == false){
-            Move.start(Environment.node_list.get(i));
-          }
-          else if(Environment.node_list.get(i).goal_nearby == true){
-            Node_mng.check_reach_goal(Environment.node_list.get(i));
-          }
+          Move.start(Environment.node_list.get(i));
           if(DEBUG) System.out.println("Node "+ Environment.node_list.get(i).num + " (" + Environment.node_list.get(i).point.x + ", " + Environment.node_list.get(i).point.y + ")");
         }
-
         if(Environment.node_list.get(i).reached == true) {
           Fog_mng.dynamic_fog_dead_judge(i);
           if(DEBUG) System.out.println("Node " + Environment.node_list.get(i).num + " is now deleteing.");

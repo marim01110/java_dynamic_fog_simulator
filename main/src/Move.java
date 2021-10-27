@@ -1,12 +1,11 @@
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Move {
   //private static final boolean DEBUG = App.DEBUG;
 
   static void start(Node_info node){
-    decide_direction(node);
+    if(node.goal_nearby == false) decide_direction(node);
     Node_mng.check_reach_goal(node);
   }
 
@@ -23,7 +22,7 @@ public class Move {
     point.setLocation(point.x, point.y-y);
   }
 
-  static void move(Node_info node, int direc){
+  private static void move(Node_info node, int direc){
     int dist = node.move_speed;
     switch(direc){
       case 0:     Move.positive_x(node.point, dist);
@@ -72,26 +71,6 @@ public class Move {
     }
   }
 
-  static void random_walk_restrict(Node_info node){//Not Used.
-    Random rand = new Random();
-    int candidate, area_judge_data;
-    var direction_list = new ArrayList<Integer>();
-
-    //Scan the surroundings
-    area_judge_data = next_area_judge(node);
-    if(area_judge_data / 1000 != 1) direction_list.add(2);
-    else area_judge_data -= 1000;
-    if(area_judge_data / 100 != 1) direction_list.add(3);
-    else area_judge_data -= 100;
-    if(area_judge_data / 10 != 1) direction_list.add(0);
-    else area_judge_data -= 10;
-    if(area_judge_data / 1 != 1) direction_list.add(1);
-    else area_judge_data -= 1;
-
-    candidate = direction_list.get(rand.nextInt(direction_list.size()));
-    Move.move(node, candidate);
-  }
-
   private static void decide_direction(Node_info node){
     double diff_x, diff_y;
     diff_x = node.destination.x - node.point.x;
@@ -112,15 +91,6 @@ public class Move {
     if(node.point.y < 0) error += 10;
     if(node.point.x > Settings.EDGE_DIST) error += 100;
     if(node.point.y > Settings.EDGE_DIST) error += 1000;
-    return error;
-  }
-
-  private static int next_area_judge(Node_info node){//Not Used.
-    int error = 0;
-    if(node.point.x - node.move_speed < 0) error += 1;
-    if(node.point.x + node.move_speed > Settings.EDGE_DIST) error += 10;
-    if(node.point.y - node.move_speed < 0) error += 100;
-    if(node.point.y + node.move_speed > Settings.EDGE_DIST) error += 1000;
     return error;
   }
 }
