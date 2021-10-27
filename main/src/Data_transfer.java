@@ -72,7 +72,7 @@ public class Data_transfer {
     }
 
     //Data search in Local Network
-    if(need_data.hosted_by_total > 0) found_in_lan = true;
+    if(need_data.hosted_by_list.size() > 0) found_in_lan = true;
 
     //Check distance the nearest DF and edge.
     distance_df_edge = current_node.point.distance(nearest_dynamic_fog.point);

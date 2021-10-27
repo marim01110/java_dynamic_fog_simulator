@@ -35,16 +35,14 @@ public class Data_mng {
   static void create(){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
-    int data_num, data_size, data_expire_after, hosted_by_total;
+    int data_num, data_size, data_expire_after;
 
     //Data Create Process
     data_num = cache_data_total;
     data_size = (rand.nextInt(39) + 1) * 5;
     data_expire_after = Environment.time_count + Settings.CONTENTS_EXPIRE_AFTER;
-    
-    hosted_by_total = 0;
 
-    var temp_Data = new Data_info(data_num, data_size, data_expire_after, hosted_by_total, hosted_by_list);
+    var temp_Data = new Data_info(data_num, data_size, data_expire_after, hosted_by_list);
     Environment.network_contents_list.add(temp_Data);
 
     cache_data_total += 1;
@@ -56,11 +54,10 @@ public class Data_mng {
     Data_info data;
     Fog_info dynamic_fog;
     int loop_count = 0;
-    int hosted_by_total, total_capacity, used_capacity;
+    int total_capacity, used_capacity;
 
     //Update network_contents_list Process
     data = get_data_info(data_num);
-    hosted_by_total = data.hosted_by_total + 1;
     for (int i = 0; i < data.hosted_by_list.size(); i++) {
       hosted_by_list.add(data.hosted_by_list.get(i));
     }
@@ -96,7 +93,7 @@ public class Data_mng {
     }
 
     //Replace with new Info
-    var temp_Data = new Data_info(data_num, data.file_size, data.expire_after, hosted_by_total, hosted_by_list);//Incomplete
+    var temp_Data = new Data_info(data_num, data.file_size, data.expire_after, hosted_by_list);//Incomplete
     Environment.network_contents_list.remove(data);
     Environment.network_contents_list.add(temp_Data);
 
@@ -217,7 +214,6 @@ public class Data_mng {
         break;
       }
     }
-    data.hosted_by_total -= 1;
   }
 
   static void print_detail(){
@@ -229,7 +225,7 @@ public class Data_mng {
         System.out.println();
         System.out.println("Data num: " + data.num);
         System.out.println("Data size: " + data.file_size);
-        System.out.println("Cached by total: " + data.hosted_by_total);
+        System.out.println("Cached by total: " + data.hosted_by_list.size());
         System.out.println("Cached by: " + data.hosted_by_list);
         System.out.println();
       }

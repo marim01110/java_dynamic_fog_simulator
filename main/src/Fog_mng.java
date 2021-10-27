@@ -77,7 +77,7 @@ public class Fog_mng {
       new_hosted_by_list = data.hosted_by_list;
       obj = delete_df.node_num;
       new_hosted_by_list.remove(obj);
-      var new_data = new Data_info(data.num, data.file_size, data.expire_after, new_hosted_by_list.size(), new_hosted_by_list);
+      var new_data = new Data_info(data.num, data.file_size, data.expire_after, new_hosted_by_list);
 
       //Replace with new info
       Environment.network_contents_list.remove(data);
