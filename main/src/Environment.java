@@ -8,6 +8,10 @@ public class Environment {
     static ArrayList<Fog_info> dynamic_fog_list = new ArrayList<>();
     static ArrayList<Data_info> network_contents_list = new ArrayList<>();
 
+    /* Macro variables */
+    static final int FOG_IS_OK = 0;
+    static final int FOG_WILL_BE_DELETED = 1;
+
     static Point2D.Double return_landmark_point(int index){
       var point = new Point2D.Double();
 

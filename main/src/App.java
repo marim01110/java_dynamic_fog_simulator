@@ -35,12 +35,14 @@ class Node_info{
 
 class Fog_info{
   int node_num;
+  int status;
   int total_capacity;
   int used_capacity;
   ArrayList<Integer> fog_stored_contents_list = new ArrayList<>();
 
-  public Fog_info(int node_num, int total_capacity, int used_capacity, ArrayList<Integer> fog_stored_contents_list){
+  public Fog_info(int node_num, int status, int total_capacity, int used_capacity, ArrayList<Integer> fog_stored_contents_list){
     this.node_num = node_num;
+    this.status = status;
     this.total_capacity = total_capacity;
     this.used_capacity = used_capacity;
     this.fog_stored_contents_list = fog_stored_contents_list;

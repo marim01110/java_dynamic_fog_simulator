@@ -54,7 +54,7 @@ public class Fog_mng {
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
           var fog_stored_contents_list = new ArrayList<Integer>();
-          var temp = new Fog_info(dynamic_fog_candidate, Settings.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
+          var temp = new Fog_info(dynamic_fog_candidate, Environment.FOG_IS_OK, Settings.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
           Environment.dynamic_fog_list.add(temp);
           if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
         }

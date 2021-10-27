@@ -99,7 +99,7 @@ public class Data_mng {
 
     //Replace with new Dynamic_Fog Information
     Environment.dynamic_fog_list.remove(dynamic_fog);
-    var temp_Storage = new Fog_info(dynamic_fog_num, total_capacity, used_capacity, fog_stored_contents_list);
+    var temp_Storage = new Fog_info(dynamic_fog_num, Environment.FOG_IS_OK, total_capacity, used_capacity, fog_stored_contents_list);
     Environment.dynamic_fog_list.add(temp_Storage);
   }
 
@@ -122,7 +122,7 @@ public class Data_mng {
       new_fog_stored_contents_list.remove(obj);
 
       new_used_capacity = Fog_mng.calc_used_capacity(new_fog_stored_contents_list);
-      var new_fog_info = new Fog_info(fog_node.node_num, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
+      var new_fog_info = new Fog_info(fog_node.node_num, fog_node.status, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
 
       //Replace with new info
       Environment.dynamic_fog_list.remove(fog_node);
