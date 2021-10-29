@@ -49,40 +49,27 @@ public class Data_mng {
   }
 
   static void update(ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
-    var hosted_by_list = new ArrayList<Integer>();
-    var fog_stored_contents_list = new ArrayList<Integer>();
     Data_info data;
-    Fog_info dynamic_fog;
+    Fog_info fog_node;
     int loop_count = 0;
-    int total_capacity, used_capacity;
+
+    data = get_data_info(data_num);
+    fog_node = Fog_mng.get_fog_info(dynamic_fog_num);
 
     //Update network_contents_list Process
-    data = get_data_info(data_num);
-    for (int i = 0; i < data.hosted_by_list.size(); i++) {
-      hosted_by_list.add(data.hosted_by_list.get(i));
-    }
-    hosted_by_list.add(dynamic_fog_num);
-
-    dynamic_fog = Fog_mng.get_fog_info(dynamic_fog_num);
+    data.hosted_by_list.add(dynamic_fog_num);
 
     //Update dynamic_fog_list Process
-    try{
-      for(int i = 0; i < dynamic_fog.fog_stored_contents_list.size(); i++){
-        fog_stored_contents_list.add(dynamic_fog.fog_stored_contents_list.get(i));
-      }
-    }
-    catch(Exception e){} //If fog_stored_contents_list is empty, do nothing.
-    fog_stored_contents_list.add(data_num);
-    total_capacity = dynamic_fog.total_capacity;
-    used_capacity = Fog_mng.calc_used_capacity(fog_stored_contents_list);
+    fog_node.fog_stored_contents_list.add(data_num);
+    Fog_mng.calc_used_capacity(fog_node);
 
     //Check Used Capacity and remove files
-    while(total_capacity < used_capacity){
+    while(fog_node.total_capacity < fog_node.used_capacity){
 
       //Decide a file to delete and delete from fog_stored_contents_list
-      delete_older_file(fog_stored_contents_list, last_used, dynamic_fog_num);
+      delete_older_file(fog_node.fog_stored_contents_list, last_used, dynamic_fog_num);
 
-      used_capacity = Fog_mng.calc_used_capacity(fog_stored_contents_list);
+      Fog_mng.calc_used_capacity(fog_node);
       
       loop_count += 1;
       if(loop_count > 10){
@@ -91,24 +78,12 @@ public class Data_mng {
         System.exit(-1);
       }
     }
-
-    //Replace with new Info
-    var temp_Data = new Data_info(data_num, data.file_size, data.expire_after, hosted_by_list);//Incomplete
-    Environment.network_contents_list.remove(data);
-    Environment.network_contents_list.add(temp_Data);
-
-    //Replace with new Dynamic_Fog Information
-    Environment.dynamic_fog_list.remove(dynamic_fog);
-    var temp_Storage = new Fog_info(dynamic_fog_num, Environment.FOG_IS_OK, total_capacity, used_capacity, fog_stored_contents_list);
-    Environment.dynamic_fog_list.add(temp_Storage);
   }
 
   private static void delete(int delete_file_num){
     Data_info data;
     Fog_info fog_node;
-    var new_fog_stored_contents_list = new ArrayList<Integer>();
     Object obj;
-    int new_used_capacity;
 
     //Load data_hosted_list
     data = get_data_info(delete_file_num);
@@ -116,17 +91,11 @@ public class Data_mng {
       //Load Fog info
       fog_node = Fog_mng.get_fog_info(data.hosted_by_list.get(i));
 
-      //Create new Fog info
-      new_fog_stored_contents_list = fog_node.fog_stored_contents_list;
+      //Update fog_stored_contents_list
       obj = delete_file_num;
-      new_fog_stored_contents_list.remove(obj);
+      fog_node.fog_stored_contents_list.remove(obj);
 
-      new_used_capacity = Fog_mng.calc_used_capacity(new_fog_stored_contents_list);
-      var new_fog_info = new Fog_info(fog_node.node_num, fog_node.status, fog_node.total_capacity, new_used_capacity, new_fog_stored_contents_list);
-
-      //Replace with new info
-      Environment.dynamic_fog_list.remove(fog_node);
-      Environment.dynamic_fog_list.add(new_fog_info);
+      Fog_mng.calc_used_capacity(fog_node);
     }
     Environment.network_contents_list.remove(data);
     Environment.file_deleted += 1;

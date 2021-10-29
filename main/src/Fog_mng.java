@@ -65,7 +65,6 @@ public class Fog_mng {
 
   private static void unregister(Fog_info delete_df){
     Data_info data;
-    var new_hosted_by_list = new ArrayList<Integer>();
     Object obj;
 
     if(DEBUG) System.out.println("Dynamic_Fog Node " + delete_df.node_num + " is now deleting.");
@@ -73,16 +72,10 @@ public class Fog_mng {
       data = null;
       data = Data_mng.get_data_info(delete_df.fog_stored_contents_list.get(i));
 
-      //Creating new info
-      new_hosted_by_list = data.hosted_by_list;
+      //Update Data_info
       obj = delete_df.node_num;
-      new_hosted_by_list.remove(obj);
-      var new_data = new Data_info(data.num, data.file_size, data.expire_after, new_hosted_by_list);
-
-      //Replace with new info
-      Environment.network_contents_list.remove(data);
-      Environment.network_contents_list.add(new_data);
-    }
+      data.hosted_by_list.remove(obj);
+}
     Environment.dynamic_fog_list.remove(delete_df);
   }
 
@@ -150,17 +143,17 @@ public class Fog_mng {
     return result;
   }
 
-  static int calc_used_capacity(ArrayList<Integer> fog_stored_contents_list){
+  static void calc_used_capacity(Fog_info dynamic_fog){
     Data_info data;
     int used_capacity = 0;
     int data_num;
     
-    for(int i = 0; i < fog_stored_contents_list.size(); i++){
-      data_num = fog_stored_contents_list.get(i);
+    for(int i = 0; i < dynamic_fog.fog_stored_contents_list.size(); i++){
+      data_num = dynamic_fog.fog_stored_contents_list.get(i);
       data = Data_mng.get_data_info(data_num);
       used_capacity += data.file_size;
     }
-    return used_capacity;
+    dynamic_fog.used_capacity = used_capacity;
   }
 
   static void print_detail(){
