@@ -45,7 +45,7 @@ public class Mode5 {
           if(DEBUG) System.out.println("Node "+ Environment.node_list.get(i).num + " (" + Environment.node_list.get(i).point.x + ", " + Environment.node_list.get(i).point.y + ")");
         }
         if(Environment.node_list.get(i).reached == true) {
-          Fog_mng.dynamic_fog_dead_judge(i);
+          if(Environment.node_list.get(i).dynamic_fog == true) Fog_mng.dynamic_fog_dead_judge(i);
           if(DEBUG) System.out.println("Node " + Environment.node_list.get(i).num + " is now deleteing.");
           Environment.node_list.remove(i);
           i -= 1;

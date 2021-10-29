@@ -13,6 +13,8 @@ class Node_info{
   int num;
   Point2D.Double point = new Point2D.Double();
   Point2D.Double destination = new Point2D.Double();
+  boolean stay;
+  int stay_time;
   int data_refresh_time;
   boolean dynamic_fog;
   boolean goal_nearby;
@@ -20,10 +22,12 @@ class Node_info{
   int move_speed;
   double battery_remain_percentage;
 
-  public Node_info(int num, Point2D.Double point, Point2D.Double destination, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage){
+  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean stay, int stay_time, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage){
     this.num = num;
     this.point = point;
     this.destination = destination;
+    this.stay = stay;
+    this.stay_time = stay_time;
     this.data_refresh_time = data_refresh_time;
     this.dynamic_fog = dynamic_fog;
     this.goal_nearby = goal_nearby;

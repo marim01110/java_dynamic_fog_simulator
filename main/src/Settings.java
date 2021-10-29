@@ -2,10 +2,12 @@ public class Settings {
       //------SIMULATION SETTINGS------
       static final boolean DEBUG = true;
       static final boolean FOG_USE = true;
-      static final int SIM_TIME = 43200;
+      static final int SIM_TIME = 100;
       static final int EDGE_DIST = 1800;
-      static final int INIT_MAX_NODES = 4000;
+      static final int INIT_MAX_NODES = 2;
       static final int CONTENTS_REFLESH_TIME = 60;
+      static final int STAY_MIN_TIME = 3;// Unit is minites
+      static final int STAY_MAX_TIME = 10;// Unit is minites
       static final double BT_CONNECTION_RANGE = 50;
   
       //------MODE 5 SETTINGS------
@@ -19,13 +21,13 @@ public class Settings {
       static final int CONTENTS_TYPES_MAX = 10;
       static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
       static final int CONTENTS_EXPIRE_AFTER = 600;
-      static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
+      static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 100;
       static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
   
       //------LANDMARK SETTINGS------
       static final int LANDMARKS = 3;
-      static final int[] landmark_point_x_array = {1000, 800, 500};
-      static final int[] landmark_point_y_array = {1000, 200, 500};
+      static final int[] landmark_point_x_array = {1000, 1800, 0};
+      static final int[] landmark_point_y_array = {1000, 1800, 0};
     
       //------NODE MOVE SPEED SETTINGS------
       static final int MOVE_SPEEDS = 4;

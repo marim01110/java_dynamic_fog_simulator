@@ -8,7 +8,8 @@ public class Node_mng {
     Random rand = new Random();
     Point2D.Double start = new Point2D.Double();
     Point2D.Double destination = new Point2D.Double();
-    int point_index, destination_index, data_refresh_time, move_speed, move_speed_index;
+    boolean stay;
+    int point_index, destination_index, stay_time, data_refresh_time, move_speed, move_speed_index;
     double battery_remain_percentage;
 
     do{
@@ -19,11 +20,14 @@ public class Node_mng {
 
     start.setLocation(Environment.return_landmark_point(point_index));
     destination.setLocation(Environment.return_landmark_point(destination_index));
+    stay = rand.nextBoolean();
+    stay_time = 0;
+    if(stay == true) stay_time = Settings.STAY_MIN_TIME * 60 + rand.nextInt(Settings.STAY_MAX_TIME - Settings.STAY_MIN_TIME) * 60;
     data_refresh_time = rand.nextInt(Settings.CONTENTS_REFLESH_TIME);
     move_speed = Environment.return_move_speed(move_speed_index);
     battery_remain_percentage = rand.nextDouble(Settings.BATTERY_INIT_MAX_PERCENTAGE - Settings.BATTERY_INIT_MIN_PERCENTAGE) + Settings.BATTERY_INIT_MIN_PERCENTAGE;
 
-    var newnode = new Node_info(node_leased, start, destination, data_refresh_time, false, false, false, move_speed, battery_remain_percentage);
+    var newnode = new Node_info(node_leased, start, destination, stay, stay_time, data_refresh_time, false, false, false, move_speed, battery_remain_percentage);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
     Environment.node_list.add(newnode);
   }
@@ -95,5 +99,16 @@ public class Node_mng {
                         System.exit(-1);
                         break;
     }
+  }
+
+  static void keep_alive(){
+    /* Node reach detection */
+
+    /* Down detection for Dynamic Fog */
+
+    /* Share all device's location data */
+    //battery_drain
+
+    /* Adjust Dynamic Fog */
   }
 }
