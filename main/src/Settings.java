@@ -31,7 +31,7 @@ public class Settings {
     
       //------NODE MOVE SPEED SETTINGS------
       static final int MOVE_SPEEDS = 4;
-      static final int[] move_speed_array = {55, 80, 250, 330};
+      static final int[] move_speed_array = {1, 2, 4, 6};// Unit is meters/second
   
       /*
       http://www.yspc-ysmc.jp/ysmc/column/health-fitness/walking-2.html
