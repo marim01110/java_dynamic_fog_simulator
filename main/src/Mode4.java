@@ -16,7 +16,6 @@ public class Mode4 {
 
     //Simuration Start
     Environment.time_count = 0;
-    if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn();
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){

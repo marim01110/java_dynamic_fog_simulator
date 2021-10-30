@@ -24,14 +24,6 @@ public class Data_mng {
     return data;
   }
 
-  static void fixed_respawn(){
-    int contents = Environment.network_contents_list.size();
-
-    for (int i = contents; i < Settings.CONTENTS_TYPES_MAX; i++) {
-      create();
-    }
-  }
-
   static int create(){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
