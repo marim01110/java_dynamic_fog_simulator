@@ -59,8 +59,8 @@ public class Data_transfer {
     }
 
     if(need_data == null){
-      Data_mng.create();
-      System.out.println("ERROR!! YEAH!");
+      Data_mng.print_detail();
+      need_data = Data_mng.get_data_info(Data_mng.create());
     }
 
     //Data search in the nearest Dynamic Fog

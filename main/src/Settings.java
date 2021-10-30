@@ -4,7 +4,7 @@ public class Settings {
   static final boolean FOG_USE = true;
   static final int SIM_TIME = 43200;
   static final int EDGE_DIST = 1800;
-  static final int INIT_MAX_NODES = 4000;
+  static final int INIT_MAX_NODES = 100;
   static final int CONTENTS_REFLESH_TIME = 60;
   static final int STAY_MIN_TIME = 3;// Unit is minites
   static final int STAY_MAX_TIME = 10;// Unit is minites

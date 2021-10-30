@@ -32,7 +32,7 @@ public class Data_mng {
     }
   }
 
-  static void create(){
+  static int create(){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
     int data_num, data_size, data_expire_after;
@@ -46,6 +46,7 @@ public class Data_mng {
     Environment.network_contents_list.add(temp_Data);
 
     cache_data_total += 1;
+    return temp_Data.num;
   }
 
   static void update(ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
@@ -102,11 +103,13 @@ public class Data_mng {
   }
 
   static int select(){
-    int need_data_num;
+    int need_data_num, contents_total;
     Random rand = new Random();
 
     if(Settings.CONTENTS_TYPES_FIXED){
-      need_data_num = rand.nextInt(Settings.CONTENTS_TYPES_MAX) + Environment.file_deleted;
+      contents_total = Environment.network_contents_list.size();
+      if(contents_total >= Settings.CONTENTS_TYPES_MAX) need_data_num = rand.nextInt(Settings.CONTENTS_TYPES_MAX);
+      else need_data_num = rand.nextInt(contents_total + 1);
     }
     else{
       need_data_num = rand.nextInt(cache_data_total + 1);
@@ -194,6 +197,7 @@ public class Data_mng {
         System.out.println();
         System.out.println("Data num: " + data.num);
         System.out.println("Data size: " + data.file_size);
+        System.out.println("Expire After: " + data.expire_after);
         System.out.println("Cached by total: " + data.hosted_by_list.size());
         System.out.println("Cached by: " + data.hosted_by_list);
         System.out.println();
