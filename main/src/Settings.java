@@ -6,8 +6,8 @@ public class Settings {
   static final int EDGE_DIST = 1800;
   static final int INIT_MAX_NODES = 4000;
   static final int CONTENTS_REFLESH_TIME = 60;
-  static final int STAY_MIN_TIME = 3;// Unit is minites
-  static final int STAY_MAX_TIME = 10;// Unit is minites
+  static final int STAY_MIN_TIME = 3;// Unit is minites. Not Used.
+  static final int STAY_MAX_TIME = 10;// Unit is minites. Not Used.
   static final double BT_CONNECTION_RANGE = 50;
 
   //------MODE 5 SETTINGS------
@@ -18,7 +18,7 @@ public class Settings {
   //------FOG SETTINGS------
   static final int FOG_STORAGE_SIZE = 100000;
   static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/10/24 11:40 p.m.).
-  static final int CONTENTS_TYPES_MAX = 10;
+  static final int CONTENTS_TYPES_MAX = 500;
   static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
   static final int CONTENTS_EXPIRE_AFTER = 600;
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;

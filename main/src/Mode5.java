@@ -24,7 +24,6 @@ public class Mode5 {
         //Fog_mng.keep_alive();
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_leased);
       }
-      if(Settings.CONTENTS_TYPES_FIXED) Data_mng.fixed_respawn();
 
       //Change MAX_NODES value.
       stage = Environment.change_stages(Environment.time_count, stage);
