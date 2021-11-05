@@ -106,6 +106,7 @@ public class Data_mng {
     else{
       need_data_num = rand.nextInt(cache_data_total + 1);
     }
+    need_data_num += Environment.file_deleted;
     return need_data_num;
   }
 
