@@ -137,6 +137,7 @@ public class Data_mng {
         i -= 1;
       }
     }
+    Statistics.for_calc_contents_average += Environment.network_contents_list.size();
   }
 
   static void update_delete_order(ArrayList<Integer> last_used, int data_num){
