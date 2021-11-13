@@ -2,12 +2,16 @@ public class Settings {
   //------SIMULATION SETTINGS------
   static final boolean DEBUG = false;
   static final boolean FOG_USE = true;
-  static final int SIM_TIME = 43200;
+  static final int SIM_TIME = 2000;
   static final int EDGE_DIST = 1800;
   static final int INIT_MAX_NODES = 4000;
   static final int CONTENTS_REFLESH_TIME = 60;
   static final int STAY_MIN_TIME = 3;// Unit is minites. Not Used.
   static final int STAY_MAX_TIME = 10;// Unit is minites. Not Used.
+  static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is ms.
+  static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is ms.
+  static final double RTT_CLOUD = 28.91;// Unit is ms.
+  static final boolean BLUETOOTH_USE = true;
   static final double BT_CONNECTION_RANGE = 50;
 
   //------MODE 5 SETTINGS------

@@ -7,6 +7,8 @@ public class Mode4 {
   static void main(){
     var last_used = new ArrayList<Integer>();
     int node_leased = 0;
+    boolean transfer;
+    Node_info node;
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
@@ -37,7 +39,12 @@ public class Mode4 {
       }
 
       //Data Transfer Process
-      Data_transfer.start(last_used, Environment.time_count);
+      for(int i = 0; i < Environment.node_list.size(); i++){
+        node = Environment.node_list.get(i);
+        transfer = Data_transfer.check_contents(node);
+        if(transfer) Data_transfer.main(node, last_used);
+      }
+      Data_mng.valid_check();
       Data_mng.valid_check();
 
       System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
