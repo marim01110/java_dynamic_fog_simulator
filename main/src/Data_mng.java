@@ -17,8 +17,8 @@ public class Data_mng {
     }
     if(data == null){
       System.out.println("Requested data: " + need_data_num + " is Not Found.");
-      System.out.println("Quit the program.");
-      System.exit(-1);
+      //System.out.println("Quit the program.");
+      //System.exit(-1);
     }
 
     return data;
