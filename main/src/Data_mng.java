@@ -16,12 +16,18 @@ public class Data_mng {
       }
     }
     if(data == null){
-      System.out.println("Requested data: " + need_data_num + " is Not Found.");
-      //System.out.println("Quit the program.");
-      //System.exit(-1);
+      if(DEBUG) System.out.println("Requested data: " + need_data_num + " is Not Found.");
     }
 
     return data;
+  }
+
+  static void check_data_info_is_not_null(Data_info data){
+    if(data == null){
+      System.out.println("Error: Data_info is null.");
+      System.out.println("Quit the program.");
+      System.exit(-1);
+    }
   }
 
   static int create(){
@@ -47,6 +53,7 @@ public class Data_mng {
     int loop_count = 0;
 
     data = get_data_info(data_num);
+    check_data_info_is_not_null(data);
     fog_node = Fog_mng.get_fog_info(dynamic_fog_num);
 
     //Update network_contents_list Process
@@ -80,6 +87,7 @@ public class Data_mng {
 
     //Load data_hosted_list
     data = get_data_info(delete_file_num);
+    check_data_info_is_not_null(data);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       //Load Fog info
       fog_node = Fog_mng.get_fog_info(data.hosted_by_list.get(i));
@@ -174,6 +182,7 @@ public class Data_mng {
 
     //Delete from hosted_by_list
     data = get_data_info(delete_file_num);
+    check_data_info_is_not_null(data);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       if(data.hosted_by_list.get(i) == dynamic_fog_num){
         data.hosted_by_list.remove(i);
