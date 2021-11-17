@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
@@ -14,13 +13,13 @@ public class Data_transfer {
     return transfer;
   }
 
-  static void main(Node_info node, ArrayList<Integer> last_used){
+  static void main(Node_info node){
     int need_data_num;
     Node_info nearest_dynamic_fog = null;
     var near_dynamic_fogs_list = new ArrayList<Integer>();
     
     need_data_num = Data_mng.select();
-    Data_mng.update_delete_order(last_used, need_data_num);
+    Data_mng.update_delete_order(need_data_num);
 
     if(Settings.FOG_USE){
       near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node);
@@ -38,24 +37,23 @@ public class Data_transfer {
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
     }
     else{
-      start(near_dynamic_fogs_list, last_used, node, need_data_num);
+      start(near_dynamic_fogs_list, node, need_data_num);
     }
   }
 
-  private static void start(ArrayList<Integer> near_dynamic_fogs_list, ArrayList<Integer> last_used, Node_info request_node, int need_data_num){
+  private static void start(ArrayList<Integer> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
     Data_info need_data = null;
     Node_info nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0));// Maintainance required (2021/11/14 12:55 a.m.)
     Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
     boolean bluetooth_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
 
     //Get need_data information
-    need_data = Data_mng.get_data_info(need_data_num);
+    need_data = Data_mng.get_data_info(need_data_num, false);
     if(need_data == null){
       /* Create new data */
       int temp = Data_mng.create();
       if(DEBUG) System.out.println("Data created.");
-      need_data = Data_mng.get_data_info(temp);
-      Data_mng.check_data_info_is_not_null(need_data);
+      need_data = Data_mng.get_data_info(temp, true);
     }
 
     //Data search in the nearest Dynamic Fog
@@ -95,14 +93,19 @@ public class Data_transfer {
     if(found_in_lan){
       if(bluetooth_range){
         from_local_cellular(sender_node, nearest_dynamic_fog);
-        Data_mng.update(last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
         if(DEBUG) System.out.println("Data was downloaded from Local Network and copied to the Nearest DF.");
       }
       else{
-        from_local_cellular(sender_node, request_node);
+        if(copy_control(need_data)){
+          from_local_cellular(sender_node, nearest_dynamic_fog);
+          Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+          from_local_cellular(nearest_dynamic_fog, request_node);
+        }
+        else from_local_cellular(sender_node, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
         if(DEBUG) System.out.println("Data was downloaded from Local Network.");
@@ -111,7 +114,8 @@ public class Data_transfer {
 
     if(data_downloaded == false){
       from_cloud_cellular(nearest_dynamic_fog);
-      Data_mng.update(last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+      Statistics.data_size_via_internet_proposed += need_data.file_size;
+      Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
       if(bluetooth_range){
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
@@ -132,6 +136,7 @@ public class Data_transfer {
       System.exit(-1);
     }
 
+    Statistics.data_size_via_internet_conventional += need_data.file_size;
     Statistics.for_calc_latency_conventional += Settings.RTT_CLOUD;
     Statistics.data_transfered += 1;
   }
@@ -153,41 +158,18 @@ public class Data_transfer {
     Statistics.for_calc_latency_proposed += Settings.RTT_CLOUD;
   }
 
-  private static boolean search_with_copy_controled(ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
-    var rand = new Random();
-    int need_data_hosted_by_total, dynamic_fog_total_nodes, another_dynamic_fog_node_num;
-    Fog_info another_dynamic_fog = null;// Not used.
-    boolean data_downloaded = false;
+  private static boolean copy_control(Data_info need_data){
+    boolean copy = false;
+    int need_data_hosted_by_total, dynamic_fog_total_nodes;
 
     need_data_hosted_by_total = need_data.hosted_by_list.size();
     dynamic_fog_total_nodes = Environment.dynamic_fog_list.size();
 
     if(DEBUG) System.out.println("hosted by " + need_data_hosted_by_total + " nodes, Max dupulication is " + dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100);
 
-    /* Set dynamic fog which has need_data */
-    another_dynamic_fog_node_num = Environment.dynamic_fog_list.get(rand.nextInt(dynamic_fog_total_nodes)).node_num;
-    another_dynamic_fog = Fog_mng.get_fog_info(another_dynamic_fog_node_num);
+    if(need_data_hosted_by_total <= dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100) copy = true;
+    else copy = false;
 
-    if(need_data_hosted_by_total <= dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100){
-      Data_mng.update(last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
-      /* Need to add power comsumption code */
-      if(DEBUG) System.out.println("Dupulicated");
-    }
-    else{
-      /* Need to add power comsumption code */
-      if(DEBUG) System.out.println("Dupulication cancelled");
-    }
-
-    data_downloaded = true;
-    Statistics.dl_from_local += 1;
-    if(DEBUG) System.out.println("Data Copied from Local Network.");
-
-    return data_downloaded;
-  }
-
-  /* private */ static boolean copy_control(){
-    boolean result = false;
-
-    return result;
+    return copy;
   }
 }

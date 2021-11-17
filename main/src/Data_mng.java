@@ -6,7 +6,7 @@ public class Data_mng {
   private static final int INIT = -1;
   static int cache_data_total = 0;
 
-  static Data_info get_data_info(int need_data_num){
+  static Data_info get_data_info(int need_data_num, boolean deny_null){
     Data_info data = null;
 
     for(int i = 0; i < Environment.network_contents_list.size(); i++){
@@ -17,17 +17,14 @@ public class Data_mng {
     }
     if(data == null){
       if(DEBUG) System.out.println("Requested data: " + need_data_num + " is Not Found.");
+      if(deny_null){
+        System.out.println("Error: Data_info is null.");
+        System.out.println("Quit the program.");
+        System.exit(-1);
+      }
     }
 
     return data;
-  }
-
-  static void check_data_info_is_not_null(Data_info data){
-    if(data == null){
-      System.out.println("Error: Data_info is null.");
-      System.out.println("Quit the program.");
-      System.exit(-1);
-    }
   }
 
   static int create(){
@@ -47,13 +44,12 @@ public class Data_mng {
     return temp_Data.num;
   }
 
-  static void update(ArrayList<Integer> last_used, int dynamic_fog_num, int data_num){
+  static void update(int dynamic_fog_num, int data_num){
     Data_info data;
     Fog_info fog_node;
     int loop_count = 0;
 
-    data = get_data_info(data_num);
-    check_data_info_is_not_null(data);
+    data = get_data_info(data_num, true);
     fog_node = Fog_mng.get_fog_info(dynamic_fog_num);
 
     //Update network_contents_list Process
@@ -67,7 +63,7 @@ public class Data_mng {
     while(fog_node.total_capacity < fog_node.used_capacity){
 
       //Decide a file to delete and delete from fog_stored_contents_list
-      delete_older_file(fog_node.fog_stored_contents_list, last_used, dynamic_fog_num);
+      delete_older_file(fog_node.fog_stored_contents_list, dynamic_fog_num);
 
       Fog_mng.calc_used_capacity(fog_node);
       
@@ -86,8 +82,7 @@ public class Data_mng {
     Object obj;
 
     //Load data_hosted_list
-    data = get_data_info(delete_file_num);
-    check_data_info_is_not_null(data);
+    data = get_data_info(delete_file_num, true);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       //Load Fog info
       fog_node = Fog_mng.get_fog_info(data.hosted_by_list.get(i));
@@ -148,27 +143,27 @@ public class Data_mng {
     Statistics.for_calc_contents_average += Environment.network_contents_list.size();
   }
 
-  static void update_delete_order(ArrayList<Integer> last_used, int data_num){
-    for(int i = 0; i < last_used.size(); i++){
-      if(last_used.get(i) == data_num){
-        last_used.remove(i);
+  static void update_delete_order(int data_num){
+    for(int i = 0; i < Environment.last_used.size(); i++){
+      if(Environment.last_used.get(i) == data_num){
+        Environment.last_used.remove(i);
       }
     }
-    last_used.add(data_num);
+    Environment.last_used.add(data_num);
   }
 
-  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, ArrayList<Integer> last_used, int dynamic_fog_num){
+  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, int dynamic_fog_num){
     Data_info data;
     int delete_file_num = INIT;
 
     //if(DEBUG) System.out.println("Current delete order is " + last_used);
 
     // Delete from fog_stored_contents_list
-    for(int i = 0; i < last_used.size(); i++){
+    for(int i = 0; i < Environment.last_used.size(); i++){
       for(int j = 0; j < fog_stored_contents_list.size(); j++){
-        if((last_used.get(i) - fog_stored_contents_list.get(j)) == 0){
+        if((Environment.last_used.get(i) - fog_stored_contents_list.get(j)) == 0){
           fog_stored_contents_list.remove(j);
-          delete_file_num = last_used.get(i);
+          delete_file_num = Environment.last_used.get(i);
           break;
         }
       }
@@ -181,8 +176,7 @@ public class Data_mng {
     }
 
     //Delete from hosted_by_list
-    data = get_data_info(delete_file_num);
-    check_data_info_is_not_null(data);
+    data = get_data_info(delete_file_num, true);
     for(int i = 0; i < data.hosted_by_list.size(); i++){
       if(data.hosted_by_list.get(i) == dynamic_fog_num){
         data.hosted_by_list.remove(i);

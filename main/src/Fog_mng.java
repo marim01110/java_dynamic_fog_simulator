@@ -73,8 +73,7 @@ public class Fog_mng {
     if(DEBUG) System.out.println("Dynamic_Fog Node " + delete_df.node_num + " is now deleting.");
     for(int i = 0; i < delete_df.fog_stored_contents_list.size(); i++){
       data = null;
-      data = Data_mng.get_data_info(delete_df.fog_stored_contents_list.get(i));
-      Data_mng.check_data_info_is_not_null(data);
+      data = Data_mng.get_data_info(delete_df.fog_stored_contents_list.get(i), true);
 
       //Update Data_info
       obj = delete_df.node_num;
@@ -154,8 +153,7 @@ public class Fog_mng {
     
     for(int i = 0; i < dynamic_fog.fog_stored_contents_list.size(); i++){
       data_num = dynamic_fog.fog_stored_contents_list.get(i);
-      data = Data_mng.get_data_info(data_num);
-      Data_mng.check_data_info_is_not_null(data);
+      data = Data_mng.get_data_info(data_num, true);
       used_capacity += data.file_size;
     }
     dynamic_fog.used_capacity = used_capacity;

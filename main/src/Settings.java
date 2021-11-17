@@ -8,9 +8,9 @@ public class Settings {
   static final int CONTENTS_REFLESH_TIME = 60;
   static final int STAY_MIN_TIME = 3;// Unit is minites.
   static final int STAY_MAX_TIME = 10;// Unit is minites.
-  static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is ms.
-  static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is ms.
-  static final double RTT_CLOUD = 28.91;// Unit is ms.
+  static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is milliseconds.
+  static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is milliseconds.
+  static final double RTT_CLOUD = 28.91;// Unit is milliseconds.
   static final boolean BLUETOOTH_USE = true;
   static final double BT_CONNECTION_RANGE = 50;
 
