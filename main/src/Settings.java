@@ -2,12 +2,16 @@ public class Settings {
   //------SIMULATION SETTINGS------
   static final boolean DEBUG = false;
   static final boolean FOG_USE = true;
-  static final int SIM_TIME = 43200;
+  static final int SIM_TIME = 2000;
   static final int EDGE_DIST = 1800;
   static final int INIT_MAX_NODES = 4000;
   static final int CONTENTS_REFLESH_TIME = 60;
-  static final int STAY_MIN_TIME = 3;// Unit is minites. Not Used.
-  static final int STAY_MAX_TIME = 10;// Unit is minites. Not Used.
+  static final int STAY_MIN_TIME = 3;// Unit is minites.
+  static final int STAY_MAX_TIME = 10;// Unit is minites.
+  static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is milliseconds.
+  static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is milliseconds.
+  static final double RTT_CLOUD = 28.91;// Unit is milliseconds.
+  static final boolean BLUETOOTH_USE = true;
   static final double BT_CONNECTION_RANGE = 50;
 
   //------MODE 5 SETTINGS------
@@ -17,8 +21,8 @@ public class Settings {
 
   //------FOG SETTINGS------
   static final int FOG_STORAGE_SIZE = 100000;
-  static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/10/24 11:40 p.m.).
-  static final int CONTENTS_TYPES_MAX = 500;
+  static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/11/17 8:56 p.m.).
+  static final int CONTENTS_TYPES_MAX = 300;
   static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
   static final int CONTENTS_EXPIRE_AFTER = 600;
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
@@ -31,7 +35,7 @@ public class Settings {
 
   //------NODE MOVE SPEED SETTINGS------
   static final int MOVE_SPEEDS = 4;
-  static final int[] move_speed_array = {1, 2, 4, 6};// Unit is meters/second
+  static final int[] move_speed_array = {1, 2, 4, 6};// Unit is meters per second.
 
   /*
   http://www.yspc-ysmc.jp/ysmc/column/health-fitness/walking-2.html

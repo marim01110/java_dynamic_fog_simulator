@@ -1,66 +1,59 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
-  
-  static void start(ArrayList<Integer> last_used, int time_count){
-    boolean transfer;
-    Node_info current_node, nearest_dynamic_fog = null;
-    int reflesh_node, need_data_num;
+
+  static boolean check_contents(Node_info node){
+    boolean transfer = false;
+    int reflesh_node;
+
+    reflesh_node = Environment.time_count % Settings.CONTENTS_REFLESH_TIME;
+
+    if(reflesh_node == node.data_refresh_time) transfer = true;
+    return transfer;
+  }
+
+  static void main(Node_info node){
+    int need_data_num;
+    Node_info nearest_dynamic_fog = null;
     var near_dynamic_fogs_list = new ArrayList<Integer>();
+    
+    need_data_num = Data_mng.select();
+    Data_mng.update_delete_order(need_data_num);
 
-    reflesh_node = time_count % Settings.CONTENTS_REFLESH_TIME;
-    for(int i = 0; i < Environment.node_list.size(); i++){
-      transfer = false;
-      current_node = Environment.node_list.get(i);
+    if(Settings.FOG_USE){
+      near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node);
+      nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0)); 
+    }
+    if(DEBUG){
+      System.out.print("Node_num: " + node.num + ", Req. data: " + need_data_num);
+      if(nearest_dynamic_fog != null) System.out.println(", Nearest DF: " + nearest_dynamic_fog.num);
+      else System.out.println();
+    }
 
-      if(reflesh_node == current_node.data_refresh_time) transfer = true;
-
-      if(transfer){
-        need_data_num = Data_mng.select();
-        Data_mng.update_delete_order(last_used, need_data_num);
-        
-        if(Settings.FOG_USE){
-          near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(current_node);
-          nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0)); 
-        }
-        if(DEBUG){
-          System.out.print("Node_num: " + current_node.num + ", Req. data: " + need_data_num);
-          if(nearest_dynamic_fog != null) System.out.println(", Nearest DF: " + nearest_dynamic_fog.num);
-          else System.out.println();
-        }
-          
-        if(nearest_dynamic_fog == null){//Fog feature not used. so all files download from cloud.
-          Node_mng.battery_drain(current_node, "cellular", "recv");
-          Statistics.dl_from_cloud += 1;
-          if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
-        }
-        else{
-          search(near_dynamic_fogs_list, last_used, current_node, need_data_num);
-        }
-        Statistics.data_transfered += 1;
-      }
+    if(nearest_dynamic_fog == null){//Fog feature not used. so all files download from cloud.
+      Node_mng.battery_drain(node, "cellular", "recv");
+      Statistics.dl_from_cloud += 1;
+      if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+    }
+    else{
+      start(near_dynamic_fogs_list, node, need_data_num);
     }
   }
 
-  private static void search(ArrayList<Integer> near_dynamic_fogs_list, ArrayList<Integer> last_used, Node_info current_node, int need_data_num){
-    double distance_df_edge;
+  private static void start(ArrayList<Integer> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
     Data_info need_data = null;
-    Node_info nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0));
-    boolean found_in_df = false, found_in_lan = false, data_downloaded = false;
-    
-    //Get need_data
-    for(int i = 0; i < Environment.network_contents_list.size(); i++){
-      if(need_data_num == Environment.network_contents_list.get(i).num){
-        need_data = Environment.network_contents_list.get(i);
-        break;
-      }
-    }
+    Node_info nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0));// Maintainance required (2021/11/14 12:55 a.m.)
+    Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
+    boolean bluetooth_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
 
+    //Get need_data information
+    need_data = Data_mng.get_data_info(need_data_num, false);
     if(need_data == null){
+      /* Create new data */
       int temp = Data_mng.create();
-      need_data = Data_mng.get_data_info(temp);
+      if(DEBUG) System.out.println("Data created.");
+      need_data = Data_mng.get_data_info(temp, true);
     }
 
     //Data search in the nearest Dynamic Fog
@@ -70,74 +63,70 @@ public class Data_transfer {
         break;
       }
     }
+    if(Settings.BLUETOOTH_USE){
+      if(request_node.point.distance(nearest_dynamic_fog.point) <= Settings.BT_CONNECTION_RANGE) bluetooth_range = true;
+    }
+    else bluetooth_range = false;
 
-    //Data search in Local Network
-    if(need_data.hosted_by_list.size() > 0) found_in_lan = true;
-
-    //Check distance the nearest DF and edge.
-    distance_df_edge = current_node.point.distance(nearest_dynamic_fog.point);
-    if(Settings.BT_CONNECTION_RANGE >= distance_df_edge){
-      if(found_in_df){
-        //The requested data is found in the nearest DF (and get by bluetooth).
-        Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
-        Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.
+    if(found_in_df){
+      if(bluetooth_range){
+        from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
-        Statistics.dl_from_nearest_df += 1;
-        if(DEBUG) System.out.println("Data was found in Nearest DF.");
+        Statistics.dl_from_nearest_df_bluetooth += 1;
+        if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Bluetooth.");
       }
       else{
-        if(found_in_lan){
-          if(near_dynamic_fogs_list.size() > 1){
-            //Search Dynamic Fogs which in BT connection's range.
-            for(int i = 0; i < near_dynamic_fogs_list.size(); i++){
-              Node_info temp_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(i));
-              //Data search in the Dynamic Fog
-              for(int j = 0; j < need_data.hosted_by_list.size(); j++){
-                if(temp_dynamic_fog.num == need_data.hosted_by_list.get(j)){
-                  found_in_df = true;
-                  break;
-                }
-              }
-              if(found_in_df){
-                //The requested data is found in the neighbor DF (and get by bluetooth).
-                Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
-                Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.
-                data_downloaded = true;
-                Statistics.dl_from_nearest_df += 1;
-                if(DEBUG) System.out.println("Data was found in Nearest DF.");
-              }
-              if(data_downloaded == true) break;
-            }
-          }
-          if(data_downloaded != true){
-            data_downloaded = search_with_copy_controled(last_used, nearest_dynamic_fog, current_node, need_data);
-          }
-        }
-        else{
-          //The requested data is not found in Local Network (DL from Cloud and send by bluetooth).
-          Data_mng.update(last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
-          Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from Cloud.
-          Node_mng.battery_drain(nearest_dynamic_fog, "bluetooth", "send");//UL to Edge.
-          Node_mng.battery_drain(current_node, "bluetooth", "recv");//DL from DF.
-          data_downloaded = true;
-          Statistics.dl_from_cloud += 1;
-          if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
-        }
+        from_local_cellular(nearest_dynamic_fog, request_node);
+        data_downloaded = true;
+        Statistics.dl_from_nearest_df_cell += 1;
+        if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Cellular.");
       }
     }
-    else{
-      if(found_in_lan){
-        data_downloaded = search_with_copy_controled(last_used, nearest_dynamic_fog, current_node, need_data);
+
+    if(data_downloaded == false){
+      if(need_data.hosted_by_list.size() > 0){
+        found_in_lan = true;
+        sender_node = Node_mng.get_node_info(need_data.hosted_by_list.get(0));
+      }
+    }
+
+    if(found_in_lan){
+      if(bluetooth_range){
+        from_local_cellular(sender_node, nearest_dynamic_fog);
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
+        data_downloaded = true;
+        Statistics.dl_from_local += 1;
+        if(DEBUG) System.out.println("Data was downloaded from Local Network and copied to the Nearest DF.");
       }
       else{
-        //The requested data is not found in Local Network (DL from Cloud and send by cellular).
-        Data_mng.update(last_used, nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
-        Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "recv");//DL from Cloud.
-        Node_mng.battery_drain(nearest_dynamic_fog, "cellular", "send");//UL to Edge.
-        Node_mng.battery_drain(current_node, "cellular", "recv");//DL from DF.
+        if(copy_control(need_data)){
+          from_local_cellular(sender_node, nearest_dynamic_fog);
+          Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+          from_local_cellular(nearest_dynamic_fog, request_node);
+        }
+        else from_local_cellular(sender_node, request_node);
+        data_downloaded = true;
+        Statistics.dl_from_local += 1;
+        if(DEBUG) System.out.println("Data was downloaded from Local Network.");
+      }
+    }
+
+    if(data_downloaded == false){
+      from_cloud_cellular(nearest_dynamic_fog);
+      Statistics.data_size_via_internet_proposed += need_data.file_size;
+      Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+      if(bluetooth_range){
+        from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_cloud += 1;
-        if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
+        if(DEBUG) System.out.println("Data was downloaded from Cloud and copied to the Nearest DF.");
+      }
+      else{
+        from_local_cellular(nearest_dynamic_fog, request_node);
+        data_downloaded = true;
+        Statistics.dl_from_cloud += 1;
+        if(DEBUG) System.out.println("Data was downloaded from Cloud and copied to the Nearest DF.");
       }
     }
 
@@ -146,37 +135,41 @@ public class Data_transfer {
       System.out.println("Quit the program.");
       System.exit(-1);
     }
+
+    Statistics.data_size_via_internet_conventional += need_data.file_size;
+    Statistics.for_calc_latency_conventional += Settings.RTT_CLOUD;
+    Statistics.data_transfered += 1;
   }
 
-  private static boolean search_with_copy_controled(ArrayList<Integer> last_used, Node_info nearest_dynamic_fog, Node_info current_node, Data_info need_data){
-    var rand = new Random();
-    int need_data_hosted_by_total, dynamic_fog_total_nodes, another_dynamic_fog_node_num;
-    Fog_info another_dynamic_fog = null;
-    boolean data_downloaded = false;
+  private static void from_nearest_df_bluetooth(Node_info sender_node, Node_info request_node){
+    Node_mng.battery_drain(sender_node, "bluetooth", "send");//UL to Edge.
+    Node_mng.battery_drain(request_node, "bluetooth", "recv");//DL from DF.
+    Statistics.for_calc_latency_proposed += Settings.RTT_DIRECT_BLUETOOTH;
+  }
+
+  private static void from_local_cellular(Node_info sender_node, Node_info request_node){
+    Node_mng.battery_drain(sender_node, "cellular", "send");//UL to Edge.
+    Node_mng.battery_drain(request_node, "cellular", "recv");//DL from DF.
+    Statistics.for_calc_latency_proposed += Settings.RTT_DIRECT_CELLULAR;
+  }
+
+  private static void from_cloud_cellular(Node_info request_node){
+    Node_mng.battery_drain(request_node, "cellular", "recv");//DL from DF.
+    Statistics.for_calc_latency_proposed += Settings.RTT_CLOUD;
+  }
+
+  private static boolean copy_control(Data_info need_data){
+    boolean copy = false;
+    int need_data_hosted_by_total, dynamic_fog_total_nodes;
 
     need_data_hosted_by_total = need_data.hosted_by_list.size();
     dynamic_fog_total_nodes = Environment.dynamic_fog_list.size();
 
     if(DEBUG) System.out.println("hosted by " + need_data_hosted_by_total + " nodes, Max dupulication is " + dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100);
 
-    /* Set dynamic fog which has need_data */
-    another_dynamic_fog_node_num = Environment.dynamic_fog_list.get(rand.nextInt(dynamic_fog_total_nodes)).node_num;
-    another_dynamic_fog = Fog_mng.get_fog_info(another_dynamic_fog_node_num);
+    if(need_data_hosted_by_total <= dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100) copy = true;
+    else copy = false;
 
-    if(need_data_hosted_by_total <= dynamic_fog_total_nodes * Settings.MAX_PERCENTAGE_OF_DUPLICATION / 100){
-      Data_mng.update(last_used, nearest_dynamic_fog.num, need_data.num);//Maintainance required (2021/9/28 12:46 a.m.)
-      /* Need to add power comsumption code */
-      if(DEBUG) System.out.println("Dupulicated");
-    }
-    else{
-      /* Need to add power comsumption code */
-      if(DEBUG) System.out.println("Dupulication cancelled");
-    }
-
-    data_downloaded = true;
-    Statistics.dl_from_local += 1;
-    if(DEBUG) System.out.println("Data Copied from Local Network.");
-
-    return data_downloaded;
+    return copy;
   }
 }

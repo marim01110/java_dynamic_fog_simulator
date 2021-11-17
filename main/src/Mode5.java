@@ -1,18 +1,15 @@
-import java.util.ArrayList;
-
 public class Mode5 {
   private static final boolean DEBUG = Settings.DEBUG;
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
   static void main(){
-    var last_used = new ArrayList<Integer>();
-    int stage = 0;
-    int node_leased = 0;
+    boolean transfer;
+    Node_info node;
 
     //Initialized Array on Dynamic_List
     for(int i = 0; i < MAX_NODES; i++){
-      Node_mng.spawn(node_leased);
-      node_leased += 1;
+      Node_mng.spawn(Environment.node_leased);
+      Environment.node_leased += 1;
     }
 
     //Simuration Start
@@ -22,19 +19,19 @@ public class Mode5 {
       if(Settings.FOG_USE){
         /* Dynamic node Scan */
         //Fog_mng.keep_alive();
-        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(node_leased);
+        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(Environment.node_leased);
       }
 
       //Change MAX_NODES value.
-      stage = Environment.change_stages(Environment.time_count, stage);
-      if(stage != 0){
-        MAX_NODES = Environment.return_max_nodes(stage);
+      Environment.stage = Environment.change_stages(Environment.time_count, Environment.stage);
+      if(Environment.stage != 0){
+        MAX_NODES = Environment.return_max_nodes(Environment.stage);
       }
 
       //Node replenishment.
       while(Environment.node_list.size() < MAX_NODES){
-        Node_mng.spawn(node_leased);
-        node_leased += 1;
+        Node_mng.spawn(Environment.node_leased);
+        Environment.node_leased += 1;
       }
 
       //Node Move Process
@@ -60,10 +57,16 @@ public class Mode5 {
       }
 
       //Data Transfer Process
-      Data_transfer.start(last_used, Environment.time_count);
+      for(int i = 0; i < Environment.node_list.size(); i++){
+        node = Environment.node_list.get(i);
+        transfer = Data_transfer.check_contents(node);
+        if(transfer) Data_transfer.main(node);
+      }
       Data_mng.valid_check();
 
-      System.out.println("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
+      if(!DEBUG) System.out.print("\033[H\033[2J");
+      System.out.print("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
+      if(DEBUG) System.out.println();
     }
     Statistics.print_info();
   }
