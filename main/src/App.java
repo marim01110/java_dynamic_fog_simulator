@@ -21,8 +21,9 @@ class Node_info{
   boolean reached;
   int move_speed;
   double battery_remain_percentage;
+  boolean battery_low;
 
-  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean stay, int stay_time, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage){
+  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean stay, int stay_time, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage, boolean battery_low){
     this.num = num;
     this.point = point;
     this.destination = destination;
@@ -34,6 +35,7 @@ class Node_info{
     this.reached = reached;
     this.move_speed = move_speed;
     this.battery_remain_percentage = battery_remain_percentage;
+    this.battery_low = battery_low;
   }
 }
 

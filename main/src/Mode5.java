@@ -65,7 +65,7 @@ public class Mode5 {
       Data_mng.valid_check();
 
       if(!DEBUG) System.out.print("\033[H\033[2J");
-      System.out.print("Processed time_count " + Environment.time_count + " (" + Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
+      System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100.0 / Settings.SIM_TIME + "% done.)");
       if(DEBUG) System.out.println();
     }
     Statistics.print_info();

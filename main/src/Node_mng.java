@@ -23,11 +23,11 @@ public class Node_mng {
     stay = rand.nextBoolean();
     stay_time = 0;
     if(stay == true) stay_time = Settings.STAY_MIN_TIME * 60 + rand.nextInt(Settings.STAY_MAX_TIME - Settings.STAY_MIN_TIME) * 60;
-    data_refresh_time = rand.nextInt(Settings.CONTENTS_REFLESH_TIME);
+    data_refresh_time = rand.nextInt(Settings.CONTENTS_RETRIEVE_FREQUENCY);
     move_speed = Environment.return_move_speed(move_speed_index);
     battery_remain_percentage = rand.nextDouble(Settings.BATTERY_INIT_MAX_PERCENTAGE - Settings.BATTERY_INIT_MIN_PERCENTAGE) + Settings.BATTERY_INIT_MIN_PERCENTAGE;
 
-    var newnode = new Node_info(node_leased, start, destination, stay, stay_time, data_refresh_time, false, false, false, move_speed, battery_remain_percentage);
+    var newnode = new Node_info(node_leased, start, destination, stay, stay_time, data_refresh_time, false, false, false, move_speed, battery_remain_percentage, false);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
     Environment.node_list.add(newnode);
   }
@@ -99,6 +99,13 @@ public class Node_mng {
                         System.exit(-1);
                         break;
     }
+  }
+
+  private static void battery_check(Node_info node){
+    if(node.battery_remain_percentage <= Settings.BATTERY_LOW_THRESHOLD_PERCENTAGE){
+      node.battery_low = true;
+    }
+    else node.battery_low = false;
   }
 
   static void keep_alive(){

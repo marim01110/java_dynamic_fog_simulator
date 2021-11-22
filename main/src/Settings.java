@@ -5,7 +5,7 @@ public class Settings {
   static final int SIM_TIME = 43200;// Unit is seconds.
   static final int EDGE_DIST = 1800;// Unit is meters.
   static final int INIT_MAX_NODES = 4000;
-  static final int CONTENTS_REFLESH_TIME = 60;// Unit is seconds.
+  static final int CONTENTS_RETRIEVE_FREQUENCY = 60;// Unit is seconds.
   static final int STAY_MIN_TIME = 3;// Unit is minites.
   static final int STAY_MAX_TIME = 10;// Unit is minites.
   static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is milliseconds.
@@ -46,7 +46,7 @@ public class Settings {
   //------BATTERY SIMULATION SETTINGS------
   static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
   static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
-  static final int BATTERY_MIN_PERCENTAGE = 40;
+  static final int BATTERY_LOW_THRESHOLD_PERCENTAGE = 40;
   static final double BATTERY_COMSUMPTION_BT_SEND = 0.2;
   static final double BATTERY_COMSUMPTION_BT_RECV = 0.1;
   static final double BATTERY_COMSUMPTION_CELL_SEND = 0.4;

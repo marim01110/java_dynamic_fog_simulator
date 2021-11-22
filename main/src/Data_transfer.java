@@ -7,7 +7,7 @@ public class Data_transfer {
     boolean transfer = false;
     int reflesh_node;
 
-    reflesh_node = Environment.time_count % Settings.CONTENTS_REFLESH_TIME;
+    reflesh_node = Environment.time_count % Settings.CONTENTS_RETRIEVE_FREQUENCY;
 
     if(reflesh_node == node.data_refresh_time) transfer = true;
     return transfer;
