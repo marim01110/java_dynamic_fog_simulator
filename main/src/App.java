@@ -73,21 +73,20 @@ public class App {
   public static void main(String[] args) throws Exception {
     Scanner scan = new Scanner(System.in);
 
-    System.out.print("Select running mode.[0,4,5,8] ");
-    int runnning_mode = scan.nextInt();
-    switch(runnning_mode){
+    System.out.print("Select running mode.[4,5,8] ");
+    Environment.mode = scan.nextInt();
+    Sim.main();
+    /*
+    switch(Environment.mode){
       case 4:     Environment.init();
                   Mode4.main();
                   break;
       case 5:     Environment.init();
-                  Mode5.main();
-                  break;
-      case 8:     Environment.loop();
-                  break;
-      case 0:     test.main();
+                  Sim.main();
                   break;
       default:    break;
     }
+    */
     scan.close();
   }
 }

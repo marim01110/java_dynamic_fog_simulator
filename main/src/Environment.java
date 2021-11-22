@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.awt.geom.Point2D;
 
 public class Environment {
+    static int mode;
     static int time_count;
     static int file_deleted;
     static int node_leased;
@@ -29,10 +30,10 @@ public class Environment {
 
     static void loop(){
       Scanner scan = new Scanner(System.in);
-      int loop, mode;
+      int loop;
 
       System.out.print("Specify runnning_mode [4,5]: ");
-      mode = scan.nextInt();
+      Environment.mode = scan.nextInt();
 
       System.out.print("Specify the number of repetitions: ");
       loop = scan.nextInt();
@@ -41,13 +42,7 @@ public class Environment {
       for(int i = 0; i < loop; i++){
         System.out.println("loop_count " + i);
         init();
-        switch(mode){
-          case 4:   Mode4.main();
-                    break;
-          case 5:   Mode5.main();
-                    break;
-          default:  break;
-        }
+        Sim.main();
         System.out.println();
       }
       scan.close();

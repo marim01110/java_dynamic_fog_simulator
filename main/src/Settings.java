@@ -1,6 +1,6 @@
 public class Settings {
   //------SIMULATION SETTINGS------
-  static final boolean DEBUG = false;
+  static final boolean DEBUG = true;
   static final boolean FOG_USE = true;
   static final int SIM_TIME = 43200;// Unit is seconds.
   static final int EDGE_DIST = 1800;// Unit is meters.
