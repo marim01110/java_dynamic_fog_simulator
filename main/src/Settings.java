@@ -1,10 +1,10 @@
 public class Settings {
   //------SIMULATION SETTINGS------
-  static final boolean DEBUG = true;
+  static final boolean DEBUG = false;
   static final boolean FOG_USE = true;
-  static final int SIM_TIME = 200;// Unit is seconds.
+  static final int SIM_TIME = 43200;// Unit is seconds.
   static final int EDGE_DIST = 1800;// Unit is meters.
-  static final int INIT_MAX_NODES = 400;
+  static final int INIT_MAX_NODES = 4000;
   static final int CONTENTS_RETRIEVE_FREQUENCY = 60;// Unit is seconds.
   static final int STAY_MIN_TIME = 3;// Unit is minites.
   static final int STAY_MAX_TIME = 10;// Unit is minites.

@@ -132,11 +132,12 @@ public class Node_mng {
         if(current_node.dynamic_fog == true) Fog_mng.unregister(Fog_mng.get_fog_info(current_node.num));
         delete(current_node);
         i -= 1;
+        continue;
       }
 
       /* Share device's location data */
       /*
-       * Incomplete, disabled. 2021/11/22 11.29 p.m.
+       * Incomplete, disabled. (2021/11/22 11.29 p.m.)
       battery_drain(current_node, "cellular", "send");
       */
 
@@ -146,10 +147,12 @@ public class Node_mng {
           fog_info = Fog_mng.get_fog_info(current_node.num);
           Fog_mng.unregister(fog_info);
         }
-        if(current_node.battery_remain_percentage <= 0) delete(current_node);
+        if(current_node.battery_remain_percentage <= 0){
+          delete(current_node);
+          i -= 1;
+          continue;
+        }
       }
     }
-
-    /* Adjust Dynamic Fog */
   }
 }
