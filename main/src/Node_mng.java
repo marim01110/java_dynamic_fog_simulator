@@ -32,6 +32,11 @@ public class Node_mng {
     Environment.node_list.add(newnode);
   }
 
+  private static void delete(Node_info node){
+    if(DEBUG) System.out.println("Node " + node.num + " is now deleteing.");
+    Environment.node_list.remove(node);
+  }
+
   static void check_reach_goal(Node_info node){
     if(node.goal_nearby == true){
       if((Math.abs(node.point.x - node.destination.x) <= node.move_speed) && (node.point.x != node.destination.x)){
@@ -103,18 +108,47 @@ public class Node_mng {
 
   private static void battery_check(Node_info node){
     if(node.battery_remain_percentage <= Settings.BATTERY_LOW_THRESHOLD_PERCENTAGE){
+      if(DEBUG) System.out.println("Node " + node.num + "'s battery turns to low state.");
       node.battery_low = true;
     }
     else node.battery_low = false;
   }
 
   static void keep_alive(){
-    /* Node reach detection */
+    Node_info current_node;
+    Fog_info fog_info;
 
-    /* Down detection for Dynamic Fog */
+    for(int i = 0; i < Environment.node_list.size(); i++){
+      current_node = Environment.node_list.get(i);
+      /* Node Move Process */
+      if(current_node.reached == false){
+        if(Environment.mode == 4) Move.random_walk(current_node);
+        if(Environment.mode == 5) Move.start(current_node);
+        if(DEBUG) System.out.println("Node "+ current_node.num + " (" + current_node.point.x + ", " + current_node.point.y + ")");
+      }
 
-    /* Share all device's location data */
-    //battery_drain
+      /* Node reach detection */
+      if(current_node.reached == true) {
+        if(current_node.dynamic_fog == true) Fog_mng.unregister(Fog_mng.get_fog_info(current_node.num));
+        delete(current_node);
+        i -= 1;
+      }
+
+      /* Share device's location data */
+      /*
+       * Incomplete, disabled. 2021/11/22 11.29 p.m.
+      battery_drain(current_node, "cellular", "send");
+      */
+
+      battery_check(current_node);
+      if(current_node.battery_low == true){
+        if(current_node.dynamic_fog == true){
+          fog_info = Fog_mng.get_fog_info(current_node.num);
+          Fog_mng.unregister(fog_info);
+        }
+        if(current_node.battery_remain_percentage <= 0) delete(current_node);
+      }
+    }
 
     /* Adjust Dynamic Fog */
   }

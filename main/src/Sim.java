@@ -25,9 +25,9 @@ public class Sim {
 
     while(Environment.time_count < Settings.SIM_TIME){
       if(Settings.FOG_USE){
-        /* Dynamic node Scan */
-        //Fog_mng.keep_alive();
-        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0) Fog_mng.register(Environment.node_leased);
+        if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0){
+          Fog_mng.register(Environment.node_leased);
+        }
       }
 
       if(Environment.mode == 5){
@@ -36,28 +36,16 @@ public class Sim {
         if(Environment.stage != 0){
           MAX_NODES = Environment.return_max_nodes(Environment.stage);
         }
-
-        //Node replenishment.
-        while(Environment.node_list.size() < MAX_NODES){
-          Node_mng.spawn(Environment.node_leased);
-          Environment.node_leased += 1;
-        }
+      }
+      
+      //Node replenishment.
+      while(Environment.node_list.size() < MAX_NODES){
+        Node_mng.spawn(Environment.node_leased);
+        Environment.node_leased += 1;
       }
 
-      //Node Move Process
-      for(int i = 0; i < Environment.node_list.size(); i++){
-        if(Environment.node_list.get(i).reached == false){
-          if(Environment.mode == 4) Move.random_walk(Environment.node_list.get(i));
-          if(Environment.mode == 5) Move.start(Environment.node_list.get(i));
-          if(DEBUG) System.out.println("Node "+ Environment.node_list.get(i).num + " (" + Environment.node_list.get(i).point.x + ", " + Environment.node_list.get(i).point.y + ")");
-        }
-        if(Environment.node_list.get(i).reached == true) {
-          if(Environment.node_list.get(i).dynamic_fog == true) Fog_mng.dynamic_fog_dead_judge(i);
-          if(DEBUG) System.out.println("Node " + Environment.node_list.get(i).num + " is now deleteing.");
-          Environment.node_list.remove(i);
-          i -= 1;
-        }
-      }
+      //Node Keep_Alive Process (Including Move Process)
+      Node_mng.keep_alive();
 
       Environment.time_count += 1;
       if(Settings.FOG_USE){
