@@ -73,20 +73,15 @@ public class App {
   public static void main(String[] args) throws Exception {
     Scanner scan = new Scanner(System.in);
 
+    System.out.println("Mode 4: Random-walk");
+    System.out.println("Mode 5: Destination");
+    System.out.println("Mode 8: Loop");
+    
     System.out.print("Select running mode.[4,5,8] ");
     Environment.mode = scan.nextInt();
-    Sim.main();
-    /*
-    switch(Environment.mode){
-      case 4:     Environment.init();
-                  Mode4.main();
-                  break;
-      case 5:     Environment.init();
-                  Sim.main();
-                  break;
-      default:    break;
-    }
-    */
+    
+    if(Environment.mode == 8) Environment.loop();
+    else Sim.main();
     scan.close();
   }
 }

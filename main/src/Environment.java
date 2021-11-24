@@ -32,12 +32,12 @@ public class Environment {
       Scanner scan = new Scanner(System.in);
       int loop;
 
-      System.out.print("Specify runnning_mode [4,5]: ");
-      Environment.mode = scan.nextInt();
-
       System.out.print("Specify the number of repetitions: ");
       loop = scan.nextInt();
       if(loop <= 0) System.exit(-1);
+
+      System.out.print("Specify runnning_mode [4,5]: ");
+      Environment.mode = scan.nextInt();
 
       for(int i = 0; i < loop; i++){
         System.out.println("loop_count " + i);
