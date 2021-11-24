@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 public class Environment {
     static int mode;
     static int time_count;
+    static int cache_data_total;
     static int file_deleted;
     static int node_leased;
     static int stage;
@@ -19,6 +20,7 @@ public class Environment {
 
     static void init(){
       time_count = 0;
+      cache_data_total = 0;
       file_deleted = 0;
       node_leased = 0;
       stage = 0;

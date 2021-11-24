@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class Data_mng {
   private static final boolean DEBUG = Settings.DEBUG;
   private static final int INIT = -1;
-  static int cache_data_total = 0;
 
   static Data_info get_data_info(int need_data_num, boolean deny_null){
     Data_info data = null;
@@ -33,14 +32,14 @@ public class Data_mng {
     int data_num, data_size, data_expire_after;
 
     //Data Create Process
-    data_num = cache_data_total;
+    data_num = Environment.cache_data_total;
     data_size = (rand.nextInt(39) + 1) * 5;
     data_expire_after = Environment.time_count + Settings.CONTENTS_EXPIRE_AFTER;
 
     var temp_Data = new Data_info(data_num, data_size, data_expire_after, hosted_by_list);
     Environment.network_contents_list.add(temp_Data);
 
-    cache_data_total += 1;
+    Environment.cache_data_total += 1;
     return temp_Data.num;
   }
 
@@ -107,7 +106,7 @@ public class Data_mng {
       else need_data_num = rand.nextInt(contents_total + 1);
     }
     else{
-      need_data_num = rand.nextInt(cache_data_total + 1);
+      need_data_num = rand.nextInt(Environment.cache_data_total + 1);
     }
     need_data_num += Environment.file_deleted;
     return need_data_num;
