@@ -69,6 +69,18 @@ class Data_info{
   }
 }
 
+class Landmark{
+  int num;
+  String name;
+  Point2D.Double point = new Point2D.Double();
+  
+  public Landmark(int num, String name, double x, double y){
+    this.num = num;
+    this.name = name;
+    this.point.setLocation(x, y);
+  }
+}
+
 public class App {
   public static void main(String[] args) throws Exception {
     Scanner scan = new Scanner(System.in);

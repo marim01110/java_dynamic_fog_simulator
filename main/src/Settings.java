@@ -6,6 +6,7 @@ public class Settings {
   static final int EDGE_DIST = 1800;// Unit is meters.
   static final int INIT_MAX_NODES = 4000;
   static final int CONTENTS_RETRIEVE_FREQUENCY = 60;// Unit is seconds.
+  static final int LANDMARKS = 10;
   static final int STAY_MIN_TIME = 3;// Unit is minites.
   static final int STAY_MAX_TIME = 10;// Unit is minites.
   static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is milliseconds.
@@ -27,11 +28,6 @@ public class Settings {
   static final int CONTENTS_EXPIRE_AFTER = 180;// Unit is seconds.
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
   static final int DYNAMIC_FOG_UPDATE_INTERVAL = 300;// Unit is seconds.
-
-  //------LANDMARK SETTINGS------
-  static final int LANDMARKS = 3;
-  static final int[] landmark_point_x_array = {1000, 1800, 0};
-  static final int[] landmark_point_y_array = {1000, 1800, 0};
 
   //------NODE MOVE SPEED SETTINGS------
   static final int MOVE_SPEEDS = 4;

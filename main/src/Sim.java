@@ -7,8 +7,9 @@ public class Sim {
     Node_info node;
 
     switch(Environment.mode){
-      case 4:   break;
-      case 5:   break;
+      case 4:   
+      case 5:   Environment.init();
+                break;
       default:  System.out.println("Error: Invalid running_mode selected.");
                 System.exit(-1);
                 break;
