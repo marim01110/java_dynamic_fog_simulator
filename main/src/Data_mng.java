@@ -132,7 +132,7 @@ public class Data_mng {
       data = Environment.network_contents_list.get(i);
       if(data.expire_after <= current_time){
         if(DEBUG){
-          System.out.println("Data num: " + data.num + " is not valid.");
+          System.out.println("Data num: " + data.num + " is expired.");
           System.out.println("Deleting ...");
         }
         delete(data.num);

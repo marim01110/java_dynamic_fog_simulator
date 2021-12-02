@@ -1,33 +1,41 @@
+import java.util.ArrayList;
 import java.util.Random;
-import java.awt.geom.Point2D;
 
 public class Node_mng {
   private static final boolean DEBUG = Settings.DEBUG;
 
   static void spawn(int node_leased){
     Random rand = new Random();
-    Point2D.Double start = new Point2D.Double();
-    Point2D.Double destination = new Point2D.Double();
-    boolean stay;
-    int point_index, destination_index, stay_time, data_refresh_time, move_speed, move_speed_index;
+    Landmark start, destination;
+    var waypoint_list = new ArrayList<Landmark>();
+    var waypoint_temp_list = new ArrayList<Integer>();
+    int waypoints, waypoint_candidate_index, data_refresh_time, move_speed, move_speed_index;
     double battery_remain_percentage;
 
-    do{
-      point_index = rand.nextInt(Settings.LANDMARKS);
-      destination_index = rand.nextInt(Settings.LANDMARKS);
-    }while(point_index == destination_index);
+    /* Set start position (Start from JR Kyoto Sta.) */
+    start = Environment.return_landmark_point(0);
+
+    /* Set Waypoints */
+    for(int i = 1; i < Settings.LANDMARKS; i++) waypoint_temp_list.add(i);
+    waypoints = rand.nextInt(Settings.LANDMARKS - Settings.WAYPOINT_MIN - 1) + Settings.WAYPOINT_MIN;
+    for(int i = 0; i < waypoints; i++){
+      waypoint_candidate_index = rand.nextInt(waypoint_temp_list.size());
+      waypoint_list.add(Environment.return_landmark_point(waypoint_temp_list.get(waypoint_candidate_index)));
+      waypoint_temp_list.remove(waypoint_candidate_index);
+    }
+    waypoint_list.add(start);// At the end, they come back to the starting point.
+
+    /* Load first waypoint */
+    destination = waypoint_list.get(0);
+    waypoint_list.remove(0);
+
     move_speed_index = rand.nextInt(Settings.MOVE_SPEEDS);
 
-    start.setLocation(Environment.return_landmark_point(point_index));
-    destination.setLocation(Environment.return_landmark_point(destination_index));
-    stay = rand.nextBoolean();
-    stay_time = 0;
-    if(stay == true) stay_time = Settings.STAY_MIN_TIME * 60 + rand.nextInt(Settings.STAY_MAX_TIME - Settings.STAY_MIN_TIME) * 60;
     data_refresh_time = rand.nextInt(Settings.CONTENTS_RETRIEVE_FREQUENCY);
     move_speed = Environment.return_move_speed(move_speed_index);
     battery_remain_percentage = rand.nextDouble(Settings.BATTERY_INIT_MAX_PERCENTAGE - Settings.BATTERY_INIT_MIN_PERCENTAGE) + Settings.BATTERY_INIT_MIN_PERCENTAGE;
 
-    var newnode = new Node_info(node_leased, start, destination, stay, stay_time, data_refresh_time, false, false, false, move_speed, battery_remain_percentage, false);
+    var newnode = new Node_info(node_leased, start.point, start, destination, waypoint_list, data_refresh_time, false, false, false, move_speed, battery_remain_percentage, false);
     if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
     Environment.node_list.add(newnode);
   }
@@ -39,18 +47,18 @@ public class Node_mng {
 
   static void check_reach_goal(Node_info node){
     if(node.goal_nearby == true){
-      if((Math.abs(node.point.x - node.destination.x) <= node.move_speed) && (node.point.x != node.destination.x)){
-          node.point.setLocation(node.destination.x, node.point.y);
+      if((Math.abs(node.point.x - node.destination.point.x) <= node.move_speed) && (node.point.x != node.destination.point.x)){
+          node.point.setLocation(node.destination.point.x, node.point.y);
       }
-      else if((Math.abs(node.point.y - node.destination.y) <= node.move_speed) && (node.point.y != node.destination.y)){
-        node.point.setLocation(node.point.x, node.destination.y);
+      else if((Math.abs(node.point.y - node.destination.point.y) <= node.move_speed) && (node.point.y != node.destination.point.y)){
+        node.point.setLocation(node.point.x, node.destination.point.y);
       }
-      if((node.point.x == node.destination.x) && (node.point.y == node.destination.y)){
+      if((node.point.x == node.destination.point.x) && (node.point.y == node.destination.point.y)){
         node.reached = true;
         if(DEBUG) System.out.println("Node num: " + node.num + " have reached the goal point.");
       }
     }
-    else if(node.point.distance(node.destination)<=node.move_speed){
+    else if(node.point.distance(node.destination.point)<=node.move_speed){
       node.goal_nearby = true;
     }
     else{

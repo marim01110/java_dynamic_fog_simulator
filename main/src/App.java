@@ -12,9 +12,9 @@ import java.util.ArrayList;
 class Node_info{
   int num;
   Point2D.Double point = new Point2D.Double();
-  Point2D.Double destination = new Point2D.Double();
-  boolean stay;
-  int stay_time;
+  Landmark start;
+  Landmark destination;
+  ArrayList<Landmark> waypoint_list = new ArrayList<>();
   int data_refresh_time;
   boolean dynamic_fog;
   boolean goal_nearby;
@@ -23,12 +23,12 @@ class Node_info{
   double battery_remain_percentage;
   boolean battery_low;
 
-  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean stay, int stay_time, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage, boolean battery_low){
+  public Node_info(int num, Point2D.Double point, Landmark start, Landmark destination, ArrayList<Landmark> waypoint_list, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage, boolean battery_low){
     this.num = num;
     this.point = point;
+    this.start = start;
     this.destination = destination;
-    this.stay = stay;
-    this.stay_time = stay_time;
+    this.waypoint_list = waypoint_list;
     this.data_refresh_time = data_refresh_time;
     this.dynamic_fog = dynamic_fog;
     this.goal_nearby = goal_nearby;

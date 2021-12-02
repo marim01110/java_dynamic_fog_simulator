@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.awt.geom.Point2D;
 
 public class Environment {
     static int mode;
@@ -65,11 +64,8 @@ public class Environment {
       landmark_array[9] = new Landmark(10, "Kiyomizu-dera Temple", 1550, 1300);
     }
 
-    static Point2D.Double return_landmark_point(int index){
-      var point = new Point2D.Double();
-
-      point.setLocation(landmark_array[index].point);
-      return point;
+    static Landmark return_landmark_point(int index){
+      return landmark_array[index];
     }
 
     static int return_move_speed(int index){
