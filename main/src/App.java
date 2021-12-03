@@ -12,28 +12,30 @@ import java.util.ArrayList;
 class Node_info{
   int num;
   Point2D.Double point = new Point2D.Double();
-  Point2D.Double destination = new Point2D.Double();
-  boolean stay;
-  int stay_time;
+  Landmark start;
+  Landmark destination;
+  ArrayList<Landmark> waypoint_list = new ArrayList<>();
   int data_refresh_time;
   boolean dynamic_fog;
   boolean goal_nearby;
   boolean reached;
   int move_speed;
   double battery_remain_percentage;
+  boolean battery_low;
 
-  public Node_info(int num, Point2D.Double point, Point2D.Double destination, boolean stay, int stay_time, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage){
+  public Node_info(int num, Point2D.Double point, Landmark start, Landmark destination, ArrayList<Landmark> waypoint_list, int data_refresh_time, boolean dynamic_fog, boolean goal_nearby, boolean reached, int move_speed, double battery_remain_percentage, boolean battery_low){
     this.num = num;
     this.point = point;
+    this.start = start;
     this.destination = destination;
-    this.stay = stay;
-    this.stay_time = stay_time;
+    this.waypoint_list = waypoint_list;
     this.data_refresh_time = data_refresh_time;
     this.dynamic_fog = dynamic_fog;
     this.goal_nearby = goal_nearby;
     this.reached = reached;
     this.move_speed = move_speed;
     this.battery_remain_percentage = battery_remain_percentage;
+    this.battery_low = battery_low;
   }
 }
 
@@ -67,25 +69,31 @@ class Data_info{
   }
 }
 
+class Landmark{
+  int num;
+  String name;
+  Point2D.Double point = new Point2D.Double();
+  
+  public Landmark(int num, String name, double x, double y){
+    this.num = num;
+    this.name = name;
+    this.point.setLocation(x, y);
+  }
+}
+
 public class App {
   public static void main(String[] args) throws Exception {
     Scanner scan = new Scanner(System.in);
 
-    System.out.print("Select running mode.[0,4,5,8] ");
-    int runnning_mode = scan.nextInt();
-    switch(runnning_mode){
-      case 4:     Environment.init();
-                  Mode4.main();
-                  break;
-      case 5:     Environment.init();
-                  Mode5.main();
-                  break;
-      case 8:     Environment.loop();
-                  break;
-      case 0:     test.main();
-                  break;
-      default:    break;
-    }
+    System.out.println("Mode 4: Random-walk");
+    System.out.println("Mode 5: Destination");
+    System.out.println("Mode 8: Loop");
+    
+    System.out.print("Select running mode.[4,5,8] ");
+    Environment.mode = scan.nextInt();
+    
+    if(Environment.mode == 8) Environment.loop();
+    else Sim.main();
     scan.close();
   }
 }

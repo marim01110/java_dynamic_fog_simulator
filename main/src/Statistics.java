@@ -11,7 +11,7 @@ public class Statistics {
   static double for_calc_latency_conventional = 0;
   static long data_size_via_internet_proposed = 0;
   static long data_size_via_internet_conventional = 0;
-  static double power_comsumption_total = 0;
+  static double power_consumption_total = 0;
 
   static void print_info(){
     System.out.println();
@@ -23,7 +23,7 @@ public class Statistics {
     System.out.println("Download from Nearest Dynamic_Fog by Cellular: " + dl_from_nearest_df_cell + " (" + dl_from_nearest_df_cell * 100.0 / data_transfered + "%)");
     System.out.println("Download from Nearest Dynamic_Fog by Bluetooth: " + dl_from_nearest_df_bluetooth + " (" + dl_from_nearest_df_bluetooth * 100.0 / data_transfered + "%)"); 
     System.out.println("Average content types: " + for_calc_contents_average / Settings.SIM_TIME);
-    System.out.println("Total battery comsumption: " + power_comsumption_total);
+    System.out.println("Total battery consumption: " + power_consumption_total);
     System.out.println();
     System.out.println("------Evaluations------");
     System.out.println("Average latency");

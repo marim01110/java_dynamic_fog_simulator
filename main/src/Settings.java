@@ -2,36 +2,31 @@ public class Settings {
   //------SIMULATION SETTINGS------
   static final boolean DEBUG = false;
   static final boolean FOG_USE = true;
-  static final int SIM_TIME = 2000;
-  static final int EDGE_DIST = 1800;
-  static final int INIT_MAX_NODES = 4000;
-  static final int CONTENTS_REFLESH_TIME = 60;
-  static final int STAY_MIN_TIME = 3;// Unit is minites.
-  static final int STAY_MAX_TIME = 10;// Unit is minites.
+  static final int SIM_TIME = 68400;// Unit is seconds.
+  static final int EDGE_DIST = 1700;// Unit is meters.
+  static final int INIT_MAX_NODES = 970;
+  static final int CONTENTS_RETRIEVE_FREQUENCY = 60;// Unit is seconds.
+  static final int LANDMARKS = 10;
+  static final int WAYPOINT_MIN = 3;
   static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is milliseconds.
   static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is milliseconds.
   static final double RTT_CLOUD = 28.91;// Unit is milliseconds.
   static final boolean BLUETOOTH_USE = true;
-  static final double BT_CONNECTION_RANGE = 50;
+  static final double BT_CONNECTION_RANGE = 50;// Unit is meters.
 
   //------MODE 5 SETTINGS------
-  static final int STAGES = 0;
-  static final int[] max_nodes_change_time_array = {};
-  static final int[] max_nodes_array = {};
+  static final int STAGES = 18;
+  static final int[] max_nodes_change_time_array = {3600, 7200, 10800, 14400, 18000, 21600, 25200, 28800, 32400, 36000, 39600, 43200, 46800, 50400, 54000, 57600, 61200, 64800};
+  static final int[] max_nodes_array = {1037, 1162, 1391, 1537, 1750, 1905, 2155, 2214, 2073, 1935, 1971, 2052, 1950, 1765, 1596, 1291, 1100, 990};
 
   //------FOG SETTINGS------
-  static final int FOG_STORAGE_SIZE = 100000;
+  static final int FOG_STORAGE_SIZE = 100000;// Unit is kilobytes.
   static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/11/17 8:56 p.m.).
   static final int CONTENTS_TYPES_MAX = 300;
   static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
-  static final int CONTENTS_EXPIRE_AFTER = 600;
+  static final int CONTENTS_EXPIRE_AFTER = 180;// Unit is seconds.
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
-  static final int DYNAMIC_FOG_UPDATE_INTERVAL = 5;
-
-  //------LANDMARK SETTINGS------
-  static final int LANDMARKS = 3;
-  static final int[] landmark_point_x_array = {1000, 1800, 0};
-  static final int[] landmark_point_y_array = {1000, 1800, 0};
+  static final int DYNAMIC_FOG_UPDATE_INTERVAL = 300;// Unit is seconds.
 
   //------NODE MOVE SPEED SETTINGS------
   static final int MOVE_SPEEDS = 4;
@@ -46,9 +41,9 @@ public class Settings {
   //------BATTERY SIMULATION SETTINGS------
   static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
   static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
-  static final int BATTERY_MIN_PERCENTAGE = 40;
-  static final double BATTERY_COMSUMPTION_BT_SEND = 0.2;
-  static final double BATTERY_COMSUMPTION_BT_RECV = 0.1;
-  static final double BATTERY_COMSUMPTION_CELL_SEND = 0.4;
-  static final double BATTERY_COMSUMPTION_CELL_RECV = 0.2;  
+  static final int BATTERY_LOW_THRESHOLD_PERCENTAGE = 40;
+  static final double BATTERY_COMSUMPTION_BT_SEND = 0.002;
+  static final double BATTERY_COMSUMPTION_BT_RECV = 0.001;
+  static final double BATTERY_COMSUMPTION_CELL_SEND = 0.004;
+  static final double BATTERY_COMSUMPTION_CELL_RECV = 0.002;  
 }

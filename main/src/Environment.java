@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.awt.geom.Point2D;
 
 public class Environment {
+    static int mode;
     static int time_count;
+    static int cache_data_total;
     static int file_deleted;
     static int node_leased;
     static int stage;
+    static Landmark landmark_array[] = new Landmark[Settings.LANDMARKS];
     static ArrayList<Node_info> node_list = new ArrayList<>();
     static ArrayList<Fog_info> dynamic_fog_list = new ArrayList<>();
     static ArrayList<Data_info> network_contents_list = new ArrayList<>();
@@ -18,6 +20,7 @@ public class Environment {
 
     static void init(){
       time_count = 0;
+      cache_data_total = 0;
       file_deleted = 0;
       node_leased = 0;
       stage = 0;
@@ -25,39 +28,44 @@ public class Environment {
       dynamic_fog_list.clear();
       network_contents_list.clear();
       last_used.clear();
+      init_landmark();
     }
 
     static void loop(){
       Scanner scan = new Scanner(System.in);
-      int loop, mode;
-
-      System.out.print("Specify runnning_mode [4,5]: ");
-      mode = scan.nextInt();
+      int loop;
 
       System.out.print("Specify the number of repetitions: ");
       loop = scan.nextInt();
       if(loop <= 0) System.exit(-1);
 
+      System.out.print("Specify runnning_mode [4,5]: ");
+      Environment.mode = scan.nextInt();
+
       for(int i = 0; i < loop; i++){
         System.out.println("loop_count " + i);
         init();
-        switch(mode){
-          case 4:   Mode4.main();
-                    break;
-          case 5:   Mode5.main();
-                    break;
-          default:  break;
-        }
+        Sim.main();
         System.out.println();
       }
       scan.close();
     }
 
-    static Point2D.Double return_landmark_point(int index){
-      var point = new Point2D.Double();
+    static void init_landmark(){
+      landmark_array[0] = new Landmark(1, "JR Kyoto Station", 640, 890);
+      landmark_array[1] = new Landmark(2, "To-ji Temple", 225, 685);
+      landmark_array[2] = new Landmark(3, "Higashi-Honganji Temple", 640, 1120);
+      landmark_array[3] = new Landmark(4, "Kyoto Railway Museum", 30, 960);
+      landmark_array[4] = new Landmark(5, "Nintendo Co., Ltd Headquarter", 550, 200);
+      landmark_array[5] = new Landmark(6, "Komyo-in Temple", 1180, 415);
+      landmark_array[6] = new Landmark(7, "Fushimi Kandakara Shrine", 1290, 80);
+      landmark_array[7] = new Landmark(8, "Sennyu-ji Temple", 1420, 590);
+      landmark_array[8] = new Landmark(9, "Rengeo-in Sanjusangen-do", 1100, 1030);
+      landmark_array[9] = new Landmark(10, "Kiyomizu-dera Temple", 1550, 1300);
+    }
 
-      point.setLocation(Settings.landmark_point_x_array[index], Settings.landmark_point_y_array[index]);
-      return point;
+    static Landmark return_landmark_point(int index){
+      return landmark_array[index];
     }
 
     static int return_move_speed(int index){

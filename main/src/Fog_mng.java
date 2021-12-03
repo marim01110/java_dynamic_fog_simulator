@@ -5,17 +5,17 @@ public class Fog_mng {
   private static final boolean DEBUG = Settings.DEBUG;
   private static final int INIT = -1;
 
-  static Fog_info get_fog_info(int dynamic_fog_num){
+  static Fog_info get_fog_info(int dynamic_fog_node_num){
     Fog_info dynamic_fog = null;
 
     for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
-      if(Environment.dynamic_fog_list.get(i).node_num == dynamic_fog_num){
+      if(Environment.dynamic_fog_list.get(i).node_num == dynamic_fog_node_num){
         dynamic_fog = Environment.dynamic_fog_list.get(i);
         break;
       }
     }
     if(dynamic_fog == null){
-      System.out.println("Requested fog: " + dynamic_fog_num + " is Not Found.");
+      System.out.println("Requested fog: " + dynamic_fog_node_num + " is Not Found.");
       System.out.println("Quit the program.");
       System.exit(-1);
     }
@@ -38,7 +38,8 @@ public class Fog_mng {
         if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate.num);
 
         //Verify the candidate.
-        for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+        if(dynamic_fog_candidate.battery_low == true) error = true;
+        else for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
           if(dynamic_fog_candidate.num == Environment.dynamic_fog_list.get(i).node_num) error = true;
           if(error == true) break;
         }
@@ -51,7 +52,7 @@ public class Fog_mng {
         }
 
         if(error == true){
-          if(DEBUG) System.out.println("The Candidate is Dupulicated.");
+          if(DEBUG) System.out.println("The Candidate is incompatible.");
         }
         else if(error == false){//"error == false" means the candidate not dupulicated.
           var fog_stored_contents_list = new ArrayList<Integer>();
@@ -66,9 +67,10 @@ public class Fog_mng {
     }
   }
 
-  private static void unregister(Fog_info delete_df){
+  static void unregister(Fog_info delete_df){
     Data_info data;
     Object obj;
+    Node_info node;
 
     if(DEBUG) System.out.println("Dynamic_Fog Node " + delete_df.node_num + " is now deleting.");
     for(int i = 0; i < delete_df.fog_stored_contents_list.size(); i++){
@@ -78,11 +80,13 @@ public class Fog_mng {
       //Update Data_info
       obj = delete_df.node_num;
       data.hosted_by_list.remove(obj);
-}
+    }
+    node = Node_mng.get_node_info(delete_df.node_num);
     Environment.dynamic_fog_list.remove(delete_df);
+    node.dynamic_fog = false;
   }
 
-  static void keep_alive(){
+  static void keep_alive(){//Unused.
     Node_info node;
 
     for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
@@ -90,12 +94,6 @@ public class Fog_mng {
       if(node.goal_nearby == true){
         
       }
-    }
-  }
-
-  static void dynamic_fog_dead_judge(int node_list_index){
-    for(int j = 0; j < Environment.dynamic_fog_list.size(); j++){
-      if(Environment.dynamic_fog_list.get(j).node_num == Environment.node_list.get(node_list_index).num) unregister(Environment.dynamic_fog_list.get(j));
     }
   }
 
