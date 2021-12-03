@@ -2,9 +2,9 @@ public class Settings {
   //------SIMULATION SETTINGS------
   static final boolean DEBUG = false;
   static final boolean FOG_USE = true;
-  static final int SIM_TIME = 43200;// Unit is seconds.
+  static final int SIM_TIME = 68400;// Unit is seconds.
   static final int EDGE_DIST = 1700;// Unit is meters.
-  static final int INIT_MAX_NODES = 4000;
+  static final int INIT_MAX_NODES = 970;
   static final int CONTENTS_RETRIEVE_FREQUENCY = 60;// Unit is seconds.
   static final int LANDMARKS = 10;
   static final int WAYPOINT_MIN = 3;
@@ -15,9 +15,9 @@ public class Settings {
   static final double BT_CONNECTION_RANGE = 50;// Unit is meters.
 
   //------MODE 5 SETTINGS------
-  static final int STAGES = 0;
-  static final int[] max_nodes_change_time_array = {};
-  static final int[] max_nodes_array = {};
+  static final int STAGES = 18;
+  static final int[] max_nodes_change_time_array = {3600, 7200, 10800, 14400, 18000, 21600, 25200, 28800, 32400, 36000, 39600, 43200, 46800, 50400, 54000, 57600, 61200, 64800};
+  static final int[] max_nodes_array = {1037, 1162, 1391, 1537, 1750, 1905, 2155, 2214, 2073, 1935, 1971, 2052, 1950, 1765, 1596, 1291, 1100, 990};
 
   //------FOG SETTINGS------
   static final int FOG_STORAGE_SIZE = 100000;// Unit is kilobytes.

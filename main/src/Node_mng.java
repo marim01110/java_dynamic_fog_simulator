@@ -114,10 +114,10 @@ public class Node_mng {
     switch(communication_method){
       case "bluetooth": switch(recv_or_send){
                           case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_BT_RECV;
-                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_BT_RECV;
+                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_BT_RECV;
                                         break;
                           case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_BT_SEND;
-                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_BT_SEND;
+                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_BT_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);
@@ -126,10 +126,10 @@ public class Node_mng {
                         break;
       case "cellular":  switch(recv_or_send){
                           case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_RECV;
-                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_CELL_RECV;
+                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_CELL_RECV;
                                         break;
                           case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_SEND;
-                                        Statistics.power_comsumption_total += Settings.BATTERY_COMSUMPTION_CELL_SEND;
+                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_CELL_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);
