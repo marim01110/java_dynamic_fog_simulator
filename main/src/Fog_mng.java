@@ -60,7 +60,7 @@ public class Fog_mng {
           Environment.dynamic_fog_list.add(temp);
           dynamic_fog_candidate.dynamic_fog = true;
           
-          if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
+          if(DEBUG) System.out.println("Node " + dynamic_fog_candidate.num + " becomes Dynamic_Fog node.");
         }
         if(DEBUG) System.out.println("Required: " + dynamic_fogs_required + ", Exist: " + Environment.dynamic_fog_list.size());
       }

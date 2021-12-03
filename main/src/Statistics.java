@@ -22,7 +22,7 @@ public class Statistics {
     System.out.println("Download from Local Network: " + dl_from_local + " (" + dl_from_local * 100.0 / data_transfered + "%)");
     System.out.println("Download from Nearest Dynamic_Fog by Cellular: " + dl_from_nearest_df_cell + " (" + dl_from_nearest_df_cell * 100.0 / data_transfered + "%)");
     System.out.println("Download from Nearest Dynamic_Fog by Bluetooth: " + dl_from_nearest_df_bluetooth + " (" + dl_from_nearest_df_bluetooth * 100.0 / data_transfered + "%)"); 
-    System.out.println("Average content types: " + for_calc_contents_average / Settings.SIM_TIME);
+    System.out.println("Average content types: " + for_calc_contents_average / (Settings.SIM_TIME_HOURS * 3600));
     System.out.println("Total battery consumption: " + power_consumption_total);
     System.out.println();
     System.out.println("------Evaluations------");

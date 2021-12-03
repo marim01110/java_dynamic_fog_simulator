@@ -8,6 +8,7 @@ public class Environment {
     static int file_deleted;
     static int node_leased;
     static int stage;
+    static int[] max_nodes_array = new int[24];
     static Landmark landmark_array[] = new Landmark[Settings.LANDMARKS];
     static ArrayList<Node_info> node_list = new ArrayList<>();
     static ArrayList<Fog_info> dynamic_fog_list = new ArrayList<>();
@@ -64,6 +65,12 @@ public class Environment {
       landmark_array[9] = new Landmark(10, "Kiyomizu-dera Temple", 1550, 1300);
     }
 
+    static void init_max_nodes_array(){
+      for(int i = 0; i < 24; i++){
+        Environment.max_nodes_array[i] = Settings.nodes_model_array[i] * Settings.NODES_REALITY / 100;
+      }
+    }
+
     static Landmark return_landmark_point(int index){
       return landmark_array[index];
     }
@@ -75,19 +82,12 @@ public class Environment {
       return move_speed;
     }
 
-    static int change_stages(int time, int stage){
-      int result = stage;
+    static int return_max_nodes(){
+      int time_now, max_nodes;
+      
+      time_now = time_count / 3600 + Settings.START_FROM;
+      max_nodes = max_nodes_array[time_now];
 
-      if(stage < Settings.STAGES){
-        if(time == Settings.max_nodes_change_time_array[stage]){
-          result = stage + 1;
-        }
-      }
-
-      return result;
-    }
-
-    static int return_max_nodes(int stage){
-      return Settings.max_nodes_array[stage - 1];
+      return max_nodes;
     }
 }
