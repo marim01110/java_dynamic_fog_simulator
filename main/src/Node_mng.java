@@ -1,3 +1,4 @@
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -6,6 +7,7 @@ public class Node_mng {
 
   static void spawn(int node_leased){
     Random rand = new Random();
+    var position = new Point2D.Double();
     Landmark start, destination;
     var waypoint_list = new ArrayList<Landmark>();
     var waypoint_temp_list = new ArrayList<Integer>();
@@ -29,14 +31,17 @@ public class Node_mng {
     destination = waypoint_list.get(0);
     waypoint_list.remove(0);
 
+    /* Set current position */
+    position.setLocation(start.point);
+
     move_speed_index = rand.nextInt(Settings.MOVE_SPEEDS);
 
     data_refresh_time = rand.nextInt(Settings.CONTENTS_RETRIEVE_FREQUENCY);
     move_speed = Environment.return_move_speed(move_speed_index);
     battery_remain_percentage = rand.nextDouble(Settings.BATTERY_INIT_MAX_PERCENTAGE - Settings.BATTERY_INIT_MIN_PERCENTAGE) + Settings.BATTERY_INIT_MIN_PERCENTAGE;
 
-    var newnode = new Node_info(node_leased, start.point, start, destination, waypoint_list, data_refresh_time, false, false, false, move_speed, battery_remain_percentage, false);
-    if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.point + ", Goal is " + newnode.destination);
+    var newnode = new Node_info(node_leased, position, start, destination, waypoint_list, data_refresh_time, false, false, false, move_speed, battery_remain_percentage, false);
+    if(DEBUG) System.out.println("Node " + newnode.num + " Created. Start from " + newnode.start.name + ", Next waypoint is " + newnode.destination.name);
     Environment.node_list.add(newnode);
   }
 
@@ -54,8 +59,14 @@ public class Node_mng {
         node.point.setLocation(node.point.x, node.destination.point.y);
       }
       if((node.point.x == node.destination.point.x) && (node.point.y == node.destination.point.y)){
-        node.reached = true;
-        if(DEBUG) System.out.println("Node num: " + node.num + " have reached the goal point.");
+        if(node.waypoint_list.isEmpty()){
+          node.reached = true;
+          if(DEBUG) System.out.println("Node num: " + node.num + " have reached the goal point (" + node.destination.name + ").");  
+        }
+        else{
+          if(DEBUG) System.out.println("Node num: " + node.num + " have reached waypoint (" + node.destination.name + ").");
+          load_next_waypoint(node);
+        }
       }
     }
     else if(node.point.distance(node.destination.point)<=node.move_speed){
@@ -64,6 +75,23 @@ public class Node_mng {
     else{
       node.goal_nearby = false;
     }
+  }
+
+  private static void load_next_waypoint(Node_info node){
+    Landmark next_destination;
+
+    /* Change start point */
+    node.start = node.destination;
+
+    /* Set next waypoint */
+    next_destination = node.waypoint_list.get(0);
+    node.waypoint_list.remove(0);
+    node.destination = next_destination;
+    if(DEBUG) System.out.println("Node " + node.num + " restart from " + node.start.name + ", Next waypoint is " + node.destination.name);
+
+    /* Reset flags */
+    node.goal_nearby = false;
+    node.reached = false;
   }
 
   static Node_info get_node_info(int node_num){
@@ -132,7 +160,7 @@ public class Node_mng {
       if(current_node.reached == false){
         if(Environment.mode == 4) Move.random_walk(current_node);
         if(Environment.mode == 5) Move.start(current_node);
-        if(DEBUG) System.out.println("Node "+ current_node.num + " (" + current_node.point.x + ", " + current_node.point.y + ")");
+        if(DEBUG) System.out.println("Node "+ current_node.num + " (" + current_node.point.x + ", " + current_node.point.y + "), Waypoint is (" + current_node.destination.point.x + ", " + current_node.destination.point.y + ")");
       }
 
       /* Node reach detection */
@@ -161,6 +189,7 @@ public class Node_mng {
           continue;
         }
       }
+      current_node = null;
     }
   }
 }
