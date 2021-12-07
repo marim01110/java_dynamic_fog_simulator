@@ -2,8 +2,6 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class Move {
-  //private static final boolean DEBUG = App.DEBUG;
-
   static void start(Node_info node){
     if(node.goal_nearby == false) decide_direction(node);
     Node_mng.check_reach_goal(node);

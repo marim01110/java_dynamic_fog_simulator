@@ -23,13 +23,14 @@ public class Statistics {
     System.out.println("Download from Nearest Dynamic_Fog by Cellular: " + dl_from_nearest_df_cell + " (" + dl_from_nearest_df_cell * 100.0 / data_transfered + "%)");
     System.out.println("Download from Nearest Dynamic_Fog by Bluetooth: " + dl_from_nearest_df_bluetooth + " (" + dl_from_nearest_df_bluetooth * 100.0 / data_transfered + "%)"); 
     System.out.println("Average content types: " + for_calc_contents_average / (Settings.SIM_TIME_HOURS * 3600));
-    System.out.println("Total battery consumption: " + power_consumption_total);
     System.out.println();
     System.out.println("------Evaluations------");
     System.out.println("Average latency");
     System.out.println("  Proposed: " + for_calc_latency_proposed / data_transfered + " [ms], Conventional: " + for_calc_latency_conventional / data_transfered + " [ms]");
     System.out.println("Data size which through the Internet");
     System.out.println("  Proposed: " + data_size_via_internet_proposed + " [kB], Conventional: " + data_size_via_internet_conventional + " [kB]");
+    System.out.println("Battery consumption");
+    System.out.println("  Proposed: " + power_consumption_total + ", Conventional: " + data_transfered * Settings.BATTERY_COMSUMPTION_CELL_RECV);
     System.out.println();
   }
 }
