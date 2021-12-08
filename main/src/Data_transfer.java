@@ -22,7 +22,7 @@ public class Data_transfer {
     Data_mng.update_delete_order(need_data_num);
 
     if(Settings.FOG_USE){
-      near_dynamic_fogs_list = Fog_mng.search_near_dynamic_fogs(node);
+      /*near_dynamic_fogs_list = */Fog_mng.scan_near_dynamic_fogs(node);
       nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0)); 
     }
     if(DEBUG){
@@ -34,6 +34,7 @@ public class Data_transfer {
     if(nearest_dynamic_fog == null){//Fog feature not used. so all files download from cloud.
       Node_mng.battery_drain(node, "cellular", "recv");
       Statistics.dl_from_cloud += 1;
+      Statistics.data_transfered += 1;
       if(DEBUG) System.out.println("Data was Downloaded from Cloud.");
     }
     else{
@@ -45,7 +46,7 @@ public class Data_transfer {
     Data_info need_data = null;
     Node_info nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0));// Maintainance required (2021/11/14 12:55 a.m.)
     Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
-    boolean bluetooth_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
+    boolean bluetooth_range = false, wifi_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
 
     //Get need_data information
     need_data = Data_mng.get_data_info(need_data_num, false);
@@ -67,18 +68,28 @@ public class Data_transfer {
       if(request_node.point.distance(nearest_dynamic_fog.point) <= Settings.BT_CONNECTION_RANGE) bluetooth_range = true;
     }
     else bluetooth_range = false;
+    if(Settings.WIFI_USE){
+      if(request_node.point.distance(nearest_dynamic_fog.point) <= Settings.WIFI_CONNECTION_RANGE) wifi_range = true;
+    }
+    else wifi_range = false;
 
     if(found_in_df){
       if(bluetooth_range){
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
-        Statistics.dl_from_nearest_df_bluetooth += 1;
+        Statistics.dl_from_near_df_bluetooth += 1;
         if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Bluetooth.");
+      }
+      else if(wifi_range){
+        from_local_wifi(nearest_dynamic_fog, request_node);
+        data_downloaded = true;
+        Statistics.dl_from_near_df_wifi += 1;
+        if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Wi-Fi.");
       }
       else{
         from_local_cellular(nearest_dynamic_fog, request_node);
         data_downloaded = true;
-        Statistics.dl_from_nearest_df_cell += 1;
+        Statistics.dl_from_near_df_cell += 1;
         if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Cellular.");
       }
     }
@@ -145,6 +156,12 @@ public class Data_transfer {
     Node_mng.battery_drain(sender_node, "bluetooth", "send");//UL to Edge.
     Node_mng.battery_drain(request_node, "bluetooth", "recv");//DL from DF.
     Statistics.for_calc_latency_proposed += Settings.RTT_DIRECT_BLUETOOTH;
+  }
+
+  private static void from_local_wifi(Node_info sender_node, Node_info request_node){
+    Node_mng.battery_drain(sender_node, "wifi", "send");// UL to Edge.
+    Node_mng.battery_drain(request_node, "wifi", "recv");// DL from Local.
+    Statistics.for_calc_latency_proposed += Settings.RTT_DIRECT_WIFI;
   }
 
   private static void from_local_cellular(Node_info sender_node, Node_info request_node){

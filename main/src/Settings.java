@@ -9,14 +9,17 @@ public class Settings {
   static final int LANDMARKS = 10;
   static final int WAYPOINT_MIN = 3;
   static final double RTT_DIRECT_CELLULAR = 14.13;// Unit is milliseconds.
+  static final double RTT_DIRECT_WIFI = 14.13;// Unit is milliseconds.
   static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is milliseconds.
   static final double RTT_CLOUD = 28.91;// Unit is milliseconds.
   static final boolean BLUETOOTH_USE = true;
   static final double BT_CONNECTION_RANGE = 50;// Unit is meters.
+  static final boolean WIFI_USE = true;
+  static final double WIFI_CONNECTION_RANGE = 200;// Unit is meters.
 
   //------MODE 5 SETTINGS------
   static final int START_FROM = 5;// 24-hour notation.
-  static final int NODES_REALITY = 3;// Unit is percents.
+  static final int NODES_REALITY = 1;// Unit is percents.
   static final int[] nodes_model_array = {95405, 94750, 89750, 88580, 89975, 96950, 103675, 116200, 139050, 153700, 175000, 190450, 215450, 221350, 207300, 193530, 197100, 205200, 194950, 176500, 159550, 129100, 109950, 99030};
 
   //------FOG SETTINGS------
@@ -44,6 +47,8 @@ public class Settings {
   static final int BATTERY_LOW_THRESHOLD_PERCENTAGE = 40;
   static final double BATTERY_COMSUMPTION_BT_SEND = 0.0010415;
   static final double BATTERY_COMSUMPTION_BT_RECV = 0.0006590;
+  static final double BATTERY_COMSUMPTION_WIFI_SEND = 0.0023122;
+  static final double BATTERY_COMSUMPTION_WIFI_RECV = 0.0008699; 
   static final double BATTERY_COMSUMPTION_CELL_SEND = 0.0092593;
   static final double BATTERY_COMSUMPTION_CELL_RECV = 0.0018519;  
 }
