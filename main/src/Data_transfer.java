@@ -16,14 +16,14 @@ public class Data_transfer {
   static void main(Node_info node){
     int need_data_num;
     Node_info nearest_dynamic_fog = null;
-    var near_dynamic_fogs_list = new ArrayList<Integer>();
+    var near_dynamic_fogs_list = new ArrayList<Near_DFs>();
     
     need_data_num = Data_mng.select();
     Data_mng.update_delete_order(need_data_num);
 
     if(Settings.FOG_USE){
-      /*near_dynamic_fogs_list = */Fog_mng.scan_near_dynamic_fogs(node);
-      nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0)); 
+      near_dynamic_fogs_list = Fog_mng.scan_near_dynamic_fogs(node);
+      nearest_dynamic_fog = near_dynamic_fogs_list.get(0).dynamic_fog; 
     }
     if(DEBUG){
       System.out.print("Node_num: " + node.num + ", Req. data: " + need_data_num);
@@ -42,9 +42,9 @@ public class Data_transfer {
     }
   }
 
-  private static void start(ArrayList<Integer> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
+  private static void start(ArrayList<Near_DFs> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
     Data_info need_data = null;
-    Node_info nearest_dynamic_fog = Node_mng.get_node_info(near_dynamic_fogs_list.get(0));// Maintainance required (2021/11/14 12:55 a.m.)
+    Node_info nearest_dynamic_fog = near_dynamic_fogs_list.get(0).dynamic_fog;// Maintainance required (2021/12/8 7:42 p.m.)
     Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
     boolean bluetooth_range = false, wifi_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
 

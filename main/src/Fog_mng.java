@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class Fog_mng {
   private static final boolean DEBUG = Settings.DEBUG;
-  private static final int INIT = -1;
 
   static Fog_info get_fog_info(int dynamic_fog_node_num){
     Fog_info dynamic_fog = null;
