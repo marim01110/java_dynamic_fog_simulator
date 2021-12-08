@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
+  private static final int INIT = -1;
 
   static boolean check_contents(Node_info node){
     boolean transfer = false;
@@ -44,11 +45,13 @@ public class Data_transfer {
 
   private static void start(ArrayList<Near_DFs> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
     Data_info need_data = null;
-    Node_info nearest_dynamic_fog = near_dynamic_fogs_list.get(0).dynamic_fog;// Maintainance required (2021/12/8 7:42 p.m.)
+    Node_info nearest_dynamic_fog = null;
     Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
     boolean bluetooth_range = false, wifi_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
+    int nearest_dynamic_fog_index_num = INIT;
+    double distance;
 
-    //Get need_data information
+    /* Get need_data information */
     need_data = Data_mng.get_data_info(need_data_num, false);
     if(need_data == null){
       /* Create new data */
@@ -57,19 +60,29 @@ public class Data_transfer {
       need_data = Data_mng.get_data_info(temp, true);
     }
 
-    //Data search in the nearest Dynamic Fog
+    /* Data search in the nearest Dynamic Fog */
     for(int i = 0; i < need_data.hosted_by_list.size(); i++){
-      if(nearest_dynamic_fog.num == need_data.hosted_by_list.get(i)){
-        found_in_df = true;
-        break;
+      for(int j = 0; j < near_dynamic_fogs_list.size(); j++){
+        if(need_data.hosted_by_list.get(i) == near_dynamic_fogs_list.get(j).dynamic_fog.num){
+          found_in_df = true;
+          nearest_dynamic_fog_index_num = j;
+          break;
+        }
       }
+      if(found_in_df == true) break;
     }
+    if(nearest_dynamic_fog_index_num == INIT) nearest_dynamic_fog_index_num = 0;
+
+    /* Load Dynamic_Fog info and distance */
+    nearest_dynamic_fog = near_dynamic_fogs_list.get(nearest_dynamic_fog_index_num).dynamic_fog;
+    distance = near_dynamic_fogs_list.get(nearest_dynamic_fog_index_num).distance;
+
     if(Settings.BLUETOOTH_USE){
-      if(request_node.point.distance(nearest_dynamic_fog.point) <= Settings.BT_CONNECTION_RANGE) bluetooth_range = true;
+      if(distance <= Settings.BT_CONNECTION_RANGE) bluetooth_range = true;
     }
     else bluetooth_range = false;
     if(Settings.WIFI_USE){
-      if(request_node.point.distance(nearest_dynamic_fog.point) <= Settings.WIFI_CONNECTION_RANGE) wifi_range = true;
+      if(distance <= Settings.WIFI_CONNECTION_RANGE) wifi_range = true;
     }
     else wifi_range = false;
 

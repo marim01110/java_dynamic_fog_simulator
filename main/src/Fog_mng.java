@@ -126,7 +126,18 @@ public class Fog_mng {
       Collections.sort(result, new Comparator<Near_DFs>() {
         @Override
         public int compare(Near_DFs df1, Near_DFs df2){
-          return df1.distance < df2.distance ? -1 : 1;
+          int temp = 9999;
+          
+          if(df1.distance < df2.distance) temp = -1;
+          else if(df1.distance == df2.distance) temp = 0;
+          else if(df1.distance > df2.distance) temp = 1;
+          else{
+            System.out.println("Error: Error has occured on Sorting process.");
+            System.out.println("Quit the program.");
+            System.exit(-1);
+          }
+
+          return temp;
         }
       });
     }
