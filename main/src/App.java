@@ -81,6 +81,16 @@ class Landmark{
   }
 }
 
+class Near_DFs{
+  Node_info dynamic_fog;
+  double distance;
+
+  public Near_DFs(Node_info dynamic_fog, double distance){
+    this.dynamic_fog = dynamic_fog;
+    this.distance = distance;
+  }
+}
+
 public class App {
   public static void main(String[] args) throws Exception {
     Scanner scan = new Scanner(System.in);

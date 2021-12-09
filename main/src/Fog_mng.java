@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class Fog_mng {
   private static final boolean DEBUG = Settings.DEBUG;
-  private static final int INIT = -1;
 
   static Fog_info get_fog_info(int dynamic_fog_node_num){
     Fog_info dynamic_fog = null;
@@ -60,7 +61,7 @@ public class Fog_mng {
           Environment.dynamic_fog_list.add(temp);
           dynamic_fog_candidate.dynamic_fog = true;
           
-          if(DEBUG) System.out.println("Node " + dynamic_fog_candidate + " becomes Dynamic_Fog node.");
+          if(DEBUG) System.out.println("Node " + dynamic_fog_candidate.num + " becomes Dynamic_Fog node.");
         }
         if(DEBUG) System.out.println("Required: " + dynamic_fogs_required + ", Exist: " + Environment.dynamic_fog_list.size());
       }
@@ -97,50 +98,50 @@ public class Fog_mng {
     }
   }
 
-  static ArrayList<Integer> search_near_dynamic_fogs(Node_info current_node){
-    var result = new ArrayList<Integer>();
-    double /*distance_calc_min, */temp_distance, distance = 9999;//Initialize distance
-    Node_info dynamic_fog_node;
-    int nearest_dynamic_fog_node_num = INIT;
-    //boolean reset;
+  static ArrayList<Near_DFs> scan_near_dynamic_fogs(Node_info current_node){
+    var result = new ArrayList<Near_DFs>();
+    Node_info dynamic_fog_node, nearest_dynamic_fog = null;
+    double distance, min_distance = 9999;// Initialize distance
 
-    for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
-      dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
-      temp_distance = current_node.point.distance(dynamic_fog_node.point);
-      if(distance > temp_distance){
-        distance = temp_distance;
-        nearest_dynamic_fog_node_num = dynamic_fog_node.num;
-      }
-      if(temp_distance <= Settings.BT_CONNECTION_RANGE){
-        result.add(dynamic_fog_node.num);
+    if(Settings.BLUETOOTH_USE || Settings.WIFI_USE){
+      for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+        dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
+        distance = current_node.point.distance(dynamic_fog_node.point);
+        if(Settings.WIFI_USE){
+          if(distance <= Settings.WIFI_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
+        }
+        else if(Settings.BLUETOOTH_USE){
+          if(distance <= Settings.BT_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
+        }
+        if(distance < min_distance){
+          min_distance = distance;
+          nearest_dynamic_fog = dynamic_fog_node;
+        }
       }
     }
 
-    dynamic_fog_node = null;
-
-    if(result.size() == 0){
-      result.add(nearest_dynamic_fog_node_num);
-    }/*
+    if(result.size() == 0) result.add(new Near_DFs(nearest_dynamic_fog, min_distance));
     else{
-      //Sorting ascending order
-      do{
-        distance_calc_min = 0;
-        reset = false;
-        for(int i = 0; i < result.size(); i++){
-          dynamic_fog_node = Node_mng.get_node_info(node_list, result.get(i));
-          temp_distance = current_node.point.distance(dynamic_fog_node.point);
-          if(distance_calc_min > temp_distance){
-            result.add(result.get(i));
-            result.remove(i);
-            reset = true;
-            break;
-          }
+      /* Sort */
+      Collections.sort(result, new Comparator<Near_DFs>() {
+        @Override
+        public int compare(Near_DFs df1, Near_DFs df2){
+          int temp = 9999;
+          
+          if(df1.distance < df2.distance) temp = -1;
+          else if(df1.distance == df2.distance) temp = 0;
+          else if(df1.distance > df2.distance) temp = 1;
           else{
-            distance_calc_min = temp_distance;
+            System.out.println("Error: Error has occured on Sorting process.");
+            System.out.println("Quit the program.");
+            System.exit(-1);
           }
+
+          return temp;
         }
-      }while(reset);
-    }*/
+      });
+    }
+
     return result;
   }
 

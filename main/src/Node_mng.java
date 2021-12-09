@@ -124,6 +124,18 @@ public class Node_mng {
                                         break;
                         }
                         break;
+      case "wifi":  switch(recv_or_send){
+                          case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_WIFI_RECV;
+                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_WIFI_RECV;
+                                        break;
+                          case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_WIFI_SEND;
+                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_WIFI_SEND;
+                                        break;
+                          default:      System.out.println("Not enough arguments given. Simulation aborted.");
+                                        System.exit(-1);
+                                        break;
+                        }
+                        break;
       case "cellular":  switch(recv_or_send){
                           case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_RECV;
                                         Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_CELL_RECV;

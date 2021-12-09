@@ -7,8 +7,11 @@ public class Sim {
     Node_info node;
 
     switch(Environment.mode){
-      case 4:   
+      case 4:   Environment.init();
+                break;
       case 5:   Environment.init();
+                Environment.init_max_nodes_array();
+                MAX_NODES = Environment.return_max_nodes();
                 break;
       default:  System.out.println("Error: Invalid running_mode selected.");
                 System.exit(-1);
@@ -24,7 +27,7 @@ public class Sim {
     //Simuration Start
     Environment.time_count = 0;
 
-    while(Environment.time_count < Settings.SIM_TIME){
+    while(Environment.time_count < Settings.SIM_TIME_HOURS * 3600){
       if(Settings.FOG_USE){
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0){
           Fog_mng.register(Environment.node_leased);
@@ -33,10 +36,7 @@ public class Sim {
 
       if(Environment.mode == 5){
         //Change MAX_NODES value.
-        Environment.stage = Environment.change_stages(Environment.time_count, Environment.stage);
-        if(Environment.stage != 0){
-          MAX_NODES = Environment.return_max_nodes(Environment.stage);
-        }
+        if(Environment.time_count % 3600 == 0) MAX_NODES = Environment.return_max_nodes();
       }
       
       //Node replenishment.
@@ -65,7 +65,7 @@ public class Sim {
       Data_mng.valid_check();
 
       if(!DEBUG) System.out.print("\033[H\033[2J");
-      System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100 / Settings.SIM_TIME + "% done.)");
+      System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100 / (Settings.SIM_TIME_HOURS * 3600) + "% done.)");
       if(DEBUG) System.out.println();
     }
     Statistics.print_info();
