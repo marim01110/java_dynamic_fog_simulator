@@ -12,7 +12,7 @@ public class Settings {
   static final double RTT_DIRECT_WIFI = 14.13;// Unit is milliseconds.
   static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is milliseconds.
   static final double RTT_CLOUD = 28.91;// Unit is milliseconds.
-  static final boolean BLUETOOTH_USE = true;
+  static final boolean BLUETOOTH_USE = false;
   static final double BT_CONNECTION_RANGE = 50;// Unit is meters.
   static final boolean WIFI_USE = true;
   static final double WIFI_CONNECTION_RANGE = 200;// Unit is meters.

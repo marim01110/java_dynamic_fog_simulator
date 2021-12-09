@@ -107,11 +107,11 @@ public class Fog_mng {
       for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
         dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
         distance = current_node.point.distance(dynamic_fog_node.point);
-        if(Settings.BLUETOOTH_USE){
-          if(Settings.WIFI_USE){
-            if(distance <= Settings.WIFI_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
-          }
-          else if(distance <= Settings.BT_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
+        if(Settings.WIFI_USE){
+          if(distance <= Settings.WIFI_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
+        }
+        else if(Settings.BLUETOOTH_USE){
+          if(distance <= Settings.BT_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
         }
         if(distance < min_distance){
           min_distance = distance;

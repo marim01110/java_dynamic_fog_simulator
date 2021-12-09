@@ -97,7 +97,7 @@ public class Data_transfer {
         from_local_wifi(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_near_df_wifi += 1;
-        if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Wi-Fi.");
+        if(DEBUG) System.out.println("Data was downloaded from the Nearest DF by Wi-Fi Direct.");
       }
       else{
         from_local_cellular(nearest_dynamic_fog, request_node);
@@ -119,6 +119,14 @@ public class Data_transfer {
         from_local_cellular(sender_node, nearest_dynamic_fog);
         Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
+        data_downloaded = true;
+        Statistics.dl_from_local += 1;
+        if(DEBUG) System.out.println("Data was downloaded from Local Network and copied to the Nearest DF.");
+      }
+      else if(wifi_range){
+        from_local_cellular(sender_node, nearest_dynamic_fog);
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        from_local_wifi(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
         if(DEBUG) System.out.println("Data was downloaded from Local Network and copied to the Nearest DF.");
