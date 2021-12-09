@@ -13,6 +13,24 @@ public class Statistics {
   static long data_size_via_internet_proposed = 0;
   static long data_size_via_internet_conventional = 0;
   static double power_consumption_total = 0;
+  static int out_of_battery = 0;
+
+  static void init(){
+    moves = 0;
+    border_acrossed = 0;
+    data_transfered = 0;
+    dl_from_cloud = 0;
+    dl_from_local = 0;
+    dl_from_near_df_cell = 0;
+    dl_from_near_df_wifi = 0;
+    dl_from_near_df_bluetooth = 0;
+    for_calc_latency_proposed = 0;
+    for_calc_latency_conventional = 0;
+    data_size_via_internet_proposed = 0;
+    data_size_via_internet_conventional = 0;
+    power_consumption_total = 0;
+    out_of_battery = 0;
+  }
 
   static void print_info(){
     System.out.println();
@@ -25,6 +43,7 @@ public class Statistics {
     System.out.println("Download from Near Dynamic_Fog by Wi-Fi: " + dl_from_near_df_wifi + " (" + dl_from_near_df_wifi * 100.0 / data_transfered + "%)");
     System.out.println("Download from Near Dynamic_Fog by Bluetooth: " + dl_from_near_df_bluetooth + " (" + dl_from_near_df_bluetooth * 100.0 / data_transfered + "%)"); 
     System.out.println("Average content types: " + for_calc_contents_average / (Settings.SIM_TIME_HOURS * 3600));
+    System.out.println("Numbers of out of battery: " + out_of_battery);
     System.out.println();
     System.out.println("------Evaluations------");
     System.out.println("Average latency");

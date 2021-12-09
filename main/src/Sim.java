@@ -8,8 +8,10 @@ public class Sim {
 
     switch(Environment.mode){
       case 4:   Environment.init();
+                Statistics.init();
                 break;
       case 5:   Environment.init();
+                Statistics.init();
                 Environment.init_max_nodes_array();
                 MAX_NODES = Environment.return_max_nodes();
                 break;

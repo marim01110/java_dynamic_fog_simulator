@@ -197,6 +197,7 @@ public class Node_mng {
         }
         if(current_node.battery_remain_percentage <= 0){
           delete(current_node);
+          Statistics.out_of_battery += 1;
           i -= 1;
           continue;
         }
