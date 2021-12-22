@@ -8,8 +8,10 @@ public class Sim {
 
     switch(Environment.mode){
       case 4:   Environment.init();
+                Statistics.init();
                 break;
       case 5:   Environment.init();
+                Statistics.init();
                 Environment.init_max_nodes_array();
                 MAX_NODES = Environment.return_max_nodes();
                 break;
@@ -57,7 +59,7 @@ public class Sim {
       }
 
       //Data Transfer Process
-      for(int i = 0; i < Environment.node_list.size(); i++){
+      for(int i = 0, size = Environment.node_list.size(); i < size; i++){
         node = Environment.node_list.get(i);
         transfer = Data_transfer.check_contents(node);
         if(transfer) Data_transfer.main(node);

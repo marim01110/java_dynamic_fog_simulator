@@ -9,7 +9,7 @@ public class Fog_mng {
   static Fog_info get_fog_info(int dynamic_fog_node_num){
     Fog_info dynamic_fog = null;
 
-    for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+    for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
       if(Environment.dynamic_fog_list.get(i).node_num == dynamic_fog_node_num){
         dynamic_fog = Environment.dynamic_fog_list.get(i);
         break;
@@ -40,7 +40,7 @@ public class Fog_mng {
 
         //Verify the candidate.
         if(dynamic_fog_candidate.battery_low == true) error = true;
-        else for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+        else for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
           if(dynamic_fog_candidate.num == Environment.dynamic_fog_list.get(i).node_num) error = true;
           if(error == true) break;
         }
@@ -104,7 +104,7 @@ public class Fog_mng {
     double distance, min_distance = 9999;// Initialize distance
 
     if(Settings.BLUETOOTH_USE || Settings.WIFI_USE){
-      for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+      for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
         dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
         distance = current_node.point.distance(dynamic_fog_node.point);
         if(Settings.WIFI_USE){
@@ -150,7 +150,7 @@ public class Fog_mng {
     int used_capacity = 0;
     int data_num;
     
-    for(int i = 0; i < dynamic_fog.fog_stored_contents_list.size(); i++){
+    for(int i = 0, size = dynamic_fog.fog_stored_contents_list.size(); i < size; i++){
       data_num = dynamic_fog.fog_stored_contents_list.get(i);
       data = Data_mng.get_data_info(data_num, true);
       used_capacity += data.file_size;
@@ -166,14 +166,14 @@ public class Fog_mng {
     System.out.println("Nodes active: " + Environment.node_list.size());
     dynamic_fogs_required = Environment.node_list.size() * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
     System.out.print(Environment.dynamic_fog_list.size() + " Dynamic Fog Node(s) exist (Minimum DF: " + dynamic_fogs_required + "), Dynamic Fog Node: ");
-    for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+    for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
       if(i != 0) System.out.print(", ");
       System.out.print(Environment.dynamic_fog_list.get(i).node_num);
     }
     System.out.println();
 
     try{
-      for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
+      for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
         node = Environment.dynamic_fog_list.get(i);
         node_info = Node_mng.get_node_info(node.node_num);
         System.out.println();

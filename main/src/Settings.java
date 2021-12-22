@@ -12,14 +12,14 @@ public class Settings {
   static final double RTT_DIRECT_WIFI = 14.13;// Unit is milliseconds.
   static final double RTT_DIRECT_BLUETOOTH = 200;// Unit is milliseconds.
   static final double RTT_CLOUD = 28.91;// Unit is milliseconds.
-  static final boolean BLUETOOTH_USE = false;
+  static final boolean BLUETOOTH_USE = true;
   static final double BT_CONNECTION_RANGE = 50;// Unit is meters.
-  static final boolean WIFI_USE = true;
+  static final boolean WIFI_USE = false;
   static final double WIFI_CONNECTION_RANGE = 200;// Unit is meters.
 
   //------MODE 5 SETTINGS------
   static final int START_FROM = 5;// 24-hour notation.
-  static final int NODES_REALITY = 1;// Unit is percents.
+  static final int NODES_REALITY = 4;// Unit is percents.
   static final int[] nodes_model_array = {95405, 94750, 89750, 88580, 89975, 96950, 103675, 116200, 139050, 153700, 175000, 190450, 215450, 221350, 207300, 193530, 197100, 205200, 194950, 176500, 159550, 129100, 109950, 99030};
 
   //------FOG SETTINGS------
@@ -28,7 +28,7 @@ public class Settings {
   static final int CONTENTS_TYPES_MAX = 300;
   static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
   static final int CONTENTS_EXPIRE_AFTER = 180;// Unit is seconds.
-  static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 20;
+  static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 10;
   static final int DYNAMIC_FOG_UPDATE_INTERVAL = 300;// Unit is seconds.
 
   //------NODE MOVE SPEED SETTINGS------
@@ -45,10 +45,10 @@ public class Settings {
   static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
   static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
   static final int BATTERY_LOW_THRESHOLD_PERCENTAGE = 40;
-  static final double BATTERY_COMSUMPTION_BT_SEND = 0.0010415;
+  static final double BATTERY_COMSUMPTION_BT_SEND = 0.0007837;
   static final double BATTERY_COMSUMPTION_BT_RECV = 0.0006590;
-  static final double BATTERY_COMSUMPTION_WIFI_SEND = 0.0023122;
-  static final double BATTERY_COMSUMPTION_WIFI_RECV = 0.0008699; 
-  static final double BATTERY_COMSUMPTION_CELL_SEND = 0.0092593;
-  static final double BATTERY_COMSUMPTION_CELL_RECV = 0.0018519;  
+  static final double BATTERY_COMSUMPTION_WIFI_SEND = 0.0017398;
+  static final double BATTERY_COMSUMPTION_WIFI_RECV = 0.0008699;
+  static final double BATTERY_COMSUMPTION_CELL_SEND = 0.0069671;
+  static final double BATTERY_COMSUMPTION_CELL_RECV = 0.0018519;
 }

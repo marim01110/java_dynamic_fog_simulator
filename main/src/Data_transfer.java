@@ -61,8 +61,8 @@ public class Data_transfer {
     }
 
     /* Data search in the nearest Dynamic Fog */
-    for(int i = 0; i < need_data.hosted_by_list.size(); i++){
-      for(int j = 0; j < near_dynamic_fogs_list.size(); j++){
+    for(int i = 0, hosted_by_size = need_data.hosted_by_list.size(); i < hosted_by_size; i++){
+      for(int j = 0, fogs_list_size = near_dynamic_fogs_list.size(); j < fogs_list_size; j++){
         if(need_data.hosted_by_list.get(i) == near_dynamic_fogs_list.get(j).dynamic_fog.num){
           found_in_df = true;
           nearest_dynamic_fog_index_num = j;

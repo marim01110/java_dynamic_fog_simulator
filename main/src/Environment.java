@@ -11,9 +11,9 @@ public class Environment {
     static int[] max_nodes_array = new int[24];
     static Landmark landmark_array[] = new Landmark[Settings.LANDMARKS];
     static ArrayList<Node_info> node_list = new ArrayList<>();
-    static ArrayList<Fog_info> dynamic_fog_list = new ArrayList<>();
-    static ArrayList<Data_info> network_contents_list = new ArrayList<>();
-    static ArrayList<Integer> last_used = new ArrayList<>();
+    static ArrayList<Fog_info> dynamic_fog_list = new ArrayList<>(2000);
+    static ArrayList<Data_info> network_contents_list = new ArrayList<>(Settings.CONTENTS_TYPES_MAX);
+    static ArrayList<Integer> last_used = new ArrayList<>(Settings.CONTENTS_TYPES_MAX);
 
     /* Macro variables */
     static final int FOG_IS_OK = 0;
@@ -87,6 +87,9 @@ public class Environment {
       
       time_now = time_count / 3600 + Settings.START_FROM;
       max_nodes = max_nodes_array[time_now];
+
+      node_list.ensureCapacity(max_nodes);
+      dynamic_fog_list.ensureCapacity(max_nodes * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100);
 
       return max_nodes;
     }

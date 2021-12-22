@@ -97,7 +97,7 @@ public class Node_mng {
   static Node_info get_node_info(int node_num){
     Node_info result = null;
 
-    for(int i = 0; i < Environment.node_list.size(); i++){
+    for(int i = 0, size = Environment.node_list.size(); i < size; i++){
       if(node_num == Environment.node_list.get(i).num){
         result = Environment.node_list.get(i);
         break;
@@ -197,6 +197,7 @@ public class Node_mng {
         }
         if(current_node.battery_remain_percentage <= 0){
           delete(current_node);
+          Statistics.out_of_battery += 1;
           i -= 1;
           continue;
         }
