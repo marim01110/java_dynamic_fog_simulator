@@ -48,7 +48,7 @@ public class Settings {
   static final double BATTERY_COMSUMPTION_BT_SEND = 0.0007837;
   static final double BATTERY_COMSUMPTION_BT_RECV = 0.0006590;
   static final double BATTERY_COMSUMPTION_WIFI_SEND = 0.0017398;
-  static final double BATTERY_COMSUMPTION_WIFI_RECV = 0.0008699; 
+  static final double BATTERY_COMSUMPTION_WIFI_RECV = 0.0008699;
   static final double BATTERY_COMSUMPTION_CELL_SEND = 0.0069671;
-  static final double BATTERY_COMSUMPTION_CELL_RECV = 0.0018519;  
+  static final double BATTERY_COMSUMPTION_CELL_RECV = 0.0018519;
 }

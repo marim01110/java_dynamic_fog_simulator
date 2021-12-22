@@ -59,7 +59,7 @@ public class Sim {
       }
 
       //Data Transfer Process
-      for(int i = 0; i < Environment.node_list.size(); i++){
+      for(int i = 0, size = Environment.node_list.size(); i < size; i++){
         node = Environment.node_list.get(i);
         transfer = Data_transfer.check_contents(node);
         if(transfer) Data_transfer.main(node);

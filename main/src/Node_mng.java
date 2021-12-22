@@ -97,7 +97,7 @@ public class Node_mng {
   static Node_info get_node_info(int node_num){
     Node_info result = null;
 
-    for(int i = 0; i < Environment.node_list.size(); i++){
+    for(int i = 0, size = Environment.node_list.size(); i < size; i++){
       if(node_num == Environment.node_list.get(i).num){
         result = Environment.node_list.get(i);
         break;

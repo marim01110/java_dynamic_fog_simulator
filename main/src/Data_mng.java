@@ -8,7 +8,7 @@ public class Data_mng {
   static Data_info get_data_info(int need_data_num, boolean deny_null){
     Data_info data = null;
 
-    for(int i = 0; i < Environment.network_contents_list.size(); i++){
+    for(int i = 0, size = Environment.network_contents_list.size(); i < size; i++){
       if(need_data_num == Environment.network_contents_list.get(i).num){
         data = Environment.network_contents_list.get(i);
         break;
@@ -115,7 +115,7 @@ public class Data_mng {
   static boolean info_exist(Integer data_num){
     boolean result = false;
 
-    for(int i = 0; i < Environment.network_contents_list.size(); i++){
+    for(int i = 0, size = Environment.network_contents_list.size(); i < size; i++){
       if(Environment.network_contents_list.get(i).num == data_num){
         result = true;
       }
@@ -143,9 +143,10 @@ public class Data_mng {
   }
 
   static void update_delete_order(int data_num){
-    for(int i = 0; i < Environment.last_used.size(); i++){
+    for(int i = 0, size = Environment.last_used.size(); i < size; i++){
       if(Environment.last_used.get(i) == data_num){
         Environment.last_used.remove(i);
+        break;
       }
     }
     Environment.last_used.add(data_num);
@@ -188,7 +189,7 @@ public class Data_mng {
     Data_info data;
 
     try {
-      for(int i = 0; i < Environment.network_contents_list.size(); i++){
+      for(int i = 0, size = Environment.network_contents_list.size(); i < size; i++){
         data = Environment.network_contents_list.get(i);
         System.out.println();
         System.out.println("Data num: " + data.num);
