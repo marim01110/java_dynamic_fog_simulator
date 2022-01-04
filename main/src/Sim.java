@@ -66,8 +66,11 @@ public class Sim {
       }
       Data_mng.valid_check();
 
+      int time_count_hour = Environment.time_count / 3600 + Settings.START_FROM;
+      int time_count_min = Environment.time_count % 3600 / 60;
+
       if(!DEBUG) System.out.print("\033[H\033[2J");
-      System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100 / (Settings.SIM_TIME_HOURS * 3600) + "% done.)");
+      System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100 / (Settings.SIM_TIME_HOURS * 3600) + "% done.)" + ", Current time in Sim: " + time_count_hour + ":" + time_count_min + ", Active nodes: " + Environment.node_list.size());
       if(DEBUG) System.out.println();
     }
     Statistics.print_info();
