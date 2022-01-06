@@ -117,7 +117,7 @@ public class Data_transfer {
     if(found_in_lan){
       if(bluetooth_range){
         from_local_cellular(sender_node, nearest_dynamic_fog);
-        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
@@ -125,7 +125,7 @@ public class Data_transfer {
       }
       else if(wifi_range){
         from_local_cellular(sender_node, nearest_dynamic_fog);
-        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);
         from_local_wifi(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
@@ -135,7 +135,7 @@ public class Data_transfer {
         /*
         if(copy_control(need_data)){
           from_local_cellular(sender_node, nearest_dynamic_fog);
-          Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+          Data_mng.update(nearest_dynamic_fog.num, need_data_num);
           from_local_cellular(nearest_dynamic_fog, request_node);
         }
         else */from_local_cellular(sender_node, request_node);
@@ -148,7 +148,7 @@ public class Data_transfer {
     if(data_downloaded == false){
       from_cloud_cellular(nearest_dynamic_fog);
       Statistics.data_size_via_internet_proposed += need_data.file_size;
-      Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+      Data_mng.update(nearest_dynamic_fog.num, need_data_num);
       if(bluetooth_range){
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
