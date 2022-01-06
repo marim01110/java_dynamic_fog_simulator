@@ -38,7 +38,7 @@ public class Fog_mng {
         dynamic_fog_candidate = Environment.node_list.get(counter);
         if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate.num);
 
-        //Verify the candidate.
+        /* Verify the candidate. */
         if(dynamic_fog_candidate.battery_low == true) error = true;
         else for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
           if(dynamic_fog_candidate.num == Environment.dynamic_fog_list.get(i).node_num) error = true;
@@ -55,7 +55,8 @@ public class Fog_mng {
         if(error == true){
           if(DEBUG) System.out.println("The Candidate is incompatible.");
         }
-        else if(error == false){//"error == false" means the candidate not dupulicated.
+        else if(error == false){
+          /* "error == false" means the candidate not dupulicated. */
           var fog_stored_contents_list = new ArrayList<Integer>();
           var temp = new Fog_info(dynamic_fog_candidate.num, Environment.FOG_IS_OK, Settings.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
           Environment.dynamic_fog_list.add(temp);
@@ -78,24 +79,13 @@ public class Fog_mng {
       data = null;
       data = Data_mng.get_data_info(delete_df.fog_stored_contents_list.get(i), true);
 
-      //Update Data_info
+      /* Update Data_info */
       obj = delete_df.node_num;
       data.hosted_by_list.remove(obj);
     }
     node = Node_mng.get_node_info(delete_df.node_num);
     Environment.dynamic_fog_list.remove(delete_df);
     node.dynamic_fog = false;
-  }
-
-  static void keep_alive(){//Unused.
-    Node_info node;
-
-    for(int i = 0; i < Environment.dynamic_fog_list.size(); i++){
-      node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
-      if(node.goal_nearby == true){
-        
-      }
-    }
   }
 
   static ArrayList<Near_DFs> scan_near_dynamic_fogs(Node_info current_node){

@@ -103,7 +103,7 @@ public class Node_mng {
         break;
       }
     }
-    //If not found ...
+    /* If not found ... */
     if(result == null){
       System.out.println("Requested node: " + node_num + " is Not Found.");
     }

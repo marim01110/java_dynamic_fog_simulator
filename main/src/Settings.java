@@ -24,7 +24,7 @@ public class Settings {
 
   //------FOG SETTINGS------
   static final int FOG_STORAGE_SIZE = 100000;// Unit is kilobytes.
-  static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2021/11/17 8:56 p.m.).
+  static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2022/1/6 5:11 p.m.).
   static final int CONTENTS_TYPES_MAX = 300;
   static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
   static final int CONTENTS_EXPIRE_AFTER = 180;// Unit is seconds.

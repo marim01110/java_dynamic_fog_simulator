@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
-  private static final int INIT = -1;
 
   static boolean check_contents(Node_info node){
     boolean transfer = false;
@@ -32,7 +31,8 @@ public class Data_transfer {
       else System.out.println();
     }
 
-    if(nearest_dynamic_fog == null){//Fog feature not used. so all files download from cloud.
+    if(nearest_dynamic_fog == null){
+      /* Fog feature not used. so all files download from cloud. */
       Node_mng.battery_drain(node, "cellular", "recv");
       Statistics.dl_from_cloud += 1;
       Statistics.data_transfered += 1;
@@ -46,16 +46,16 @@ public class Data_transfer {
   private static void start(ArrayList<Near_DFs> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
     Data_info need_data = null;
     Node_info nearest_dynamic_fog = null;
-    Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
+    Node_info sender_node = null;
     boolean bluetooth_range = false, wifi_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
-    int nearest_dynamic_fog_index_num = INIT;
+    int nearest_dynamic_fog_index_num = Environment.INIT;
     double distance;
 
     /* Get need_data information */
     need_data = Data_mng.get_data_info(need_data_num, false);
-    if(need_data == null){
+    if(need_data.expire_after == Environment.INIT){
       /* Create new data */
-      int temp = Data_mng.create();
+      int temp = Data_mng.create(need_data_num);
       if(DEBUG) System.out.println("Data created.");
       need_data = Data_mng.get_data_info(temp, true);
     }
@@ -71,7 +71,7 @@ public class Data_transfer {
       }
       if(found_in_df == true) break;
     }
-    if(nearest_dynamic_fog_index_num == INIT) nearest_dynamic_fog_index_num = 0;
+    if(nearest_dynamic_fog_index_num == Environment.INIT) nearest_dynamic_fog_index_num = 0;
 
     /* Load Dynamic_Fog info and distance */
     nearest_dynamic_fog = near_dynamic_fogs_list.get(nearest_dynamic_fog_index_num).dynamic_fog;
@@ -117,7 +117,7 @@ public class Data_transfer {
     if(found_in_lan){
       if(bluetooth_range){
         from_local_cellular(sender_node, nearest_dynamic_fog);
-        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
@@ -125,7 +125,7 @@ public class Data_transfer {
       }
       else if(wifi_range){
         from_local_cellular(sender_node, nearest_dynamic_fog);
-        Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+        Data_mng.update(nearest_dynamic_fog.num, need_data_num);
         from_local_wifi(nearest_dynamic_fog, request_node);
         data_downloaded = true;
         Statistics.dl_from_local += 1;
@@ -135,7 +135,7 @@ public class Data_transfer {
         /*
         if(copy_control(need_data)){
           from_local_cellular(sender_node, nearest_dynamic_fog);
-          Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+          Data_mng.update(nearest_dynamic_fog.num, need_data_num);
           from_local_cellular(nearest_dynamic_fog, request_node);
         }
         else */from_local_cellular(sender_node, request_node);
@@ -148,7 +148,7 @@ public class Data_transfer {
     if(data_downloaded == false){
       from_cloud_cellular(nearest_dynamic_fog);
       Statistics.data_size_via_internet_proposed += need_data.file_size;
-      Data_mng.update(nearest_dynamic_fog.num, need_data_num);//Maintainance required (2021/9/28 12:46 a.m.)
+      Data_mng.update(nearest_dynamic_fog.num, need_data_num);
       if(bluetooth_range){
         from_nearest_df_bluetooth(nearest_dynamic_fog, request_node);
         data_downloaded = true;
@@ -203,6 +203,7 @@ public class Data_transfer {
     Statistics.for_calc_latency_proposed += Settings.RTT_CLOUD;
   }
 
+  /*
   private static boolean copy_control(Data_info need_data){
     boolean copy = false;
     int need_data_hosted_by_total, dynamic_fog_total_nodes;
@@ -217,4 +218,5 @@ public class Data_transfer {
 
     return copy;
   }
+  */
 }
