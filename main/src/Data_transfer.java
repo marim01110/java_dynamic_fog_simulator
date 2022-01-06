@@ -31,7 +31,8 @@ public class Data_transfer {
       else System.out.println();
     }
 
-    if(nearest_dynamic_fog == null){//Fog feature not used. so all files download from cloud.
+    if(nearest_dynamic_fog == null){
+      /* Fog feature not used. so all files download from cloud. */
       Node_mng.battery_drain(node, "cellular", "recv");
       Statistics.dl_from_cloud += 1;
       Statistics.data_transfered += 1;
@@ -45,16 +46,16 @@ public class Data_transfer {
   private static void start(ArrayList<Near_DFs> near_dynamic_fogs_list, Node_info request_node, int need_data_num){
     Data_info need_data = null;
     Node_info nearest_dynamic_fog = null;
-    Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
+    Node_info sender_node = null;
     boolean bluetooth_range = false, wifi_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
     int nearest_dynamic_fog_index_num = Environment.INIT;
     double distance;
 
     /* Get need_data information */
     need_data = Data_mng.get_data_info(need_data_num, false);
-    if(need_data == null){
+    if(need_data.expire_after == Environment.INIT){
       /* Create new data */
-      int temp = Data_mng.create();
+      int temp = Data_mng.create(need_data_num);
       if(DEBUG) System.out.println("Data created.");
       need_data = Data_mng.get_data_info(temp, true);
     }
