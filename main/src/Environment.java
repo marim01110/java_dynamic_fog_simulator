@@ -8,6 +8,7 @@ public class Environment {
     static int file_deleted;
     static int node_leased;
     static int stage;
+    static final int INIT = -1;
     static int[] max_nodes_array = new int[24];
     static Landmark landmark_array[] = new Landmark[Settings.LANDMARKS];
     static ArrayList<Node_info> node_list = new ArrayList<>();

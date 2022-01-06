@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class Data_mng {
   private static final boolean DEBUG = Settings.DEBUG;
-  private static final int INIT = -1;
 
   static Data_info get_data_info(int need_data_num, boolean deny_null){
     Data_info data = null;
@@ -154,7 +153,7 @@ public class Data_mng {
 
   private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, int dynamic_fog_num){
     Data_info data;
-    int delete_file_num = INIT;
+    int delete_file_num = Environment.INIT;
 
     //if(DEBUG) System.out.println("Current delete order is " + last_used);
 
@@ -167,9 +166,9 @@ public class Data_mng {
           break;
         }
       }
-      if(delete_file_num != INIT) break;
+      if(delete_file_num != Environment.INIT) break;
     }
-    if(delete_file_num == INIT){
+    if(delete_file_num == Environment.INIT){
       System.out.println("Error: Can not Find Delete file.");
       System.out.println("Quit the program.");
       System.exit(-1);

@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
-  private static final int INIT = -1;
 
   static boolean check_contents(Node_info node){
     boolean transfer = false;
@@ -48,7 +47,7 @@ public class Data_transfer {
     Node_info nearest_dynamic_fog = null;
     Node_info sender_node = null;// Maintainance required (2021/11/17 8:16 p.m.)
     boolean bluetooth_range = false, wifi_range = false, found_in_df = false, found_in_lan = false, data_downloaded = false;
-    int nearest_dynamic_fog_index_num = INIT;
+    int nearest_dynamic_fog_index_num = Environment.INIT;
     double distance;
 
     /* Get need_data information */
@@ -71,7 +70,7 @@ public class Data_transfer {
       }
       if(found_in_df == true) break;
     }
-    if(nearest_dynamic_fog_index_num == INIT) nearest_dynamic_fog_index_num = 0;
+    if(nearest_dynamic_fog_index_num == Environment.INIT) nearest_dynamic_fog_index_num = 0;
 
     /* Load Dynamic_Fog info and distance */
     nearest_dynamic_fog = near_dynamic_fogs_list.get(nearest_dynamic_fog_index_num).dynamic_fog;
@@ -203,6 +202,7 @@ public class Data_transfer {
     Statistics.for_calc_latency_proposed += Settings.RTT_CLOUD;
   }
 
+  /*
   private static boolean copy_control(Data_info need_data){
     boolean copy = false;
     int need_data_hosted_by_total, dynamic_fog_total_nodes;
@@ -217,4 +217,5 @@ public class Data_transfer {
 
     return copy;
   }
+  */
 }
