@@ -1,8 +1,8 @@
 /*
 Used Java Version
-openjdk 17 2021-09-14
-OpenJDK Runtime Environment (build 17+35-2724)
-OpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)
+openjdk 17.0.1 2021-10-19
+OpenJDK Runtime Environment (build 17.0.1+12-39)
+OpenJDK 64-Bit Server VM (build 17.0.1+12-39, mixed mode, sharing)
 */
 
 import java.util.Scanner;
