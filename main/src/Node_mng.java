@@ -2,8 +2,13 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 public class Node_mng {
   private static final boolean DEBUG = Settings.DEBUG;
+  protected static ArrayList<Integer> delete_node_temp_list = new ArrayList<>();
 
   void spawn(int node_leased){
     Random rand = new Random();
@@ -110,7 +115,7 @@ public class Node_mng {
     }
   }
 
-  private void battery_check(Node_info node){
+  protected void battery_check(Node_info node){
     if(node.battery_remain_percentage <= Settings.BATTERY_LOW_THRESHOLD_PERCENTAGE){
       if(DEBUG) System.out.println("Node " + node.num + "'s battery turns to low state.");
       node.battery_low = true;
@@ -118,7 +123,45 @@ public class Node_mng {
     else node.battery_low = false;
   }
 
-  void keep_alive(){
+  void keep_alive() throws Exception {
+    Node_info current_node;
+    ExecutorService executor = Executors.newFixedThreadPool(4);
+    var list = new ArrayList<Future<?>>();
+
+    for(int i = 0; i < Environment.node_list.size(); i++){
+      current_node = Environment.node_list.get(i);
+
+      Future<?> future = executor.submit(new keep_alive_multi_threads(current_node));
+      list.add(future);
+    }
+    executor.shutdown();
+
+    for (Future<?> future : list) {
+      future.get();
+    }
+
+    if(delete_node_temp_list.isEmpty() == false){
+      for(int i = 0, size = delete_node_temp_list.size(); i < size; i++){
+        Node_info delete_node;
+  
+        delete_node = get_node_info(delete_node_temp_list.get(i));
+        if(delete_node == null){
+          System.exit(-1);
+        }
+  
+        if(delete_node.dynamic_fog == true){
+          var fog_mng_class = new Fog_mng();
+          fog_mng_class.unregister(Fog_mng.get_fog_info(delete_node.num));
+        }
+        delete(delete_node);
+      }
+    }
+
+    delete_node_temp_list.clear();
+  }
+
+
+  void keep_alive_old(){
     Node_info current_node;
     Fog_info fog_info;
 
@@ -162,6 +205,49 @@ public class Node_mng {
         }
       }
       current_node = null;
+    }
+  }
+}
+
+class keep_alive_multi_threads implements Runnable{
+  Node_info current_node;
+
+  public keep_alive_multi_threads(Node_info current_node){
+    this.current_node = current_node;
+  }
+
+  public void run(){
+    boolean delete_node = false;
+
+    /* Node Move Process */
+    if(current_node.reached == false){
+      var move_class = new Move();
+      if(Environment.mode == 4) move_class.random_walk(current_node);
+      if(Environment.mode == 5) move_class.start(current_node);
+      if(Settings.DEBUG) System.out.println("Node "+ current_node.num + " (" + current_node.point.x + ", " + current_node.point.y + "), Waypoint is (" + current_node.destination.point.x + ", " + current_node.destination.point.y + ")");
+    }
+
+    /* Node reach detection */
+    if(current_node.reached == true) delete_node = true;
+
+    /* Share device's location data */
+    /*
+     * Incomplete, disabled. (2021/11/22 11.29 p.m.)
+    battery_drain(current_node, "cellular", "send");
+    */
+
+    var node_mng_class = new Node_mng();
+    node_mng_class.battery_check(current_node);
+    if(current_node.battery_low == true){
+      if(current_node.battery_remain_percentage <= 0){
+        delete_node = true;
+        Statistics.out_of_battery += 1;
+      }
+    }
+
+    // Need to write code for node deletion.
+    if(delete_node == true){
+      Node_mng.delete_node_temp_list.add(current_node.num);
     }
   }
 }

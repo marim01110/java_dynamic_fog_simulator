@@ -33,7 +33,7 @@ public class Environment {
       init_landmark();
     }
 
-    void loop(){
+    void loop() throws Exception {
       Scanner scan = new Scanner(System.in);
       int loop;
       var sim = new Simulator();

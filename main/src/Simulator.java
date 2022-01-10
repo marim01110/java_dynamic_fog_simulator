@@ -2,7 +2,7 @@ public class Simulator {
   private static final boolean DEBUG = Settings.DEBUG;
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
-  void main(){
+  void main() throws Exception {
     boolean transfer;
     Node_info node;
     var node_mng_class = new Node_mng();
@@ -53,7 +53,7 @@ public class Simulator {
       }
 
       /* Node Keep_Alive Process (Including Move Process) */
-      node_mng_class.keep_alive();
+      node_mng_class.keep_alive_old();
 
       Environment.time_count += 1;
       if(Settings.FOG_USE){
