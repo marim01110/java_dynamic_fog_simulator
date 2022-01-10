@@ -20,7 +20,7 @@ public class Environment {
     static final int FOG_IS_OK = 0;
     static final int FOG_WILL_BE_DELETED = 1;
 
-    void init(){
+    static void init(){
       time_count = 0;
       cache_data_total = 0;
       file_deleted = 0;
@@ -54,7 +54,7 @@ public class Environment {
       scan.close();
     }
 
-    void init_landmark(){
+    static void init_landmark(){
       landmark_array[0] = new Landmark(1, "JR Kyoto Station", 640, 890);
       landmark_array[1] = new Landmark(2, "To-ji Temple", 225, 685);
       landmark_array[2] = new Landmark(3, "Higashi-Honganji Temple", 640, 1120);
