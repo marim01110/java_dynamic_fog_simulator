@@ -20,7 +20,7 @@ public class Environment {
     static final int FOG_IS_OK = 0;
     static final int FOG_WILL_BE_DELETED = 1;
 
-    static void init(){
+    void init(){
       time_count = 0;
       cache_data_total = 0;
       file_deleted = 0;
@@ -33,9 +33,10 @@ public class Environment {
       init_landmark();
     }
 
-    static void loop(){
+    void loop(){
       Scanner scan = new Scanner(System.in);
       int loop;
+      var sim = new Simulator();
 
       System.out.print("Specify the number of repetitions: ");
       loop = scan.nextInt();
@@ -47,13 +48,13 @@ public class Environment {
       for(int i = 0; i < loop; i++){
         System.out.println("loop_count " + i);
         init();
-        Sim.main();
+        sim.main();
         System.out.println();
       }
       scan.close();
     }
 
-    static void init_landmark(){
+    void init_landmark(){
       landmark_array[0] = new Landmark(1, "JR Kyoto Station", 640, 890);
       landmark_array[1] = new Landmark(2, "To-ji Temple", 225, 685);
       landmark_array[2] = new Landmark(3, "Higashi-Honganji Temple", 640, 1120);

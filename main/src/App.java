@@ -102,8 +102,14 @@ public class App {
     System.out.print("Select running mode.[4,5,8] ");
     Environment.mode = scan.nextInt();
     
-    if(Environment.mode == 8) Environment.loop();
-    else Sim.main();
+    if(Environment.mode == 8){
+      var env = new Environment();
+      env.loop();
+    }
+    else{
+      var sim = new Simulator();
+      sim.main();
+    }
     scan.close();
   }
 }

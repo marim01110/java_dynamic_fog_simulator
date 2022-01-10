@@ -1,8 +1,8 @@
-public class Sim {
+public class Simulator {
   private static final boolean DEBUG = Settings.DEBUG;
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
-  static void main(){
+  void main(){
     boolean transfer;
     Node_info node;
 
