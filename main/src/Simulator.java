@@ -1,10 +1,12 @@
-public class Sim {
+public class Simulator {
   private static final boolean DEBUG = Settings.DEBUG;
   private static int MAX_NODES = Settings.INIT_MAX_NODES;
 
-  static void main(){
+  void main(){
     boolean transfer;
     Node_info node;
+    var node_mng_class = new Node_mng();
+    var data_mng_class = new Data_mng();
 
     switch(Environment.mode){
       case 4:   Environment.init();
@@ -22,7 +24,7 @@ public class Sim {
 
     /* Initialized Array on Dynamic_List */
     for(int i = 0; i < MAX_NODES; i++){
-      Node_mng.spawn(Environment.node_leased);
+      node_mng_class.spawn(Environment.node_leased);
       Environment.node_leased += 1;
     }
 
@@ -34,7 +36,8 @@ public class Sim {
     while(Environment.time_count < Settings.SIM_TIME_HOURS * 3600){
       if(Settings.FOG_USE){
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0){
-          Fog_mng.register(Environment.node_leased);
+          var fog_mng_class = new Fog_mng();
+          fog_mng_class.register();
         }
       }
 
@@ -45,12 +48,12 @@ public class Sim {
       
       /* Node replenishment. */
       while(Environment.node_list.size() < MAX_NODES){
-        Node_mng.spawn(Environment.node_leased);
+        node_mng_class.spawn(Environment.node_leased);
         Environment.node_leased += 1;
       }
 
       /* Node Keep_Alive Process (Including Move Process) */
-      Node_mng.keep_alive();
+      node_mng_class.keep_alive();
 
       Environment.time_count += 1;
       if(Settings.FOG_USE){
@@ -62,11 +65,12 @@ public class Sim {
 
       /* Data Transfer Process */
       for(int i = 0, size = Environment.node_list.size(); i < size; i++){
+        var transfer_process = new Data_transfer();
         node = Environment.node_list.get(i);
-        transfer = Data_transfer.check_contents(node);
-        if(transfer) Data_transfer.main(node);
+        transfer = transfer_process.check_contents(node);
+        if(transfer) transfer_process.main(node);
       }
-      Data_mng.valid_check();
+      data_mng_class.valid_check();
 
       int time_count_hour = Environment.time_count / 3600 + Settings.START_FROM;
       int time_count_min = Environment.time_count % 3600 / 60;

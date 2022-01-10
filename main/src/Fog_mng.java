@@ -24,7 +24,7 @@ public class Fog_mng {
     return dynamic_fog;
   }
 
-  static void register(int node_leased){
+  void register(){
     Random rand = new Random();
     Node_info dynamic_fog_candidate;
     int dynamic_fogs_required, counter;
@@ -69,7 +69,7 @@ public class Fog_mng {
     }
   }
 
-  static void unregister(Fog_info delete_df){
+  void unregister(Fog_info delete_df){
     Data_info data;
     Object obj;
     Node_info node;
@@ -88,7 +88,7 @@ public class Fog_mng {
     node.dynamic_fog = false;
   }
 
-  static ArrayList<Near_DFs> scan_near_dynamic_fogs(Node_info current_node){
+  ArrayList<Near_DFs> scan_near_dynamic_fogs(Node_info current_node){
     var result = new ArrayList<Near_DFs>();
     Node_info dynamic_fog_node, nearest_dynamic_fog = null;
     double distance, min_distance = 9999;// Initialize distance
@@ -135,7 +135,7 @@ public class Fog_mng {
     return result;
   }
 
-  static void calc_used_capacity(Fog_info dynamic_fog){
+  void calc_used_capacity(Fog_info dynamic_fog){
     Data_info data;
     int used_capacity = 0;
     int data_num;

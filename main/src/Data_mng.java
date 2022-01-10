@@ -39,7 +39,7 @@ public class Data_mng {
     if(DEBUG) System.out.println("Initialization of Network contents list is Completed.");
   }
 
-  static int create(int num){
+  int create(int num){
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
     int data_num, data_size, data_expire_after;
@@ -56,9 +56,10 @@ public class Data_mng {
     return temp_Data.num;
   }
 
-  static void update(int dynamic_fog_num, int data_num){
+  void update(int dynamic_fog_num, int data_num){
     Data_info data;
     Fog_info fog_node;
+    var fog_mng_class = new Fog_mng();
     int loop_count = 0;
 
     data = get_data_info(data_num, true);
@@ -69,7 +70,7 @@ public class Data_mng {
 
     /* Update dynamic_fog_list Process */
     fog_node.fog_stored_contents_list.add(data_num);
-    Fog_mng.calc_used_capacity(fog_node);
+    fog_mng_class.calc_used_capacity(fog_node);
 
     /* Check Used Capacity and remove files */
     while(fog_node.total_capacity < fog_node.used_capacity){
@@ -77,7 +78,7 @@ public class Data_mng {
       /* Decide a file to delete and delete from fog_stored_contents_list */
       delete_older_file(fog_node.fog_stored_contents_list, dynamic_fog_num);
 
-      Fog_mng.calc_used_capacity(fog_node);
+      fog_mng_class.calc_used_capacity(fog_node);
       
       loop_count += 1;
       if(loop_count > 10){
@@ -88,10 +89,11 @@ public class Data_mng {
     }
   }
 
-  private static void delete(int delete_file_num){
+  private void delete(int delete_file_num){
     Data_info data;
     Fog_info fog_node;
     Object obj;
+    var fog_mng_class = new Fog_mng();
 
     //Load data_hosted_list
     data = get_data_info(delete_file_num, true);
@@ -103,13 +105,13 @@ public class Data_mng {
       obj = delete_file_num;
       fog_node.fog_stored_contents_list.remove(obj);
 
-      Fog_mng.calc_used_capacity(fog_node);
+      fog_mng_class.calc_used_capacity(fog_node);
     }
     Environment.network_contents_list.set(data.num, return_empty_data(data.num));
     Environment.file_deleted += 1;
   }
 
-  static int select(){
+  int select(){
     int need_data_num;
     Random rand = new Random();
 
@@ -124,7 +126,7 @@ public class Data_mng {
     return need_data_num;
   }
 
-  static boolean info_exist(Integer data_num){
+  boolean info_exist(Integer data_num){
     boolean result = false;
 
     for(int i = 0, size = Environment.network_contents_list.size(); i < size; i++){
@@ -136,7 +138,7 @@ public class Data_mng {
     return result;
   }
 
-  static void valid_check(){
+  void valid_check(){
     int current_time  = Environment.time_count;
     Data_info data;
 
@@ -154,7 +156,7 @@ public class Data_mng {
     Statistics.for_calc_contents_average += Environment.network_contents_list.size();
   }
 
-  static void update_delete_order(int data_num){
+  void update_delete_order(int data_num){
     for(int i = 0, size = Environment.last_used.size(); i < size; i++){
       if(Environment.last_used.get(i) == data_num){
         Environment.last_used.remove(i);
@@ -164,7 +166,7 @@ public class Data_mng {
     Environment.last_used.add(data_num);
   }
 
-  private static void delete_older_file(ArrayList<Integer> fog_stored_contents_list, int dynamic_fog_num){
+  private void delete_older_file(ArrayList<Integer> fog_stored_contents_list, int dynamic_fog_num){
     Data_info data;
     int delete_file_num = Environment.INIT;
 

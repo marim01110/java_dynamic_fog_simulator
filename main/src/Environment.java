@@ -33,9 +33,10 @@ public class Environment {
       init_landmark();
     }
 
-    static void loop(){
+    void loop(){
       Scanner scan = new Scanner(System.in);
       int loop;
+      var sim = new Simulator();
 
       System.out.print("Specify the number of repetitions: ");
       loop = scan.nextInt();
@@ -47,7 +48,7 @@ public class Environment {
       for(int i = 0; i < loop; i++){
         System.out.println("loop_count " + i);
         init();
-        Sim.main();
+        sim.main();
         System.out.println();
       }
       scan.close();
