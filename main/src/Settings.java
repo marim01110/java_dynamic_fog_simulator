@@ -51,4 +51,7 @@ public class Settings {
   static final double BATTERY_COMSUMPTION_WIFI_RECV = 0.0008699;
   static final double BATTERY_COMSUMPTION_CELL_SEND = 0.0069671;
   static final double BATTERY_COMSUMPTION_CELL_RECV = 0.0018519;
+
+  /* ------ ADVANCED SIMULATOR SETTINGS ------ */
+  static final int AVAILABLE_CORES_ON_HOST = Runtime.getRuntime().availableProcessors();
 }

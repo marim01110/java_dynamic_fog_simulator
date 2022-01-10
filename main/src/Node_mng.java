@@ -125,7 +125,7 @@ public class Node_mng {
 
   void keep_alive() throws Exception {
     Node_info current_node;
-    ExecutorService executor = Executors.newFixedThreadPool(4);
+    ExecutorService executor = Executors.newFixedThreadPool(Settings.AVAILABLE_CORES_ON_HOST);
     var list = new ArrayList<Future<?>>();
 
     for(int i = 0; i < Environment.node_list.size(); i++){

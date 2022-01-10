@@ -95,6 +95,9 @@ public class App {
   public static void main(String[] args) throws Exception {
     Scanner scan = new Scanner(System.in);
 
+    System.out.println("Detected " + Settings.AVAILABLE_CORES_ON_HOST + " cores on current host.");
+    System.out.println();
+
     System.out.println("Mode 4: Random-walk");
     System.out.println("Mode 5: Destination");
     System.out.println("Mode 8: Loop");
