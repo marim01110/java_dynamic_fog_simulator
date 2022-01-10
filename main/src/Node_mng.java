@@ -170,8 +170,9 @@ public class Node_mng {
       current_node = Environment.node_list.get(i);
       /* Node Move Process */
       if(current_node.reached == false){
-        if(Environment.mode == 4) Move.random_walk(current_node);
-        if(Environment.mode == 5) Move.start(current_node);
+        var move_class = new Move();
+        if(Environment.mode == 4) move_class.random_walk(current_node);
+        if(Environment.mode == 5) move_class.start(current_node);
         if(DEBUG) System.out.println("Node "+ current_node.num + " (" + current_node.point.x + ", " + current_node.point.y + "), Waypoint is (" + current_node.destination.point.x + ", " + current_node.destination.point.y + ")");
       }
 
