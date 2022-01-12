@@ -91,53 +91,11 @@ public class Fog_mng {
   ArrayList<Near_DFs> scan_near_dynamic_fogs(Node_info current_node){
     var result = new ArrayList<Near_DFs>();
     Node_info dynamic_fog_node, nearest_dynamic_fog = null;
-    int df_area_x_id, df_area_y_id;
-    boolean x_ok, y_ok;
     double distance, min_distance = 9999;// Initialize distance
 
     if(Settings.BLUETOOTH_USE || Settings.WIFI_USE){
-      int node_area_x_id, node_area_y_id, limit;
-      var scan_area_x_ids = new ArrayList<Integer>();
-      var scan_area_y_ids = new ArrayList<Integer>();
-      
-      /* Load current_node geo location info */
-      node_area_x_id = (int)current_node.point.x / 100;
-      node_area_y_id = (int)current_node.point.y / 100;
-
-      /* Set scan area for current_node */
-      if(Settings.WIFI_USE) limit = (int)Math.ceil(Settings.WIFI_CONNECTION_RANGE / 100);
-      else if(Settings.BLUETOOTH_USE) limit = (int)Math.ceil(Settings.BT_CONNECTION_RANGE / 100);
-
-      for(int i = limit; i >= -limit; i--){
-        int temp;
-        temp = node_area_x_id + i;
-        if(check_in_range_of_map(temp)) scan_area_x_ids.add(temp);
-  
-        temp = node_area_y_id + i;
-        if(check_in_range_of_map(temp)) scan_area_y_ids.add(temp);
-      }
-
       for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
         dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
-
-        /* Prepare for area check */
-        df_area_x_id = 0;
-        df_area_x_id = (int)dynamic_fog_node.point.x / 100;
-        df_area_y_id = 0;
-        df_area_y_id = (int)dynamic_fog_node.point.y / 100;
-        x_ok = false;
-        y_ok = false;
-
-        /* Area check */
-        for(int j = 0, area_ids_size = scan_area_x_ids.size(); j < area_ids_size; j++){
-          if(df_area_x_id == scan_area_x_ids.get(j)) x_ok = true;
-        }
-        for(int j = 0, area_ids_size = scan_area_y_ids.size(); j < area_ids_size; j++){
-          if(df_area_y_id == scan_area_y_ids.get(j)) y_ok = true;
-        }
-        if(!(x_ok && y_ok)) continue;// Skip this Dynamic_Fog (No need to scan).
-
-        /* Calculate distance */
         distance = current_node.point.distance(dynamic_fog_node.point);
         if(Settings.WIFI_USE){
           if(distance <= Settings.WIFI_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
@@ -149,68 +107,6 @@ public class Fog_mng {
           min_distance = distance;
           nearest_dynamic_fog = dynamic_fog_node;
         }
-      }
-    }
-
-    if(result.size() == 0) {
-      /* Need to repair */
-      result.add(new Near_DFs(nearest_dynamic_fog, min_distance));
-    }
-    else{
-      /* Sort */
-      Collections.sort(result, new Comparator<Near_DFs>() {
-        @Override
-        public int compare(Near_DFs df1, Near_DFs df2){
-          int temp = 9999;
-          
-          if(df1.distance < df2.distance) temp = -1;
-          else if(df1.distance == df2.distance) temp = 0;
-          else if(df1.distance > df2.distance) temp = 1;
-          else{
-            System.out.println("Error: Error has occured on Sorting process.");
-            System.out.println("Quit the program.");
-            System.exit(-1);
-          }
-
-          return temp;
-        }
-      });
-    }
-
-    return result;
-  }
-
-  private boolean check_in_range_of_map(int scan_id){
-    boolean result = true;
-
-    if(scan_id <= 0) result = false;
-    if(scan_id > Settings.EDGE_DIST / 100) result = false;
-
-    return result;
-  }
-
-  ArrayList<Near_DFs> scan_near_dynamic_fogs_old(Node_info current_node){
-    var result = new ArrayList<Near_DFs>();
-    Node_info dynamic_fog_node, nearest_dynamic_fog = null;
-    double distance, min_distance = 9999;// Initialize distance
-
-    if(Settings.BLUETOOTH_USE || Settings.WIFI_USE){
-      for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
-        dynamic_fog_node = Node_mng.get_node_info(Environment.dynamic_fog_list.get(i).node_num);
-
-        /* Need to reconfigure below for Performance issue */
-        distance = current_node.point.distance(dynamic_fog_node.point);
-        if(Settings.WIFI_USE){
-          if(distance <= Settings.WIFI_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
-        }
-        else if(Settings.BLUETOOTH_USE){
-          if(distance <= Settings.BT_CONNECTION_RANGE) result.add(new Near_DFs(dynamic_fog_node, distance));
-        }
-        if(distance < min_distance){
-          min_distance = distance;
-          nearest_dynamic_fog = dynamic_fog_node;
-        }
-        /* Need to reconfigure above for Performance issue */
       }
     }
 
