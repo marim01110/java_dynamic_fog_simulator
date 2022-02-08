@@ -1,5 +1,5 @@
 public class Settings {
-  //------SIMULATION SETTINGS------
+  /* ------SIMULATION SETTINGS------ */
   static final boolean DEBUG = false;
   static final boolean FOG_USE = true;
   static final int SIM_TIME_HOURS = 18;// Unit is hours.
@@ -17,21 +17,21 @@ public class Settings {
   static final boolean WIFI_USE = false;
   static final double WIFI_CONNECTION_RANGE = 200;// Unit is meters.
 
-  //------MODE 5 SETTINGS------
+  /* ------MODE 5 SETTINGS------ */
   static final int START_FROM = 5;// 24-hour notation.
   static final int NODES_REALITY = 4;// Unit is percents.
   static final int[] nodes_model_array = {95405, 94750, 89750, 88580, 89975, 96950, 103675, 116200, 139050, 153700, 175000, 190450, 215450, 221350, 207300, 193530, 197100, 205200, 194950, 176500, 159550, 129100, 109950, 99030};
 
-  //------FOG SETTINGS------
+  /* ------FOG SETTINGS------ */
   static final int FOG_STORAGE_SIZE = 100000;// Unit is kilobytes.
   static final boolean CONTENTS_TYPES_FIXED = true;// Contents_type_dynamic feature is currently not supported (2022/1/6 5:11 p.m.).
   static final int CONTENTS_TYPES_MAX = 300;
-  static final int MAX_PERCENTAGE_OF_DUPLICATION = 50;
+  static final int CONTENTS_FILE_SIZE_MAX = 200;// Unit is kilobytes.
   static final int CONTENTS_EXPIRE_AFTER = 180;// Unit is seconds.
   static final int DYNAMIC_FOG_RATIO_PERCENTAGE = 10;
   static final int DYNAMIC_FOG_UPDATE_INTERVAL = 300;// Unit is seconds.
 
-  //------NODE MOVE SPEED SETTINGS------
+  /* ------NODE MOVE SPEED SETTINGS------ */
   static final int MOVE_SPEEDS = 4;
   static final int[] move_speed_array = {1, 2, 4, 6};// Unit is meters per second.
 
@@ -41,7 +41,7 @@ public class Settings {
   https://www.ktr.mlit.go.jp/gaikan/pi_kouhou/jigyou_gaiyou2015/p6-7.pdf
   */
 
-  //------BATTERY SIMULATION SETTINGS------
+  /* ------BATTERY SIMULATION SETTINGS------ */
   static final int BATTERY_INIT_MIN_PERCENTAGE = 20;
   static final int BATTERY_INIT_MAX_PERCENTAGE = 90;
   static final int BATTERY_LOW_THRESHOLD_PERCENTAGE = 40;

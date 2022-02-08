@@ -46,7 +46,7 @@ public class Data_mng {
 
     /* Data Create Process */
     data_num = num;
-    data_size = (rand.nextInt(39) + 1) * 5;
+    data_size = (rand.nextInt(Settings.CONTENTS_FILE_SIZE_MAX / 5 - 1) + 1) * 5;
     data_expire_after = Environment.time_count + Settings.CONTENTS_EXPIRE_AFTER;
 
     var temp_Data = new Data_info(data_num, data_size, data_expire_after, hosted_by_list);
