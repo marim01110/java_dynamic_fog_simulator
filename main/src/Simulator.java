@@ -41,9 +41,12 @@ public class Simulator {
         }
       }
 
-      if(Environment.mode == 5){
-        /* Change MAX_NODES value. */
-        if(Environment.time_count % 3600 == 0) MAX_NODES = Environment.return_max_nodes();
+      if(Environment.time_count % 3600 == 0){
+        if(Environment.mode == 5){
+          /* Change MAX_NODES value. */
+          MAX_NODES = Environment.return_max_nodes();
+        }
+        if(Environment.time_count != 0) Statistics.store();
       }
       
       /* Node replenishment. */
@@ -79,6 +82,7 @@ public class Simulator {
       System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100 / (Settings.SIM_TIME_HOURS * 3600) + "% done.)" + ", Current time in Sim: " + time_count_hour + ":" + time_count_min /* + ", Active nodes: " + Environment.node_list.size() */);
       if(DEBUG) System.out.println();
     }
+    Statistics.store();
     Statistics.print_info();
   }
 }

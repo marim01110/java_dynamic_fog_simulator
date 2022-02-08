@@ -19,7 +19,7 @@ public class Settings {
 
   /* ------MODE 5 SETTINGS------ */
   static final int START_FROM = 5;// 24-hour notation.
-  static final int NODES_REALITY = 4;// Unit is percents.
+  static final int NODES_REALITY = 1;// Unit is percents.
   static final int[] nodes_model_array = {95405, 94750, 89750, 88580, 89975, 96950, 103675, 116200, 139050, 153700, 175000, 190450, 215450, 221350, 207300, 193530, 197100, 205200, 194950, 176500, 159550, 129100, 109950, 99030};
 
   /* ------FOG SETTINGS------ */
