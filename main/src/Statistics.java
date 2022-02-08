@@ -155,6 +155,7 @@ public class Statistics {
 
   static void print_detail(){
     System.out.println("------Details------");
+    System.out.println("Data transfer count: " + data_transfered_list);
     System.out.println("Download from Cloud: " + dl_from_cloud_list);
     System.out.println("Download from Local Network: " + dl_from_local_list);
     System.out.println("Download from Near Dynamic_Fog by Cellular: " + dl_from_near_df_cell_list);
