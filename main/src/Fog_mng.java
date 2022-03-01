@@ -31,41 +31,39 @@ public class Fog_mng {
     boolean error;
     
     dynamic_fogs_required = Environment.node_list.size() * Settings.DYNAMIC_FOG_RATIO_PERCENTAGE / 100;
-    if(dynamic_fogs_required > Environment.dynamic_fog_list.size()){
-      while(dynamic_fogs_required > Environment.dynamic_fog_list.size()){
-        error = false;
-        counter = rand.nextInt(Environment.node_list.size());
-        dynamic_fog_candidate = Environment.node_list.get(counter);
-        if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate.num);
+    while(dynamic_fogs_required > Environment.dynamic_fog_list.size()){
+      error = false;
+      counter = rand.nextInt(Environment.node_list.size());
+      dynamic_fog_candidate = Environment.node_list.get(counter);
+      if(DEBUG) System.out.println("dynamic_fog_candidate: " + dynamic_fog_candidate.num);
 
-        /* Verify the candidate. */
-        if(dynamic_fog_candidate.battery_low == true) error = true;
-        else for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
-          if(dynamic_fog_candidate.num == Environment.dynamic_fog_list.get(i).node_num) error = true;
-          if(error == true) break;
-        }
-        if(error == false){
-          for(int i = 0; i < Environment.node_list.size(); i++){
-            if(error == true){
-              if(Environment.node_list.get(i).num == dynamic_fog_candidate.num) error = false;
-            }
+      /* Verify the candidate. */
+      if(dynamic_fog_candidate.battery_low == true) error = true;
+      else for(int i = 0, size = Environment.dynamic_fog_list.size(); i < size; i++){
+        if(dynamic_fog_candidate.num == Environment.dynamic_fog_list.get(i).node_num) error = true;
+        if(error == true) break;
+      }
+      if(error == false){
+        for(int i = 0; i < Environment.node_list.size(); i++){
+          if(error == true){
+            if(Environment.node_list.get(i).num == dynamic_fog_candidate.num) error = false;
           }
         }
-
-        if(error == true){
-          if(DEBUG) System.out.println("The Candidate is incompatible.");
-        }
-        else if(error == false){
-          /* "error == false" means the candidate not dupulicated. */
-          var fog_stored_contents_list = new ArrayList<Integer>();
-          var temp = new Fog_info(dynamic_fog_candidate.num, Environment.FOG_IS_OK, Settings.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
-          Environment.dynamic_fog_list.add(temp);
-          dynamic_fog_candidate.dynamic_fog = true;
-          
-          if(DEBUG) System.out.println("Node " + dynamic_fog_candidate.num + " becomes Dynamic_Fog node.");
-        }
-        if(DEBUG) System.out.println("Required: " + dynamic_fogs_required + ", Exist: " + Environment.dynamic_fog_list.size());
       }
+
+      if(error == true){
+        if(DEBUG) System.out.println("The Candidate is incompatible.");
+      }
+      else if(error == false){
+        /* "error == false" means the candidate not dupulicated. */
+        var fog_stored_contents_list = new ArrayList<Integer>();
+        var temp = new Fog_info(dynamic_fog_candidate.num, Environment.FOG_IS_OK, Settings.FOG_STORAGE_SIZE, 0, fog_stored_contents_list);
+        Environment.dynamic_fog_list.add(temp);
+        dynamic_fog_candidate.dynamic_fog = true;
+        
+        if(DEBUG) System.out.println("Node " + dynamic_fog_candidate.num + " becomes Dynamic_Fog node.");
+      }
+      if(DEBUG) System.out.println("Required: " + dynamic_fogs_required + ", Exist: " + Environment.dynamic_fog_list.size());
     }
   }
 

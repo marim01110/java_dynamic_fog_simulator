@@ -33,7 +33,11 @@ public class Statistics {
   static double for_calc_latency_conventional = 0;
   static long data_size_via_internet_proposed = 0;
   static long data_size_via_internet_conventional = 0;
-  static double power_consumption_total = 0;
+
+  private static double power_consumption_total = 0;
+  static double power_consumption = 0;
+  private static ArrayList<Double> power_consumption_list = new ArrayList<>();
+  
   static int out_of_battery = 0;
 
   static void init(){
@@ -45,11 +49,12 @@ public class Statistics {
     dl_from_near_df_cell_list.clear();
     dl_from_near_df_wifi_list.clear();
     dl_from_near_df_bluetooth_list.clear();
+    power_consumption_list.clear();
     for_calc_latency_proposed = 0;
     for_calc_latency_conventional = 0;
     data_size_via_internet_proposed = 0;
     data_size_via_internet_conventional = 0;
-    power_consumption_total = 0;
+    power_consumption = 0;
     out_of_battery = 0;
   }
 
@@ -77,6 +82,10 @@ public class Statistics {
     /* dl_from_near_df_bluetooth */
     dl_from_near_df_bluetooth_list.add(dl_from_near_df_bluetooth);
     dl_from_near_df_bluetooth = 0;
+
+    /* power_consumption */
+    power_consumption_list.add(power_consumption);
+    power_consumption = 0;
   }
 
   private static boolean calc(){
@@ -124,6 +133,13 @@ public class Statistics {
     }
     if(dl_from_near_df_bluetooth != 0) error = true;
 
+    /* Calc power_consumption_total */
+    power_consumption_total = 0;
+    for(int i = 0, size = power_consumption_list.size(); i < size; i++){
+      power_consumption_total += power_consumption_list.get(i);
+    }
+    if(power_consumption != 0) error = true;
+
     return error;
   }
 
@@ -161,5 +177,6 @@ public class Statistics {
     System.out.println("Download from Near Dynamic_Fog by Cellular: " + dl_from_near_df_cell_list);
     System.out.println("Download from Near Dynamic_Fog by Wi-Fi: " + dl_from_near_df_wifi_list);
     System.out.println("Download from Near Dynamic_Fog by Bluetooth: " + dl_from_near_df_bluetooth_list);
+    System.out.println("Power consumption: " + power_consumption_list);
   }
 }
