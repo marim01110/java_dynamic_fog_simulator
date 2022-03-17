@@ -6,6 +6,7 @@ public class Node_mng {
   private static final boolean DEBUG = Settings.DEBUG;
 
   void spawn(int node_leased){
+    /* Create a new node. */
     Random rand = new Random();
     var position = new Point2D.Double();
     Landmark start, destination;
@@ -17,7 +18,7 @@ public class Node_mng {
     /* Set start position (Start from JR Kyoto Sta.) */
     start = Environment.return_landmark_point(0);
 
-    /* Set Waypoints */
+    /* Set waypoints */
     for(int i = 1; i < Settings.LANDMARKS; i++) waypoint_temp_list.add(i);
     waypoints = rand.nextInt(Settings.LANDMARKS - Settings.WAYPOINT_MIN - 1) + Settings.WAYPOINT_MIN;
     for(int i = 0; i < waypoints; i++){
@@ -46,6 +47,7 @@ public class Node_mng {
   }
 
   private void delete(Node_info node){
+    /* Delete a node. */
     if(DEBUG) System.out.println("Node " + node.num + " is now deleteing.");
     Environment.node_list.remove(node);
   }
@@ -70,10 +72,10 @@ public class Node_mng {
     switch(communication_method){
       case "bluetooth": switch(recv_or_send){
                           case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_BT_RECV;
-                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_BT_RECV;
+                                        Statistics.power_consumption += Settings.BATTERY_COMSUMPTION_BT_RECV;
                                         break;
                           case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_BT_SEND;
-                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_BT_SEND;
+                                        Statistics.power_consumption += Settings.BATTERY_COMSUMPTION_BT_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);
@@ -82,10 +84,10 @@ public class Node_mng {
                         break;
       case "wifi":  switch(recv_or_send){
                           case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_WIFI_RECV;
-                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_WIFI_RECV;
+                                        Statistics.power_consumption += Settings.BATTERY_COMSUMPTION_WIFI_RECV;
                                         break;
                           case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_WIFI_SEND;
-                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_WIFI_SEND;
+                                        Statistics.power_consumption += Settings.BATTERY_COMSUMPTION_WIFI_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);
@@ -94,10 +96,10 @@ public class Node_mng {
                         break;
       case "cellular":  switch(recv_or_send){
                           case "recv":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_RECV;
-                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_CELL_RECV;
+                                        Statistics.power_consumption += Settings.BATTERY_COMSUMPTION_CELL_RECV;
                                         break;
                           case "send":  node.battery_remain_percentage -= Settings.BATTERY_COMSUMPTION_CELL_SEND;
-                                        Statistics.power_consumption_total += Settings.BATTERY_COMSUMPTION_CELL_SEND;
+                                        Statistics.power_consumption += Settings.BATTERY_COMSUMPTION_CELL_SEND;
                                         break;
                           default:      System.out.println("Not enough arguments given. Simulation aborted.");
                                         System.exit(-1);
@@ -111,6 +113,7 @@ public class Node_mng {
   }
 
   private void battery_check(Node_info node){
+    /* Check battery remaining level. */
     if(node.battery_remain_percentage <= Settings.BATTERY_LOW_THRESHOLD_PERCENTAGE){
       if(DEBUG) System.out.println("Node " + node.num + "'s battery turns to low state.");
       node.battery_low = true;

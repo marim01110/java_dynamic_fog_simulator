@@ -22,12 +22,13 @@ public class Simulator {
                 break;
     }
 
-    /* Initialized Array on Dynamic_List */
+    /* Spawn initial nodes */
     for(int i = 0; i < MAX_NODES; i++){
       node_mng_class.spawn(Environment.node_leased);
       Environment.node_leased += 1;
     }
 
+    /* Initialize contents_list */
     if(Settings.CONTENTS_TYPES_FIXED) Data_mng.init_arraylist();
 
     /* Simuration Start */
@@ -36,14 +37,18 @@ public class Simulator {
     while(Environment.time_count < Settings.SIM_TIME_HOURS * 3600){
       if(Settings.FOG_USE){
         if((Environment.time_count % Settings.DYNAMIC_FOG_UPDATE_INTERVAL) ==  0){
+          /* Check Dynamic_Fog nodes */
           var fog_mng_class = new Fog_mng();
           fog_mng_class.register();
         }
       }
 
-      if(Environment.mode == 5){
-        /* Change MAX_NODES value. */
-        if(Environment.time_count % 3600 == 0) MAX_NODES = Environment.return_max_nodes();
+      if(Environment.time_count % 3600 == 0){
+        if(Environment.mode == 5){
+          /* Change MAX_NODES value. */
+          MAX_NODES = Environment.return_max_nodes();
+        }
+        if(Environment.time_count != 0) Statistics.store();
       }
       
       /* Node replenishment. */
@@ -72,6 +77,7 @@ public class Simulator {
       }
       data_mng_class.valid_check();
 
+      /* Calculate current_time for DEBUG */
       int time_count_hour = Environment.time_count / 3600 + Settings.START_FROM;
       int time_count_min = Environment.time_count % 3600 / 60;
 
@@ -79,6 +85,7 @@ public class Simulator {
       System.out.print("Processed time_count " + Environment.time_count + " (" +  Environment.time_count * 100 / (Settings.SIM_TIME_HOURS * 3600) + "% done.)" + ", Current time in Sim: " + time_count_hour + ":" + time_count_min /* + ", Active nodes: " + Environment.node_list.size() */);
       if(DEBUG) System.out.println();
     }
+    Statistics.store();
     Statistics.print_info();
   }
 }
