@@ -33,6 +33,7 @@ public class Environment {
     }
 
     static void init_landmark(){
+      /* Set the landmark number, name, and coordinates. */
       landmark_array[0] = new Landmark(1, "JR Kyoto Station", 640, 890);
       landmark_array[1] = new Landmark(2, "To-ji Temple", 225, 685);
       landmark_array[2] = new Landmark(3, "Higashi-Honganji Temple", 640, 1120);
@@ -46,8 +47,9 @@ public class Environment {
     }
 
     static void init_max_nodes_array(){
+      /* Create a time period list of the number of nodes participating in the Dynamic Fog system. */
       for(int i = 0; i < 24; i++){
-        Environment.max_nodes_array[i] = Settings.nodes_model_array[i] * Settings.NODES_REALITY / 100;
+        Environment.max_nodes_array[i] = Settings.nodes_model_array[i] * Settings.DF_SYSTEM_PARTICIPATION_RATIO / 100;
       }
     }
 

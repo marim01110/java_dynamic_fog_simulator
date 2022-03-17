@@ -4,6 +4,7 @@ public class Data_transfer {
   private static final boolean DEBUG = Settings.DEBUG;
 
   boolean check_contents(Node_info node){
+    /* Determine if it is time for content replacement. */
     boolean transfer = false;
     int reflesh_node;
 
@@ -19,10 +20,12 @@ public class Data_transfer {
     Node_info nearest_dynamic_fog = null;
     var near_dynamic_fogs_list = new ArrayList<Near_DFs>();
     
+    /* Determine the required content. */
     need_data_num = data_mng_class.select();
     data_mng_class.update_delete_order(need_data_num);
 
     if(Settings.FOG_USE){
+      /* Search the nearest DF. */
       var fog_mng_class = new Fog_mng();
       near_dynamic_fogs_list = fog_mng_class.scan_near_dynamic_fogs(node);
       nearest_dynamic_fog = near_dynamic_fogs_list.get(0).dynamic_fog; 
@@ -217,6 +220,8 @@ public class Data_transfer {
 
   /*
   private boolean copy_control(Data_info need_data){
+    // Restrict reproduction to avoid filling it with specific content.
+    // This feature was not used in the 2021 YOSHIKAWA's study.
     boolean copy = false;
     int need_data_hosted_by_total, dynamic_fog_total_nodes;
 

@@ -26,6 +26,7 @@ public class Data_mng {
   }
 
   private static Data_info return_empty_data(int num){
+    /* This function is used to create temporary content information. */
     var hosted_by_list = new ArrayList<Integer>();
     var empty = new Data_info(num, 999999999, Environment.INIT, hosted_by_list);
 
@@ -40,6 +41,7 @@ public class Data_mng {
   }
 
   int create(int num){
+    /* This function is used to create new content information. */
     Random rand = new Random();
     var hosted_by_list = new ArrayList<Integer>();
     int data_num, data_size, data_expire_after;
@@ -57,6 +59,7 @@ public class Data_mng {
   }
 
   void update(int dynamic_fog_num, int data_num){
+    /* This function is used when the number of hosted_nodes increases. */
     Data_info data;
     Fog_info fog_node;
     var fog_mng_class = new Fog_mng();
@@ -90,6 +93,11 @@ public class Data_mng {
   }
 
   private void delete(int delete_file_num){
+    /*
+      This function is used to delete content information.
+      When content information is deleted,
+      temporary content information is inserted to maintain the overall content count.
+    */
     Data_info data;
     Fog_info fog_node;
     Object obj;
@@ -112,6 +120,7 @@ public class Data_mng {
   }
 
   int select(){
+    /* This function is used to determine the requested content number. */
     int need_data_num;
     Random rand = new Random();
 
@@ -126,19 +135,8 @@ public class Data_mng {
     return need_data_num;
   }
 
-  boolean info_exist(Integer data_num){
-    boolean result = false;
-
-    for(int i = 0, size = Environment.network_contents_list.size(); i < size; i++){
-      if(Environment.network_contents_list.get(i).num == data_num){
-        result = true;
-      }
-      if(result == true) break;
-    }
-    return result;
-  }
-
   void valid_check(){
+    /* Check the expiration date of the content and decide whether to delete it. */
     int current_time  = Environment.time_count;
     Data_info data;
 
@@ -157,6 +155,7 @@ public class Data_mng {
   }
 
   void update_delete_order(int data_num){
+    /* The "NRU" is accomplished by moving the last requested content to the end of the list. */
     for(int i = 0, size = Environment.last_used.size(); i < size; i++){
       if(Environment.last_used.get(i) == data_num){
         Environment.last_used.remove(i);
@@ -167,6 +166,7 @@ public class Data_mng {
   }
 
   private void delete_older_file(ArrayList<Integer> fog_stored_contents_list, int dynamic_fog_num){
+    /* Deletes content from the DF according to the list created by update_delete_order. */
     Data_info data;
     int delete_file_num = Environment.INIT;
 

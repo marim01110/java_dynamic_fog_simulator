@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+/* Struct definition */
 class Node_info{
   int num;
   Point2D.Double point = new Point2D.Double();
@@ -101,6 +102,7 @@ public class App {
     System.out.print("Select running mode.[4,5] ");
     Environment.mode = scan.nextInt();
 
+    /* Simulation start */
     var sim = new Simulator();
     sim.main();
 
