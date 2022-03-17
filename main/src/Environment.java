@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Environment {
     static int mode;
@@ -31,27 +30,6 @@ public class Environment {
       network_contents_list.clear();
       last_used.clear();
       init_landmark();
-    }
-
-    void loop(){
-      Scanner scan = new Scanner(System.in);
-      int loop;
-      var sim = new Simulator();
-
-      System.out.print("Specify the number of repetitions: ");
-      loop = scan.nextInt();
-      if(loop <= 0) System.exit(-1);
-
-      System.out.print("Specify runnning_mode [4,5]: ");
-      Environment.mode = scan.nextInt();
-
-      for(int i = 0; i < loop; i++){
-        System.out.println("loop_count " + i);
-        init();
-        sim.main();
-        System.out.println();
-      }
-      scan.close();
     }
 
     static void init_landmark(){

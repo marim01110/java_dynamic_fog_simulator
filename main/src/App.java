@@ -97,19 +97,13 @@ public class App {
 
     System.out.println("Mode 4: Random-walk");
     System.out.println("Mode 5: Destination");
-    System.out.println("Mode 8: Loop");
     
-    System.out.print("Select running mode.[4,5,8] ");
+    System.out.print("Select running mode.[4,5] ");
     Environment.mode = scan.nextInt();
-    
-    if(Environment.mode == 8){
-      var env = new Environment();
-      env.loop();
-    }
-    else{
-      var sim = new Simulator();
-      sim.main();
-    }
+
+    var sim = new Simulator();
+    sim.main();
+
     scan.close();
   }
 }
